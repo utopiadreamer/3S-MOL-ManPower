@@ -1,0 +1,14 @@
+@import "../../styles/colors";
+
+.mol-languageSelector {
+  display: flex;
+  flex-direction: row;
+
+  button {
+    color: $themeDark;
+
+    &.is-checked {
+      font-weight: 700;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+@import"~office-ui-fabric-react/dist/sass/References";
+@import  "../../styles/colors";
+@import  "../../styles/dimensions";
+
+.eta-panel{
+    box-shadow: $contentBGround;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: $panel-padding;
+    .header{
+        display: flex;
+        flex-direction: row;
+       
+        h2{
+            margin: unset;
+        }
+       .title{
+        align-self:flex-start;
+  
+       }
+       .space{
+        flex-grow: 1;
+       }
+       .editable{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    }
+    .footer{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: flex-end;
+        height: 30px;
+        button{
+            margin-left: $panel-item-margin;
+        }
+    }
+}
+html[dir=rtl]{
+    .eta-panel{
+        .footer{
+            button{
+                margin-right: $panel-item-margin;
+            }
+        }
+    }
+}

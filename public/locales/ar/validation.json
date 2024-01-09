@@ -1,0 +1,7 @@
+{
+    "invalidEmail": "يجب إدخال بريد إلكتروني صحيح",
+    "isRequired": "يجب إدخال {{Label}}",
+    "invalidNationalID": "يجب إدخال رقم قومي صحيح",
+    "invalidMobileNo": "يجب إدخال رقم موبايل صحيح",
+    "selectionRequired": "يجب تحديد {{Label}}"
+}

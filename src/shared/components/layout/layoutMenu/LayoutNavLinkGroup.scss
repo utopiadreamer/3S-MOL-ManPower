@@ -1,0 +1,42 @@
+.mol-NavLinkGroup {
+  display: flex;
+  flex-direction: column;
+
+  .childPlacholder .layout-menu-nav-item {
+    padding-left: 28px !important;
+  }
+  .childPlacholderCollapsed .layout-menu-nav-item {
+    padding-left: 20px !important;
+  }
+  .open {
+    transform: rotate(0deg);
+    transition-duration: 0.2s;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transform: rotate(0deg);
+    transition-timing-function: ease-in-out;
+  }
+  .closed {
+    transform: rotate(-90deg);
+    transition-duration: 0.2s;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transform: rotate(-90deg);
+    transition-timing-function: ease-in-out;
+  }
+  .closedRtl {
+    transform: rotate(90deg);
+    transition-duration: 0.2s;
+    -webkit-transition-duration: 0.2s;
+    -webkit-transform: rotate(90deg);
+    transition-timing-function: ease-in-out;
+  }
+}
+html[dir='rtl'] {
+  .mol-NavLinkGroup {
+    .childPlacholder .layout-menu-nav-item {
+      padding-right: 28px !important;
+    }
+    .childPlacholderCollapsed .layout-menu-nav-item {
+      padding-right: 20px !important;
+    }
+  }
+}

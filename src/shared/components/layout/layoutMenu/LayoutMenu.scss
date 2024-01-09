@@ -1,0 +1,106 @@
+@import "~office-ui-fabric-react/dist/sass/References";
+@import "../../../../shared/styles/colors";
+@import "../../../../shared/styles/mixins";
+@import "../../../../shared/styles/dimensions";
+
+@mixin mol-menu-item {
+    height: 18px;
+    display: flex;
+    margin: 0;
+    padding: 12px;
+    color: $mol_menuItem;
+    text-decoration: none;
+    user-select: none;
+  
+    &:hover {
+        cursor: pointer;
+        background-color: $mol_menuItem_Hover;
+    } 
+    &.layout-menu-nav-item--active {
+        background-color: $mol_menuItem_Active;
+        color: $mol_menuItem_Active_TextColor;
+    }
+
+    &:not(.layout-menu-nav-item--disabled):hover() {
+        cursor: pointer;
+        background-color: $mol_menuItem_Hover;
+    }
+
+    .layout-menu-nav-item-label {
+        @include text-ellipsis();
+        font-size: small;
+    }
+
+    .layout-menu-nav-item-icon {
+        vertical-align: text-bottom;
+        margin-right: 10px;
+        margin-left: 4px;
+        .layout-menu-badge-container {
+            position: relative;
+
+            .badge {
+                position: absolute;
+                top: -16px;
+                right: -8px;
+                color: $color-warning;
+                font-size: 20px;
+            }
+        }
+    }
+}
+html[dir=rtl]{
+    .mol-layout-menu{
+        .layout-menu-nav-item-icon {
+            margin-left: 10px !important;
+            margin-right: 4px !important;
+        }
+    }
+}
+.mol-layout-menu {
+    background:  $mol_menu_background;
+    height: 100%;
+    min-width: $menu-width-closed;
+    width: $menu-width-closed;
+    transition: width $ms-animation-duration-2 $ms-motion-timing-decelerate;
+    //box-shadow: -4px 4px 10px $neutralTertiary;
+    box-shadow: 1px 0px 10px $mol_menu_shadowBox;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+
+    &.overflow {
+        position: absolute;
+    }
+
+  
+    .layout-menu-nav-button {
+        @include mol-menu-item();
+        pointer-events: none;
+    }
+
+    .layout-menu-nav-item {
+        @include mol-menu-item();
+    }
+
+    @media (min-width: 600px) {
+        .layout-menu-nav-button {
+            pointer-events: unset;
+        }
+
+        &.opened {
+            width: $menu-width-opened;
+        }
+    }
+}
+
+.mol-layout-menu-content {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    flex: 1;
+
+    &.overflow {
+        padding-left: $menu-width-closed;
+    }
+}

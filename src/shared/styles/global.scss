@@ -1,0 +1,778 @@
+@import '~office-ui-fabric-react/dist/sass/References';
+@import '../styles/custom_variables';
+@import '../styles/colors';
+@import '../styles/dimensions';
+
+* {
+  box-sizing: border-box;
+
+  > :not(i) {
+    font-family: $font_family !important;
+    font-weight: $font_weight_normal;
+  }
+}
+
+.wordBreak {
+  white-space: normal;
+}
+
+.loading_panel {
+  text-align: center !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  right: unset !important;
+  bottom: unset !important;
+  transform: translate(-50%, -50%) !important;
+  padding: 16px 20px !important;
+  border: 1px solid $mol_readonlyBorderColor !important;
+  background: $white_color;
+}
+
+.loading_panel > .content {
+  margin: 0 !important;
+  position: unset !important;
+  top: unset !important;
+  left: unset !important;
+  transform: unset !important;
+}
+
+.mol-gridLoadingPanel {
+  .mol-gridLoadingItem {
+    padding: 16px 20px !important;
+    border: 1px solid $mol_readonlyBorderColor !important;
+  }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-style: $font_style;
+  font-weight: $font_weight_normal;
+  font-size: $md_size;
+  color: $main_color;
+  width: 100%;
+}
+
+.panel {
+  box-shadow: $contentBGround;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  padding: $panel-padding;
+}
+
+.ms-Dialog-title {
+  font-size: 20px;
+  color: $secondary_color;
+}
+
+.inner-space {
+  width: 4px;
+}
+
+.navLinkStyle {
+  color: $themePrimary;
+  height: 20px;
+}
+
+.ant-picker-now-btn {
+  cursor: pointer !important;
+}
+
+.mol-layout-content-header {
+  .layout-content-header-title {
+    i {
+      font-size: 18px;
+    }
+  }
+}
+
+.navLink {
+  font-size: 14px;
+  line-height: 20px;
+  color: $blueColor !important;
+}
+
+.receiver-link {
+  color: $neutralPrimary;
+}
+
+.navLinkBack {
+  line-height: 21px;
+  background-color: $lightBlueColor;
+  padding: 6px 8px;
+  height: 32px;
+
+  a {
+    cursor: pointer;
+    color: $blueColor !important;
+    text-decoration: underline;
+  }
+}
+
+.gap5 {
+  gap: 5px;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.Active {
+  color: $valid;
+
+  span {
+    color: $valid;
+  }
+}
+
+.InActive {
+  color: $dark_gray;
+
+  span {
+    color: $dark_gray;
+  }
+}
+
+.Retiring {
+  color: #BB0000;
+
+  span {
+    color: #BB0000 !important;
+  }
+}
+
+.Retired {
+  color: #BB0000;
+
+  span {
+    color: #BB0000;
+  }
+}
+
+.In-active {
+  color: $dark_gray;
+
+  span {
+    color: $dark_gray;
+  }
+}
+
+.Pending {
+  color: $invalid;
+
+  span {
+    color: $invalid;
+  }
+}
+
+button {
+  &:focus {
+    outline: initial !important;
+  }
+
+  .ms-Button-label {
+    font-weight: $font_weight_normal;
+  }
+}
+
+.ms-DetailsRow-cell {
+  .ms-Button--action {
+    color: $themePrimary;
+  }
+}
+
+.messageBar {
+  position: sticky;
+  z-index: 999;
+  top: 0px;
+}
+
+.ms-Modal-scrollableContent {
+  z-index: 99999999999999;
+}
+
+.table-custom-header-cell-title {
+  font-weight: normal !important;
+}
+
+.btns-container {
+  justify-content: flex-end;
+
+  .ms-Button {
+    &:first-child {
+      margin: 0 10px;
+    }
+  }
+}
+
+h2 {
+  font-size: 1.4rem !important;
+}
+
+.mol-layout-menu-content {
+  .layout-content-root.no-header {
+    .layout-content {
+      padding: 0;
+      padding-top: 0;
+
+      .mol-panel {
+        .header {
+          .editable {
+            justify-content: flex-start;
+          }
+
+          h2,
+          h3 {
+            font-size: 18px;
+          }
+        }
+
+        .mol-section {
+          margin-top: 0;
+          margin-bottom: 15px;
+        }
+
+        .bodyLine.merge2 {
+          grid-template-columns: 2fr 1fr 1fr;
+        }
+      }
+    }
+  }
+}
+
+.bgSkyBlue {
+  background-color: $isActive;
+}
+
+.isEditable {
+  input.ms-TextField-field,
+  .ms-Dropdown {
+    &:disabled {
+      background-color: $b-groungColor;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.layout-menu-content {
+  width: calc(100% - 48px);
+  overflow-x: hidden;
+}
+
+.break-space {
+  white-space: initial;
+}
+
+.display-flex {
+  display: flex !important;
+}
+
+.justify-Between {
+  justify-content: space-between;
+}
+
+.justify-Center {
+  justify-content: center;
+}
+
+.justify-Start {
+  justify-content: flex-start;
+}
+
+.justify-End {
+  justify-content: flex-end;
+}
+
+.align-items {
+  align-items: center !important;
+}
+
+.align-items-end {
+  align-items: baseline !important;
+}
+
+.app-loading {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-title {
+  display: inline-flex !important;
+  font-size: $xxl_size;
+  line-height: 30px;
+  padding-top: 10px;
+  color: $main_color;
+}
+
+.card {
+  background: $white_color;
+  border-radius: calc(0.15rem - 1px);
+  box-shadow: 1px 1px 25px $box_shadow;
+  padding: 25px;
+  margin: 13px 0;
+
+  .card-title {
+    margin-bottom: 10px !important;
+
+    h2 {
+      font-size: $xl_size !important;
+    }
+  }
+
+  .card-sub-title {
+    margin-bottom: 10px !important;
+
+    h2 {
+      font-size: $lg_size !important;
+    }
+  }
+}
+
+.grid-card {
+  background: $white_color !important;
+  border-radius: calc(0.15rem - 1px) !important;
+  box-shadow: 1px 1px 25px $box_shadow !important;
+  padding: 25px 0 !important;
+  margin: 13px 0 !important;
+
+  .grid-title {
+    margin-bottom: 10px !important;
+    padding: 0 25px;
+
+    h2 {
+      font-size: $lg_size !important;
+    }
+  }
+}
+
+.ms-DetailsHeader {
+  padding-top: 0;
+  padding-bottom: 0;
+  border-bottom-width: 0;
+  background: $themePrimary;
+}
+
+.lineSolid {
+  max-width: 100%;
+  height: 2px;
+  background: $secondary_color;
+  margin-top: 0;
+}
+
+.LoadingIndicator {
+  padding: 6px !important;
+}
+
+.DatePicker label {
+  font-size: $md_size;
+  color: $neutralSecondary;
+  font-weight: $font_weight_normal;
+}
+
+.bold {
+  font-weight: $font_weight_bold !important;
+}
+
+.ms-Label {
+  padding-bottom: 3px;
+  color: $neutralSecondary;
+  font-weight: $font_weight_normal;
+}
+
+.ms-MessageBar-icon {
+  margin-left: $MessageBar-icon-margin;
+}
+
+.ms-DatePicker {
+  .ms-TextField {
+    :disabled {
+      border: 1px solid $themeLighter;
+      background-color: $themeLighterAlt;
+    }
+    .ms-TextField-fieldGroup {
+      .ms-TextField-field {
+        padding-left: 8px;
+
+      }
+    }
+
+    i {
+      right: 0;
+      text-align: end;
+    }
+  }
+}
+
+// Fix the bold text of the regular fluent ui pivot component
+.ms-Pivot-link {
+  &.is-selected {
+    .ms-Pivot-text {
+      font-weight: bold;
+    }
+  }
+}
+
+.spacedFlex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ms-DetailsRow-cell {
+  text-align: left;
+  align-self: center;
+}
+
+.ms-DetailsHeader-cell {
+  text-align: left;
+  align-self: center;
+  .table-custom-header-cell.filter {
+    margin-top: 4px !important;
+  }
+
+  .ms-Button {
+    &:hover {
+      background-color: rgb(243, 242, 241);
+
+      i {
+        color: $blueColor !important;
+      }
+    }
+  }
+}
+
+.fullContent_messege {
+  img {
+    display: block;
+    margin: auto;
+  }
+}
+
+.ms-Dialog-header {
+  div:nth-child(2) {
+    left: unset;
+    right: 0;
+    padding-right: 15px;
+    padding-left: unset;
+  }
+}
+
+.mol-pagination {
+  .mol-pagination-itemperpage {
+    .ms-Dropdown-container {
+      .ms-Dropdown {
+        .ms-Dropdown-title {
+          border: 0;
+        }
+      }
+    }
+  }
+}
+
+.mol-sidePanel {
+  background-color: $white;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.validationMessage {
+  animation-duration: 0.367s;
+  animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+  animation-fill-mode: both;
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(164, 38, 44);
+  margin: 0px;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.ms-DetailsRow-check {
+  opacity: 1;
+}
+.ms-DetailsRow-check[aria-checked="true"] {
+  .ms-Check-circle {
+    background-color: $themePrimary;
+    border-radius: 10px;
+  }
+}
+.ms-DetailsRow-check[aria-checked="false"] {
+  .ms-Check-circle {
+    color: $neutralLight;
+  }
+}
+
+.ms-ContextualMenu {
+  .ms-ContextualMenu-list {
+    .ms-ContextualMenu-item {
+      .ms-ContextualMenu-link {
+        &.is-disabled {
+          .ms-ContextualMenu-itemText,
+          .ms-ContextualMenu-icon {
+            color: $neutralTertiary;
+          }
+        }
+
+        &:not(.is-disabled) {
+          color: $semi_gray_color;
+          font-size: $md_size;
+        }
+      }
+    }
+  }
+}
+
+.mol-layout-menu-content {
+  .layout-container-rightPart {
+    overflow-y: auto;
+
+    @media (max-width: $ms-screen-max-md) {
+      .paginator {
+        padding-right: 5px;
+        padding-left: 5px;
+        overflow: hidden;
+        display: block;
+
+        .center {
+          .pagination {
+            .page-item {
+              padding: 0;
+
+              .page-link {
+                min-width: 27px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .mol-layout-content-root {
+      .mol-layout-content {
+        .layout-content {
+          overflow-x: hidden;
+          padding-top: 10px;
+
+          .mol-panel {
+            @media (max-width: $ms-screen-max-md) {
+              padding: $panel-padding;
+            }
+
+            .footer {
+              height: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: $ms-screen-max-md) {
+  div.ms-custom-row {
+    grid-gap: 0 10px;
+  }
+}
+
+.mol-cTextFieldReadOnly {
+  .ms-TextField-fieldGroup {
+    border: 1px solid $themeLighter;
+    background-color: $themeLighterAlt;
+  }
+}
+
+.ms-ComboBox-container {
+  .ms-ComboBox {
+    padding-right: 32px;
+    padding-left: 9px;
+  }
+}
+
+.mol-layout-menu {
+  &.opened {
+    width: 260px!important;
+  }
+}
+
+.ms-Breadcrumb {
+  .ms-Breadcrumb-listItem {
+    .ms-Breadcrumb-item:last-child {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: 300px;
+    }
+  }
+}
+
+.ms-Dialog-main.dialog {
+  min-width: 33vw;
+  .ms-Dialog-header {
+    .ms-Dialog-title {
+      padding: 20px 34px;
+    }
+  }
+}
+
+.ms-Dialog-main {
+  .ms-Dialog-header {
+    .ms-Dialog-title {
+      padding: 20px 32px;
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+  .ms-Dialog-inner {
+    padding-left: 32px;
+    padding-right: 32px;
+    .mol-popup-content {
+      width: unset!important;
+    }
+  }
+}
+
+html[dir='rtl'] {
+  text-align: right;
+  direction: rtl;
+  float: inline-start;
+
+  .ms-Dialog-main {
+    .ms-Dialog-header {
+      .ms-Dialog-title {
+        i {
+          margin-right: 0!important;
+          margin-left: 5px!important;
+        }
+      }
+    }
+
+    .ms-Dialog-inner {
+      .mol-popup-content {
+        width: 352px!important;
+      }
+    }
+  }
+
+  .layout-content-root {
+    .layout-content {
+      .mol-panel {
+        .header {
+          margin-right: unset;
+          margin-left: 15px;
+        }
+      }
+    }
+  }
+
+  .horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .wrapContent {
+    white-space: break-spaces;
+  }
+
+  .ms-DetailsRow-cell,
+  .ms-DetailsHeader-cell {
+    text-align: right;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+
+  > * {
+    font-weight: normal;
+  }
+
+  .ms-DatePicker {
+    .ms-TextField {
+      .ms-TextField-fieldGroup {
+        .ms-TextField-field {
+          padding-right: 8px;
+        }
+
+        i {
+          left: 0;
+          text-align: end;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 320px) {
+    .layout {
+      .layout-container {
+        .layout-container-rightPart {
+          .layout-header {
+            h1 {
+              font-size: $md_size;
+            }
+
+            .layout-header-content {
+              > * {
+                font-size: $md_size;
+                margin-right: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ms-MessageBar-icon {
+    margin-left: 0;
+    margin-right: $MessageBar-icon-margin;
+  }
+
+  .ms-ComboBox-container {
+    .ms-ComboBox {
+      padding-right: 9px;
+      padding-left: 32px;
+    }
+  }
+
+  .ant-picker-time-panel-column {
+    & > li.ant-picker-time-panel-cell {
+      .ant-picker-time-panel-cell-inner { 
+        padding: 0 14px 0 0;
+      }
+    }
+  }  
+
+  .ant-picker-ranges {
+    .ant-picker-ok {
+      float: left;
+      margin-left: 0;
+      margin-right: 8px;
+    }
+  }
+
+  .ms-Dialog-main.dialog {
+    .ms-Dialog-header {
+      .ms-Dialog-title {
+        i {
+          margin-right: 0;
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}

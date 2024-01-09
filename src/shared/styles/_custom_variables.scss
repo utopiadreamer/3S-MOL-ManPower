@@ -1,0 +1,82 @@
+@font-face {
+  font-family: Tahoma;
+  src: url('../assets/fonts/Tahoma-Regular-font.ttf');
+}
+// colors
+$printColorLighter: #605e5c;
+$main_color: #666666;
+$secondary_color: #3f5161;
+$gray_color: #bfbfbf;
+$bg_gradient: linear-gradient(
+  333.77deg,
+  #91c8f6 -1.33%,
+  rgba(239, 244, 249, 0) 105.53%
+);
+$white_color: #ffffff;
+$black_color: #000;
+$box_shadow: #0000000a;
+$isActive: #a9c6de;
+$skyBlue: #427cac;
+$b-groungColor: #e5e5e5;
+$contentBGround: 1px 1px 25px rgba(66, 124, 172, 0.4);
+$success: #2b7d2b;
+$danger: #b00;
+$error-color: #c43d4b;
+$btn_disabled: #eff4f9;
+$disabled_color: #cccccc;
+$primaryBtn: linear-gradient(
+  360deg,
+  #3f5161 -7.08%,
+  rgba(63, 81, 97, 0) 388.75%
+);
+$defaultBtn: linear-gradient(
+  360deg,
+  #427cac -77.5%,
+  rgba(66, 124, 172, 0) 388.75%
+);
+$lightBlueColor: #f5f8fb;
+$grayColor: #333;
+$blueColor: #427199;
+$rejected: #bb0000;
+$invalid: #d83b01;
+$invalidBackground: #fed9cc;
+$valid: #107c10;
+$validBackground: #dff6dd;
+$cancelled: #797775;
+$submitted: #925ace;
+$submittedBackground: #e7ecf0;
+$semi_gray_color: #323130;
+$info: #797775;
+$infoBackground: #fff4ce;
+$dark_gray: #8a8784;
+$lightGrayColor: #605e5c;
+$blueDarkColor: #3f5161;
+$grid_header: #427199;
+$hr_color: #0000001a;
+
+//fonts
+$font_family: tahoma;
+$font_style: normal;
+$font_weight_normal: normal;
+$font_weight_bold: bold;
+
+//line size
+$sm_lineSize: 16px;
+$md_lineSize: 20px;
+//size
+$margin_10: 10px;
+$margin_12: 12px;
+$margin_20: 20px;
+$panel-padding: 32px;
+
+$s_size: 5px;
+$xs_size: 10px;
+$sm_size: 12px;
+$md_size: 14px;
+$lg_size: 16px;
+$lg2-size: 18px;
+$xl_size: 20px;
+$xxl_size: 24px;
+$xxxl_size: 36px;
+$xxxxl_size: 48px;
+$font_family_fabric: 'FabricMDL2Icons';

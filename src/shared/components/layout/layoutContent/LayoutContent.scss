@@ -1,0 +1,132 @@
+@import "~office-ui-fabric-react/dist/sass/References";
+@import "../../../styles/dimensions";
+@import "../../../styles/colors";
+
+
+.mol-layout-menu.main-menu {
+    overflow-y: auto;
+}
+.mol-layout-content-header {
+    display: flex;
+    flex-direction: row;
+    padding-left: $layout-content-padding;
+    padding-right: $layout-content-padding;
+    height: $layout-content-height;
+    min-height: $layout-content-height;
+
+    .layout-content-header-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-right: $layout-content-padding;
+
+        h2 {
+            font-size: $ms-font-size-14;
+            font-weight: $ms-font-weight-semibold;
+            margin: 0;
+        }
+
+        i {
+            color: $themeDark;
+        }
+
+        .ms-Breadcrumb {
+            margin: 0;
+
+            i {
+                font-size: $ms-font-size-10;
+            }
+
+            .ms-TooltipHost {
+                font-size: $ms-font-size-14;
+                color: $mol_breadCrumbTextColor;
+            }
+
+            .ms-Breadcrumb-listItem {
+                &:last-child {
+                    .ms-TooltipHost {
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .layout-content-header-action {
+        flex: 1;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+}
+
+.mol-layout-content-root {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .mol-layout-content{
+        display: flex;
+        flex-direction: row;
+        &.srollable{
+            height: 90vh;
+        }
+        .layout-content {
+            flex: 1;
+           padding: 0 $layout-content-padding $layout-content-padding $layout-content-padding;
+            overflow:visible;
+            &.withRightPanel {
+                flex: unset;
+                width: auto;
+                overflow-y: scroll;
+            }
+        }
+        .layout-rightPanel{
+            width: 340px;
+            .mol-sidePanel .header .title {
+                overflow: auto;
+            }
+        }
+    }
+  
+    
+
+    .layout-content-loading.ms-ProgressIndicator {
+        .ms-ProgressIndicator-itemProgress {
+            margin: -1px 0;
+            padding: 0;
+        }
+    }
+
+    .LoadingIndicator {
+        .ms-ProgressIndicator-itemProgress{
+            padding: 0px;
+            }
+        padding-top: 4px !important;
+        height: 2px;
+        padding-bottom: 4px !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .layout-content-header {
+        display: none;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .layout-content.withRightPanel {
+        display: none;
+    }
+    .layout-rightPanel{
+       flex: 1;
+       padding-left: 25px;
+       padding-right: 25px;
+    }
+}
+
+
+html[dir="rtl"] {
+    .layout-content-header-title {
+        padding-left: $layout-content-padding;
+        padding-right: 0px;
+    }
+}

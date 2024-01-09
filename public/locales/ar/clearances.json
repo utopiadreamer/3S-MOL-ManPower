@@ -1,0 +1,24 @@
+{
+    "requestNo": "رقم الطلب",
+    "requestType": "نوع الطلب",
+    "requestDate": "تاريخ الطلب",
+    "recordNumber": "رقم السجل",
+    "recordType": "طبيعة التسوية",
+    "contractNumber": "رقم العقد",
+    "contractOperationType": "نوع النشاط للتعاقد",
+    "contractStartDate": "تاريخ بداية الأعمال للتعاقد",
+    "contractEndDate": "تاريخ نهاية الأعمال للتعاقد",
+    "totalAmount": "القيمة الإجمالية للتعاقد",
+    "contractRealAmount": "القيمة الفعلية للتعاقد",
+    "taxRate": "نسبة الضريبة للتعاقد",
+    "settelmentNumber": "رقم مستند التسوية (رقم المستخلص)",
+    "settelmentTotalAmount": "القيمة الإجمالية لمستند التسوية",
+    "contractDescription": "وصف العقد (من بيانات التعاقد)",
+    "settelmentDocumentStartDate": "تاريخ بداية لمستند التسوية",
+    "settelmentDocumentEndDate": "تاريخ نهاية لمستند التسوية",
+    "extractionDate": "تاريخ التحرير",
+    "workersRecordNumber": "رقم السجل لكشف العمالة",
+    "description": "نص توضيحي",
+    "notes": "ملاحظات"
+
+}

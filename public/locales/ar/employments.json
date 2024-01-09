@@ -1,0 +1,12 @@
+{
+    "requestNo": "رقم الطلب",
+    "requestType": "نوع الطلب",
+    "recordNumber": "رقم السجل",
+    "recordNumberForLabors": "رقم السجل لكشف العمالة",
+    "workerName": "الاسم",
+    "nationalID": "الرقم القومي",
+    "occupation": "المهنة",
+    "address": "العنوان",
+    "phoneNo": "رقم التليفون",
+    "notes": "ملاحظات"
+}

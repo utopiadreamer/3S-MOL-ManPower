@@ -1,0 +1,24 @@
+@import  "../../styles/colors";
+
+.mol-cDropDownReadOnly > div.ms-Dropdown{
+    pointer-events: none;
+}
+.mol-cDropDownReadOnly > div> {
+    span.ms-Dropdown-title{
+        pointer-events: none;
+        border: 1px solid $themeLighter;
+        background-color: $themeLighterAlt;
+    }
+    span.ms-Dropdown-caretDownWrapper{
+        visibility: hidden;
+      
+    }
+}
+
+
+div.ms-Callout.ms-Dropdown-callout{
+    &.applyContentFit{
+        min-width: var(--currentMolDropDownMinSize);
+        width: auto !important; // Not set the width for dropdown to let the callout resize to the content.
+    }
+}

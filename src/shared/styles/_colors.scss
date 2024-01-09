@@ -1,0 +1,126 @@
+@import "~office-ui-fabric-react/dist/sass/References";
+
+$mol_secondaryColor:#91C8F6;
+$mol_mainColor:#EFF4F9;
+$mol_mainColorLight: rgba(66, 124, 172, 0.4);
+
+$mol_menu_background : #3F5161;
+$mol_menu_shadowBox : rgba(0, 0, 0, 0.25);
+$mol_menuItem: #CCCCCC;
+
+$skyBlue: #427CAC;
+$mol_menuItem_Active:#427CAC;
+$mol_menuItem_Hover:  #427CAC80;
+$mol_menuItem_Active_TextColor: white;
+
+//$mol_readonlyBorderColor:green;
+$mol_readonlyBorderColor: #EFF4F9;
+$mol_breadCrumbTextColor:  #3F5161;
+/*
+** THEME COLORS
+** Feel free to change those colors to reflect your branding
+** Those values were generated using the Fluent UI Theme Designer
+** https://aka.ms/themedesigner
+*/
+
+$themePrimary: #427199; // cahange from 749fc2 to 427199
+$themeLighterAlt: #F5F8FB;// change from f9fbfd to F5F8FB
+$themeLighter: #EFF4F9;// change from e6eef5 to EFF4F9
+$themeLight: #BACEE0; // change from d0e0ed to BACEE0
+$themeTertiary: #91C8F6; // change from a6c3da  to 91C8F6
+$themeSecondary: #82a9c9;
+$themeDarkAlt: #3B658A; // change from 698fae to 3B658A
+$themeDark: #2C4E6C; // change from 587993 to 2C4E6C
+$themeDarker: #3F5161;// change from 41596d to 3F5161
+$neutralLighterAlt: #faf9f8;
+$neutralLighter: #f3f2f1;
+$neutralLight: #edebe9;
+$neutralQuaternaryAlt: #e1dfdd;
+$neutralQuaternary: #d0d0d0;
+$neutralTertiaryAlt: #c8c6c4;
+$neutralTertiary: #A19F9D;
+$neutralSecondary: #605E5C;
+$neutralPrimaryAlt: #516474;
+$neutralPrimary: #333333;
+$neutralDark: #313e4a;
+$black: #242e36;
+$blackShadow: rgba(0,0,0,.108); 
+$white: #ffffff;
+$green: green;
+$lightGreen: #DFF6DDFF;
+$gray2: #A19F9D;
+// Dividers-&-border
+$bodyDivider: #EDEBE9;
+$Input-HoverBorder: $neutralPrimary;
+$errorColor: rgb(164, 38, 44);
+$semi_gray_color: #323130;
+$darkPurpleColor: #ab218e;
+$lightGray: #8A8886;
+$primaryThemeDarker: #427199;
+$readOnly-border: #BACEE0;
+$red: red;
+$Gray160: #605e5c;
+/*
+$themePrimary:  #0078d4;
+$themeLighterAlt: #eff6fc;
+$themeLighter: #deecf9;
+$themeLight: #c7e0f4;
+$themeTertiary: #71afe5;
+$themeSecondary: #2b88d8;
+$themeDarkAlt: #106ebe;
+$themeDark: #005a9e;
+$themeDarker: #004578;
+$neutralLighterAlt: #faf9f8;
+$neutralLighter: #f3f2f1;
+$neutralLight: #edebe9;
+$neutralQuaternaryAlt: #e1dfdd;
+$neutralQuaternary: #d0d0d0;
+$neutralTertiaryAlt: #c8c6c4;
+$neutralTertiary: #a19f9d;
+$neutralSecondary: #605e5c;
+$neutralPrimaryAlt: #3b3a39;
+$neutralPrimary: #323130;
+$neutralDark: #201f1e;
+$black: #000000;
+$white: #ffffff;
+*/
+/*
+** SHARED COLORS
+** Those colors are not related with the theme
+** You can edit those values to reflect the design of your application
+*/
+$color-success: $ms-color-sharedGreenCyan10;
+$color-error: $ms-color-sharedRed10;
+$color-warning: $ms-color-sharedOrange10;
+$color-information: $ms-color-sharedCyanBlue10;
+$contentBGround: 1px 4px 25px rgba(66, 124, 172, 0.4);
+
+/*
+** ******************************
+** DO NOT change below this point
+** ******************************
+*/
+:export {
+    themePrimary: $themePrimary;
+    themeLighterAlt: $themeLighterAlt;
+    themeLighter: $themeLighter;
+    themeLight: $themeLight;
+    themeTertiary: $themeTertiary;
+    themeSecondary: $themeSecondary;
+    themeDarkAlt: $themeDarkAlt;
+    themeDark: $themeDark;
+    themeDarker: $themeDarker;
+    neutralLighterAlt: $neutralLighterAlt;
+    neutralLighter: $neutralLighter;
+    neutralLight: $neutralLight;
+    neutralQuaternaryAlt: $neutralQuaternaryAlt;
+    neutralQuaternary: $neutralQuaternary;
+    neutralTertiaryAlt: $neutralTertiaryAlt;
+    neutralTertiary: $neutralTertiary;
+    neutralSecondary: $neutralSecondary;
+    neutralPrimaryAlt: $neutralPrimaryAlt;
+    neutralPrimary: $neutralPrimary;
+    neutralDark: $neutralDark;
+    black: $black;
+    white: $white;
+}

@@ -1,0 +1,12 @@
+@import  "../../styles/colors";
+
+.cDatePickerReadOnly  > div .ms-TextField-fieldGroup{
+    border-color: #EFF4F9;
+    pointer-events: none;
+    ::placeholder{
+        visibility: hidden;
+    }
+    i{
+        pointer-events: none;
+    }
+}
