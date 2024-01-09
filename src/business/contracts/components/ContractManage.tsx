@@ -10,13 +10,11 @@ import {
 import { Panel } from "../../../shared/components/forms/Panel";
 import {
   DefaultButton,
-  IDropdownOption,
   PrimaryButton,
   Spinner,
   SpinnerSize,
 } from "@fluentui/react";
 import { Form } from "../../../shared/components/forms/Form";
-import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 
 export const ContractManage: FC = () => {
   const [formData, setFormData] = useState<any>({});
