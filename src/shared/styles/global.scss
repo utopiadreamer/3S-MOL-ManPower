@@ -49,7 +49,7 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  overflow: hidden;
+  // overflow: hidden;
   font-style: $font_style;
   font-weight: $font_weight_normal;
   font-size: $md_size;
@@ -432,7 +432,12 @@ h2 {
   align-self: center;
 }
 
+.ms-DetailsHeader-cellName {
+  font-weight: 400;
+}
+
 .ms-DetailsHeader-cell {
+  color: white;
   text-align: left;
   align-self: center;
   .table-custom-header-cell.filter {
@@ -603,7 +608,7 @@ h2 {
 
 .mol-layout-menu {
   &.opened {
-    width: 260px!important;
+    width: 260px !important;
   }
 }
 

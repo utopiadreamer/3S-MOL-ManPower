@@ -44,7 +44,7 @@ export const Panel: FC<PropsWithChildren<PanelProps>> = (
   };
 
   return (
-    <div className="eta-panel">
+    <div className="mol-panel">
       <div className="header">
         {header ? <>{header}</> : (
           <div className="title">

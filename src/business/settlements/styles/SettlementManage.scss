@@ -1,0 +1,18 @@
+.settlementManage {
+  .footer {
+    .navigation {
+      padding-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      .ms-Icon {
+        transform: rotate(180deg);
+      }
+      .norotate {
+        .ms-Icon {
+          transform: rotate(180deg) !important;
+        }
+      }
+    }
+  }
+}

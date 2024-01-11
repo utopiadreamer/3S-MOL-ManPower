@@ -36,7 +36,7 @@ export const LayoutNavLinkGroup: FC<PropsWithChildren<
         key={item.id}
         id={item.id}
         title={t(item.title)}
-        to={{ pathname: item.pathname }}
+        to={{ pathname: item.pathname === '' ? undefined : item.pathname }}
         className={clsx(
           'layout-menu-nav-item',
           disabled && 'layout-menu-nav-item--disabled'

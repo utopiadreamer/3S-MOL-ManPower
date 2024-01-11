@@ -19,10 +19,17 @@ import {
 import { Form } from "../../../shared/components/forms/Form";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 
-export const EstablishmentManage: FC = () => {
-  const [formData, setFormData] = useState<any>({});
+export interface Props {
+  editMode?: boolean;
+}
+
+export const EstablishmentManage: FC<Props> = (props: Props) => {
+  const initData = { establishmentType: EstablishmentType.Person };
+
+  const { editMode } = props;
+  const [formData, setFormData] = useState<any>(initData);
   const { t } = useTranslation(["establishments", "common"]);
-  const [isEditable, setEditable] = useState<boolean>(false);
+  const [isEditable, setEditable] = useState<boolean>(editMode ?? false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [isCanceling, setIsCanceling] = useState<boolean>(false);
 
@@ -85,60 +92,29 @@ export const EstablishmentManage: FC = () => {
   };
 
   return (
-    <LayoutContent>
-      <Panel
-        title={t("establishmentDetails")}
-        allowEdition
-        editable={isEditable}
-        editText={t("common:edit")}
-        onChangeEdit={onFormEdit}
-        footer={
-          <div className="btnSaveCode">
-            <DefaultButton
-              text={t("common:cancel")}
-              onClick={onFormCanceled}
-              disabled={isCanceling}
-            >
-              {isCanceling && <Spinner size={SpinnerSize.small} />}{" "}
-            </DefaultButton>
-            <PrimaryButton
-              text={t("common:save")}
-              onClick={onFormSave}
-              disabled={!isFormValid}
-            >
-              {isSaving && <Spinner size={SpinnerSize.small} />}
-            </PrimaryButton>
-          </div>
-        }
-      >
-        <div className="establishmentDetails card">
-          <div className="body">
-            <div className="row">
-              <TextField
-                label={t("requestNo")}
-                name="requestNo"
-                value={formData?.requestNo ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-              <DatePicker
-                label={t("requestDate")}
-                value={new Date()}
-                onChange={handleDateChange}
-                disabled={!isEditable}
-                isRequired
-              />
-              <Dropdown
-                label={t("establishmentType")}
-                options={establishmentTypes}
-                selectedKey={formData?.establishmentType ?? ""}
-                onChange={onTypeChange}
-                onValidationChange={SetValidity}
-                readOnly={!isEditable}
-                required
-              />
+    <div className="establishmentDetails">
+      <div className="body">
+        <div className="row">
+          <Dropdown
+            label={t("establishmentType")}
+            options={establishmentTypes}
+            selectedKey={formData?.establishmentType ?? ""}
+            onChange={onTypeChange}
+            onValidationChange={SetValidity}
+            readOnly={!isEditable}
+            required
+          />
+          <TextField
+            label={t("name")}
+            name="name"
+            value={formData?.name ?? ""}
+            onChange={handleInputChange}
+            readOnly={!isEditable}
+            onValidationChange={SetValidity}
+            required
+          />
+          {formData.establishmentType === EstablishmentType.Company && (
+            <>
               <TextField
                 label={t("commRegistrationNo")}
                 name="commRegistrationNo"
@@ -148,8 +124,6 @@ export const EstablishmentManage: FC = () => {
                 onValidationChange={SetValidity}
                 required
               />
-            </div>
-            <div className="row">
               <TextField
                 label={t("taxNumber")}
                 name="taxNumber"
@@ -159,70 +133,74 @@ export const EstablishmentManage: FC = () => {
                 onValidationChange={SetValidity}
                 required
               />
-              <TextField
-                label={t("institutionalCode")}
-                name="institutionalCode"
-                value={formData?.institutionalCode ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-              <TextField
-                label={t("nationalID")}
-                name="nationalID"
-                maxLength={14}
-                value={formData?.nationalID ?? ""}
-                onChange={handleInputChange}
-                validations={[ValidationType.NationalID]}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-              <TextField
-                label={t("insuranceNumber")}
-                name="insuranceNumber"
-                value={formData?.insuranceNumber ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-            </div>
-            <div className="row g-112">
-              <TextField
-                label={t("agentName")}
-                name="agentName"
-                value={formData?.agentName ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-              />
-              <TextField
-                label={t("phoneNumber")}
-                name="phoneNumber"
-                value={formData?.phoneNumber ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                maxLength={11}
-                validations={[ValidationType.MobileNo]}
-                onValidationChange={SetValidity}
-                required
-              />
-              <TextField
-                label={t("address")}
-                name="address"
-                value={formData?.address ?? ""}
-                onChange={handleInputChange}
-                multiline
-                rows={4}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-            </div>
-          </div>
+            </>
+          )}
+          {formData.establishmentType === EstablishmentType.Government && (
+            <TextField
+              label={t("institutionalCode")}
+              name="institutionalCode"
+              value={formData?.institutionalCode ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              required
+            />
+          )}
+          {formData.establishmentType === EstablishmentType.Person && (
+            <TextField
+              label={t("nationalID")}
+              name="nationalID"
+              maxLength={14}
+              value={formData?.nationalID ?? ""}
+              onChange={handleInputChange}
+              validations={[ValidationType.NationalID]}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              required
+            />
+          )}
+          <TextField
+            label={t("insuranceNumber")}
+            name="insuranceNumber"
+            value={formData?.insuranceNumber ?? ""}
+            onChange={handleInputChange}
+            readOnly={!isEditable}
+            onValidationChange={SetValidity}
+            required
+          />
+          {formData.establishmentType === EstablishmentType.Company && (
+            <TextField
+              label={t("agentName")}
+              name="agentName"
+              value={formData?.agentName ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+            />
+          )}
+          <TextField
+            label={t("phoneNumber")}
+            name="phoneNumber"
+            value={formData?.phoneNumber ?? ""}
+            onChange={handleInputChange}
+            readOnly={!isEditable}
+            maxLength={11}
+            validations={[ValidationType.MobileNo]}
+            onValidationChange={SetValidity}
+            required
+          />
+          <TextField
+            label={t("address")}
+            name="address"
+            value={formData?.address ?? ""}
+            onChange={handleInputChange}
+            multiline
+            rows={4}
+            readOnly={!isEditable}
+            onValidationChange={SetValidity}
+            required
+          />
         </div>
-      </Panel>
-    </LayoutContent>
+      </div>
+    </div>
   );
 };

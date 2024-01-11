@@ -74,12 +74,11 @@ export const LayoutContentHeader: FC<LayoutContentHeaderProps> = (
     }, [width, commandButtons]);
 
     const CommandButtonComponent = commandButtonComponent ?? LayoutCommandButton;
-    const HeaderTitleComponent = headerTitleComponent ?? LayoutContentHeaderTitle;
 
     return (
         <>
             <div className="mol-layout-content-header">
-                {menuEntry && <HeaderTitleComponent menuEntry={menuEntry} />}
+                {<LayoutContentHeaderTitle menuEntry={menuEntry} />}
 
                 <div
                     className="layout-content-header-action"

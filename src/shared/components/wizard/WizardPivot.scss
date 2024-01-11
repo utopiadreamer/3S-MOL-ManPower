@@ -1,0 +1,170 @@
+@import '../../styles/colors';
+@import "../../styles/custom_variables";
+
+$SelectedBackground: #3E729D;
+
+.WizardPivot{
+    .ms-Pivot{
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: 56px;
+        button{
+            background-color: transparent;
+        }
+    }
+
+    .is-selected {
+        &:hover {
+            background-color: transparent;
+        }
+    }
+}
+.wizardHeader{
+    background: $themeLighterAlt;
+    display: flex;
+    flex-direction: row;
+    border-radius: 44px;
+    min-width: 210px;
+    height: 32px;
+    margin-left: -56px;
+    
+    div{
+        font-family: $font_family;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        /* identical to box height, or 143% */
+        display: flex;
+        align-items: center;
+        /* themeETA / Type / OverAccent */
+        color: #333333;  
+        margin-left: 6px;
+        margin-right: 3px;
+    }
+    .circle{
+        border-radius: 18px;
+        background: $themeLighter;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 28px;
+        width: 28px;
+        margin-top: 2px;
+        margin-left: 2px;
+        box-shadow: 0px 0.3px 0.9px rgba(0, 0, 0, 0.1), 0px 1.6px 3.6px rgba(0, 0, 0, 0.13);
+        i{
+            width: inherit;
+            line-height: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: $white;
+            text-align: center;
+        }
+        p{
+            width: inherit;
+            font-family: $font_family;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            float: left;
+            line-height: 20px;
+            color: $themePrimary;
+            // margin-bottom: 0;
+            text-align: center!important;
+        }
+    }
+    
+    &.state_error{
+        div{
+            color: $rejected;
+        }
+        .circle{
+            background: $rejected;
+        }   
+    }
+    &.state_completed{
+        div{
+            color: $valid;
+        }
+        .circle{
+            background: $valid;
+        }
+    }
+    &.selected{
+        background: $SelectedBackground;
+        div{
+            color: #FFFFFF;
+        }
+       .circle{
+            background: $white;
+            box-shadow: 0px 1.2px 3.6px rgba(0, 0, 0, 0.1), 0px 6.4px 14.4px rgba(0, 0, 0, 0.13);
+            p{
+                font-weight: bold;
+            }
+        }
+        &.state_completed{
+            .circle{
+                i{
+                    color: $valid; 
+                }
+            }
+        }
+        &.state_error{
+            .circle{
+                i{
+                    color: $rejected;
+                }
+            } 
+        }
+    }
+    &.disabled{
+        background: $neutralLighter;
+        pointer-events: none;
+        cursor: none;
+        div{
+            color: $gray2;
+        }
+       .circle{
+            background: $neutralLighter;
+            box-shadow: 0px 0.3px 0.9px rgba(0, 0, 0, 0.1), 0px 1.6px 3.6px rgba(0, 0, 0, 0.13);
+            i{
+                color: $gray2;
+            }
+            p{
+                color: $gray2;
+                font-weight: normal;
+            }
+        }
+    }
+    &:hover{
+        background: $themeLight;
+        div{
+            color: $grayColor;
+        }
+       .circle{
+            background: $white;
+            i{
+                color: $themePrimary !important;
+            }
+            p{
+                color: $themePrimary;
+                font-weight: normal;
+            }
+        }
+    }
+}
+
+
+
+
+// .html[dir=rtl] {
+//     .wizardHeader {
+//         .circle{
+//             text-align: center;
+//             p {
+//                 text-align: center!important;
+//             }
+//         }
+//     }
+// }

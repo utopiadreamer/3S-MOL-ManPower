@@ -1,0 +1,25 @@
+.settlementSearch {
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.5fr 0.5fr;
+    gap: 20px;
+    align-items: end;
+  }
+
+  .search {
+    align-items: baseline;
+  }
+
+  .extract {
+    padding-top: 50px;
+
+    a {
+      background-color: rgb(0, 120, 212);
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+    }
+
+  }
+}
+

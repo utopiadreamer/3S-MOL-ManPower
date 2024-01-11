@@ -45,6 +45,7 @@ export const ContractType = {
     Contract: 'Contract',
     Tender: 'Tender',
     AssignmentOrder: 'AssignmentOrder',
+    AttributionOrder: 'AttributionOrder',
     SupplyOrder: 'SupplyOrder',
     RepairOrder: 'RepairOrder',
     PurchaseOrder: 'PurchaseOrder',
@@ -56,4 +57,13 @@ export const ContractType = {
 export const SettlementDocumentType = {
     Invoice: 'Invoice',
     Extract: 'Extract'
+}
+
+export const SettlementWizardKey = {
+    Contract: 'contract',
+    AssignEstablishment: 'assignEstablishment',
+    ExecEstablishment: 'execEstablishment',
+    WorkItems: 'workItems',
+    Employment: 'employment',
+    Extract: 'extract'
 }

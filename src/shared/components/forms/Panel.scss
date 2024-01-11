@@ -2,7 +2,7 @@
 @import  "../../styles/colors";
 @import  "../../styles/dimensions";
 
-.eta-panel{
+.mol-panel{
     box-shadow: $contentBGround;
     background-color: white;
     display: flex;
@@ -41,7 +41,7 @@
     }
 }
 html[dir=rtl]{
-    .eta-panel{
+    .mol-panel{
         .footer{
             button{
                 margin-right: $panel-item-margin;

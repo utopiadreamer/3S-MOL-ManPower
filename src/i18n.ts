@@ -12,6 +12,15 @@ i18n.use(initReactI18next) // passes i18n down to react-i18next
     .use(LanguageDetector)
     .init({
         ns: [
+            'calendar',
+            'clearances',
+            'common',
+            'contracts',
+            'employment',
+            'establishments',
+            'menu',
+            'settlements',
+            'validation'
         ],
         defaultNS: 'locales',
         load: 'languageOnly',

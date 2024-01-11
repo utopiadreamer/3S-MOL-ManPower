@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import * as H from "history";
-import React from "react";
+import React, { FC, PropsWithChildren } from "react";
 import "./Layout.scss";
 import { LayoutMenuItem } from "./layoutMenu/LayoutMenuItem";
 import { LayoutMenu } from "./layoutMenu/LayoutMenu";
@@ -11,6 +11,7 @@ import { LayoutContentHeader } from "./layoutContent/LayoutContentHeader";
 import MenuItems from "../../constants/menu";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store/store";
+import Header from "./Header";
 
 export function GetCurrentMenuItemEntry(
   location: H.Location,
@@ -32,9 +33,9 @@ export function GetCurrentMenuItemEntry(
     }
   }
 }
-
-export function Layout() {
+export const Layout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
   const { t } = useTranslation(["menu"]);
+  const { children } = props;
   const currentLang = useSelector(
     (state: RootState) => state.reduxLanguage.language
   );
@@ -42,7 +43,6 @@ export function Layout() {
 
   const { isRtl, lang } = currentLang;
   const dir = isRtl ? "rtl" : "ltr";
-
   return (
     <div dir={dir} className={clsx("layout", isRtl && "rtl")}>
       <div className="layout-container">
@@ -56,14 +56,13 @@ export function Layout() {
                         </div>
                     ) : ( */}
           <div className="layout-container-rightPart" data-is-scrollable="true">
-            {/* <Header mainTitle={t('AdministrationPortal')} /> */}
-
+            <Header mainTitle={t("mol")} />
             <LayoutContentHeader menuEntry={currentMenuEntry} />
+        <Outlet />
           </div>
           {/* )} */}
         </LayoutMenu>
-        <Outlet />
       </div>
     </div>
   );
-}
+};

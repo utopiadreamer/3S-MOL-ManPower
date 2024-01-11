@@ -88,7 +88,7 @@ html[dir=rtl]{
         }
 
         &.opened {
-            width: $menu-width-opened;
+            width: $menu-width-opened !important;
         }
     }
 }
@@ -97,7 +97,7 @@ html[dir=rtl]{
     height: 100%;
     width: 100%;
     display: flex;
-    overflow: hidden;
+    // overflow: hidden;
     flex: 1;
 
     &.overflow {

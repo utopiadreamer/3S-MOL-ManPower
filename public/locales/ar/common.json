@@ -1,6 +1,9 @@
 {
     "save": "حفظ",
     "cancel": "إلغاء",
-    "edit": "تعديل"
+    "edit": "تعديل",
+    "nbItemPerPage": "النتائج لكل صفحة:",
+    "totalRecord": "النتائج:",
+    "search": "بحث"
     
 }

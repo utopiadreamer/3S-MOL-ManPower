@@ -17,7 +17,6 @@ export const EstablishmentDetails: FC = () => {
   }, []);
 
   return (
-    <LayoutContent>
       <div className="establishmentDetails card">
         <div className="body">
           <Section title={t("establishmentDetails")} size={SectionSize.h1} />
@@ -89,6 +88,5 @@ export const EstablishmentDetails: FC = () => {
           </div>
         </div>
       </div>
-    </LayoutContent>
   );
 };

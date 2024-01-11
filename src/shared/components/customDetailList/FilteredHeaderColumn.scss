@@ -1,0 +1,107 @@
+@import '../../styles/colors';
+
+.ms-DetailsHeader-cell.is-actionable {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+.table-custom-header-cell {
+  height: 42px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  &,
+  & > span {
+    display: flex;
+    align-items: center;
+  }
+  &.filter {
+    background-color: #eff4f8;
+    border-top: 4px solid transparent;
+    > span {
+      margin-top: -4px;
+    }
+
+    .table-custom-header-cell-title {
+      color: #42729a;
+    }
+
+    button {
+      height: 22px;
+      width: 22px;
+      margin: 0 2px;
+      color: #42729a;
+      &.active {
+        color: #42729a;
+        background-color: #eff4f8;
+      }
+      
+      i {
+        color: #42729a !important;
+      }
+    }
+  }
+  .table-custom-header-cell-title {
+    font-weight: 600;
+    font-size: 14px;
+    padding-right: 5px;
+    padding-left: 5px;
+    line-height: normal;
+  }
+  i {
+    font-size: 12px;
+  }
+  button {
+    height: 22px;
+    width: 22px;
+    margin: 0 2px;
+    color: white;
+    &.active {
+      color: white;
+      background-color: $themePrimary;
+    }
+  }
+}
+
+.is-empty {
+  .table-custom-header-cell-title {
+    display: none;
+  }
+}
+
+.table-filter-callout {
+  padding: 10px;
+
+  .table-filter-callout-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: -3px;
+  }
+
+  .ms-Dropdown,
+  .ms-SearchBox,
+  .ms-TextField {
+    width: 200px;
+  }
+
+  button {
+    border: 1px solid $themePrimary;
+    margin: 5px 3px;
+    margin-bottom: 0;
+    height: 26px;
+    width: 26px;
+
+    &.active {
+      color: white;
+      background-color: $themePrimary;
+    }
+  }
+
+  .ms-SearchBox-clearButton {
+    margin-right: -2px;
+
+    button {
+      margin: 2px;
+      border: none;
+    }
+  }
+}

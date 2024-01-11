@@ -12,43 +12,76 @@ const MenuItems: LayoutMenuItem[] = [
         iconName: 'Bank',
         id: 'defineEstablishment',
         title: 'defineEstablishment',
-        pathname: '/establishments'
-    },
-    {
-        id: 'requestContract',
-        iconName: 'EntitlementRedemption',
-        title: 'requestContract',
-        pathname: '/requestContract',
+        pathname: '',
+        subItems: [
+            {
+                iconName: 'ReminderPerson',
+                id: 'persons',
+                title: 'persons',
+                pathname: '/establishments/persons',
+            },
+            {
+                iconName: 'Bank',
+                id: 'companies',
+                title: 'companies',
+                pathname: '/establishments/companies',
+            },
+            {
+                iconName: 'Bank',
+                id: 'governments',
+                title: 'governments',
+                pathname: '/establishments/governments',
+            },
+        ]
+        
     },
     {
         id: 'processSettlement',
-        iconName: 'ProcessMetaTask',
+        iconName: 'ActivateOrders',
         title: 'processSettlement',
-        pathname: '/processSettlement',
+        pathname: '/settlements',
     },
     {
-        id: 'registeringEmploymentData',
-        title: 'registeringEmploymentData',
-        iconName: 'UserSync',
-        pathname: '/registeringEmploymentData'
+        id: 'employment',
+        iconName: 'FabricUserFolder',
+        title: 'employment',
+        pathname: '/employment',
     },
     {
-        id: 'extractingSecuredExtracts',
-        iconName: 'LaptopSecure',
-        title: 'extractingSecuredExtracts',
-        pathname: '/extractingSecuredExtracts'
+        id: 'codes',
+        iconName: 'Code',
+        title: 'codes',
+        pathname: '/codes',
     },
     {
-        id: 'discountRequest',
-        iconName: 'Money',
-        title: 'discountRequest',
-        pathname: '/discountRequest'
+        id: 'security',
+        iconName: 'SecurityGroup',
+        title: 'security',
+        pathname: '/security',
     },
     {
-        id: 'exemptionRequest',
-        iconName: 'RemoveFromShoppingList',
-        title: 'exemptionRequest',
-        pathname: '/exemptionRequest',
+        id: 'audit',
+        iconName: 'ComplianceAudit',
+        title: 'audit',
+        pathname: '/audit',
+    },
+    {
+        id: 'reports',
+        iconName: 'MobileReport',
+        title: 'reports',
+        pathname: '/reports',
+    },
+    {
+        id: 'regulations',
+        iconName: 'DietPlanNotebook',
+        title: 'regulations',
+        pathname: '/regulations',
+    },
+    {
+        id: 'help',
+        iconName: 'Help',
+        title: 'help',
+        pathname: '/help',
     }
 ];
 export default MenuItems;

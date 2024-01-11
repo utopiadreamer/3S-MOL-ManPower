@@ -18,5 +18,21 @@
     "realAmount": "القيمة الفعلية",
     "taxRate": "نسبة الضريبة",
     "description": "نص توضيحي",
-    "notes": "ملاحظات"    
+    "notes": "ملاحظات",
+    "contractDetails": "بيانات التعاقد",
+    "contract": "عقد",
+    "assignmentOrder": "أمر تكليف",
+    "purchaseOrder": "أمر شراء",
+    "license": "رخصة",
+    "repairOrder": "أمر إصلاح",
+    "supplyOrder": "أمر توريد",
+    "tender": "مناقصة",
+    "attributionOrder": "أمر إسناد",
+    "other": "أخري",
+    "contractInfo": "بيانات التعاقد",
+    "assignEstInfo": "بيانات جهة الإسناد",
+    "execEstInfo": "بيانات جهة التنفيذ",
+    "workInfo": "بيانات الأعمال",
+    "financialInfo": "البيانات المالية",
+    "otherInfo": "بيانات أخري"
 }

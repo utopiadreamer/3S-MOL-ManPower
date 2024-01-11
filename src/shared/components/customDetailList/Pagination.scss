@@ -1,0 +1,68 @@
+@import "../../styles/colors";
+
+.mol-pagination {
+    display: flex;
+    flex-direction: row;
+    margin-top:24px;
+    
+    .mol-pagination-totalrecordCount{
+        display: flex;
+        align-items: flex-start;
+        .mol-pagination-totalrecordCount-label {
+            line-height: 26px;
+            font-size: 12px;
+        }
+    }
+    .mol-pagination-pageselector {
+        display: flex;
+        flex: 1 1;
+        justify-content: center;
+        margin-left: 40px;
+
+            button span.ms-Button-label:hover {
+                text-decoration: underline;
+            }
+          button.is-checked span.ms-Button-label {
+            background: $themePrimary;
+            color:white;
+            text-decoration: none;
+          }
+          button span.ms-Button-label {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-radius: 20px;
+            width: 34px;
+          }
+        .mol-pageNumber {
+            vertical-align: top;
+        }
+      
+    }
+
+    .mol-pagination-itemperpage {
+        display: flex;
+        align-items: flex-end;
+
+        .mol-pagination-itemperpage-label {
+            line-height: 26px;
+            margin-left: 0px;
+            margin-right: 8px;
+            font-size: 12px;
+        }
+
+        .ms-Dropdown-container > div[role='listbox'] {
+            font-size: 12px;
+        }
+    }
+}
+
+html[dir=rtl]{
+    .mol-pagination {
+        .mol-pagination-itemperpage {   
+            .mol-pagination-itemperpage-label {
+                margin-left: 8px;
+                margin-right: 0px;
+            }           
+        }
+    }
+}
