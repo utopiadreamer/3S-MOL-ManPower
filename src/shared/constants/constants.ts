@@ -25,9 +25,9 @@ export const Roles = {
 };
 
 export const EstablishmentType = {
-    Person: 'Person',
-    Company: 'Company',
-    Government: 'Government'
+    Person: 'persons',
+    Company: 'companies',
+    Government: 'governments'
 }
 
 export const RequestType = {
@@ -56,14 +56,19 @@ export const ContractType = {
 
 export const SettlementDocumentType = {
     Invoice: 'Invoice',
-    Extract: 'Extract'
+    Clearance: 'Clearance'
 }
 
-export const SettlementWizardKey = {
+export const ClearanceWizardKey = {
     Contract: 'contract',
     AssignEstablishment: 'assignEstablishment',
     ExecEstablishment: 'execEstablishment',
     WorkItems: 'workItems',
-    Employment: 'employment',
-    Extract: 'extract'
+    Workers: 'workers',
+    Clearance: 'clearance'
+}
+
+export const SpecialRequest = {
+    Discount: "Discount",
+    Exemption: "Exemption"
 }

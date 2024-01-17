@@ -1,0 +1,24 @@
+.clearanceManage {
+  .request {
+    padding-top: 20px;
+    .ms-ChoiceFieldGroup-flexContainer {
+      display: flex;
+      gap: 15px;
+    }
+  }
+  .footer {
+    .navigation {
+      padding-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      .ms-Icon {
+        transform: rotate(180deg);
+      }
+      .norotate {
+        .ms-Icon {
+          transform: rotate(180deg) !important;
+        }
+      }
+    }
+  }
+}

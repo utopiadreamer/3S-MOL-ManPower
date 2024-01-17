@@ -17,6 +17,7 @@ export type PreviousTabWizardAction = {type: 'PreviousTab'};
 export type ChangeTabStateWizardAction = {type: 'ChangeTabState'; payload: {key: string; newState: TabState}};
 export type RefreshTabWizardAction = {type: 'Refresh'};
 export type ChangeTabVisibilityWizardAction = {type: 'ChangeTabVisibility'; payload: { key: string; hidden: boolean }};
+export type ChangeTabDisabilityWizardAction = {type: 'ChangeTabDisability'; payload: { key: string; disable: boolean }};
 export type ResetWizardAction = {type: 'Reset';payload: { newState: WizardState }};
 
 export type WizardActions = SelectTabWizardAction|
@@ -24,6 +25,7 @@ export type WizardActions = SelectTabWizardAction|
                             PreviousTabWizardAction|
                             ChangeTabStateWizardAction|
                             ChangeTabVisibilityWizardAction|
+                            ChangeTabDisabilityWizardAction|
                             ResetWizardAction|
                             RefreshTabWizardAction;
 export type WizardReducer = (
@@ -110,6 +112,17 @@ function wizardReducer(state: WizardState, action: WizardActions): WizardState{
             };
             return { ...state, tabs: newTabs };
         }
+        case 'ChangeTabDisability': {
+            const newTabs = [...state.tabs];
+            const index = state.tabs.findIndex(
+                (t) => t.itemKey === action.payload.key
+            );
+            newTabs[index] = {
+                ...state.tabs[index],
+                disabled: action.payload.disable
+            };
+            return { ...state, tabs: newTabs };
+        }
         default:
     }
     return (state);
@@ -121,6 +134,7 @@ export interface WizardStateAndLogic{
     previousTab: () => void;
     ChangeTabState: (key: string,tabState: TabState) => void;
     changeTabVisibility: (key: string, hidden: boolean) => void;
+    changeTabDisability: (key: string, disable: boolean) => void;
     reset: (newState: WizardState) => void;
 }
 export function useWizard(intialState: WizardState): WizardStateAndLogic{
@@ -134,6 +148,7 @@ export function useWizard(intialState: WizardState): WizardStateAndLogic{
         previousTab: () => dispatch({type:'PreviousTab'}),
         ChangeTabState:  (key: string, tabState: TabState) => dispatch({type:'ChangeTabState',payload:{ key, newState: tabState}}),
         changeTabVisibility:  (key: string, hidden: boolean) => dispatch({type: 'ChangeTabVisibility',payload: { key, hidden }}),
+        changeTabDisability:  (key: string, disable: boolean) => dispatch({type: 'ChangeTabDisability',payload: { key, disable }}),
         reset: (newState: WizardState) => dispatch({type: 'Reset',payload: {  newState }})
     });
 };

@@ -1,0 +1,13 @@
+.workersList {
+    .searchList {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        gap: 20px;
+
+        .actions {
+            align-self: flex-end;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}

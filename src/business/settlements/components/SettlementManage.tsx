@@ -1,152 +1,129 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import "../styles/SettlementManage.scss";
 import { useTranslation } from "react-i18next";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
-import {
-  Wizard,
-  WizardPivotHeader,
-  WizardPivotPanel,
-  WizardState,
-  useWizard,
-} from "../../../shared/components/wizard";
-import { ContractManage } from "../../contracts/components/ContractManage";
-import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
-import {
-  SettlementContextData,
-  useSettlementContext,
-} from "../context/SettlementContext";
-import { SettlementWizardKey } from "../../../shared/constants/constants";
-import { EmploymentManage } from "../../employment/components/EmploymentManage";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { TextField } from "../../../shared/components/forms/CustomTextField";
+import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
+import { SettlementDTO } from "../../../shared/models/SettlementDTO";
+import { Form } from "../../../shared/components/forms/Form";
+import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
+import { SettlementDocumentType } from "../../../shared/constants/constants";
+import { Mode } from "../../../shared/constants/types";
 
-export const SettlementManage: FC = () => {
+export interface Props {
+  mode: Mode;
+  onValidate?: (valid: boolean) => void;
+}
+
+export const SettlementManage: FC<Props> = (props: Props) => {
   const { t } = useTranslation(["settlements", "common"]);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [goNextDisabled, setGoNextDisabled] = useState<boolean>(false);
-  const [tabsDisabled, setTabsDisabled] = useState<boolean>(true);
-  const ContractTab = SettlementWizardKey.Contract;
-  const WorkItemsTab = SettlementWizardKey.WorkItems;
-  const EmploymentTab = SettlementWizardKey.Employment;
-  const ExtractTab = SettlementWizardKey.Extract;
+  const [details, setDetails] = useState<SettlementDTO>();
+  const { mode, onValidate } = props;
 
-  const onValidate = (hasErrors: boolean) => {
-    setGoNextDisabled(!hasErrors);
-    setTabsDisabled(!hasErrors);
+  const form = useRef(new Form({}));
+  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  const documentTypes = [
+    {
+      key: SettlementDocumentType.Invoice,
+      text: t("invoice"),
+      data: { icon: "PageList" },
+    },
+    {
+      key: SettlementDocumentType.Clearance,
+      text: t("clearance"),
+      data: { icon: "M365InvoicingLogo" },
+    },
+  ];
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setDetails((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const getWizardState = (): WizardState => {
-    return {
-      translationNamespace: ContractTab,
-      tabs: [
-        {
-          itemKey: ContractTab,
-          label: t("contractRequest"),
-        },
-        {
-          itemKey: WorkItemsTab,
-          label: t(WorkItemsTab)
-        },
-        {
-          itemKey: EmploymentTab,
-          label: t(EmploymentTab)
-        },
-        {
-          itemKey: ExtractTab,
-          label: t(ExtractTab)
-        },
-      ],
-      selectedTabKey: ContractTab,
-      showTabState: true,
-      canGoBack: false,
-      canGoNext: true,
-    };
-  };
-  const wizard = useWizard(getWizardState());
-  const settlementContext = useSettlementContext();
+  const handleDateChange = () => {};
 
-  useEffect(() => {
-  }, [goNextDisabled]);
-
-  const changeState = (key: string, isValid: boolean) => {
-    wizard.ChangeTabState(key, isValid ? "completed" : "error");
-  };
-
-  const validateContract = (settlementContext: SettlementContextData) => {
-    return true;
-  };
-  const validateEmployment = (settlementContext: SettlementContextData) => {
-    return true;
-  };
-  const validateWorkItems = (settlementContext: SettlementContextData) => {
-    return true;
+  const SetValidity = (name: string, isValid: boolean) => {
+    form.current.SetValidity(name, isValid);
   };
 
   useEffect(() => {
-    if (wizard?.state.selectedTabKey) {
-      const invalidContract = validateContract(settlementContext);
-      const invalidEmployment = validateEmployment(settlementContext);
-      const invalidWorkItems = validateWorkItems(settlementContext);
-
-      if (wizard?.state.selectedTabKey === ContractTab) {
-        setGoNextDisabled(invalidContract);
-      }  else if (wizard?.state.selectedTabKey === WorkItemsTab) {
-        setGoNextDisabled(invalidWorkItems);
-        changeState(ContractTab, !invalidContract);
-      } else if (wizard?.state.selectedTabKey === EmploymentTab) {
-        setGoNextDisabled(invalidEmployment);
-        changeState(ContractTab, !invalidContract);
-        changeState(WorkItemsTab, !invalidWorkItems);
-      } else if (wizard?.state.selectedTabKey === ExtractTab) {
-        changeState(ContractTab, !invalidContract);
-        changeState(WorkItemsTab, !invalidWorkItems);
-        changeState(EmploymentTab, !invalidEmployment);
-      }
-    }
-  }, [wizard?.state.selectedTabKey]);
+    if (onValidate) onValidate(true);
+  });
 
   return (
-    <LayoutContent>
-      <div className="settlementManage">
-        <Wizard state={wizard}>
-          <WizardPivotHeader />
-          <WizardPivotPanel panelKey={ContractTab}>
-            <ContractManage editMode />
-          </WizardPivotPanel>
-          <WizardPivotPanel panelKey={WorkItemsTab}></WizardPivotPanel>
-          <WizardPivotPanel panelKey={EmploymentTab}><EmploymentManage /></WizardPivotPanel>
-          <WizardPivotPanel panelKey={ExtractTab}></WizardPivotPanel>
-        </Wizard>
-        <div className="footer">
-          <div className="navigation">
-            <PrimaryButton
-              iconProps={{ iconName: "Back" }}
-              disabled={!wizard.state.canGoBack}
-              text={t("previous")}
-              onClick={() => wizard.previousTab()}
-              className="closeButton"
-            />
-            {wizard.state.canGoNext ? (
-              <PrimaryButton
-                menuIconProps={{ iconName: "Forward" }}
-                disabled={!wizard.state.canGoNext}
-                text={t("continue")}
-                onClick={() => wizard.nextTab()}
-                className="continue"
+    <div className="contractManage panel">
+      <div className="body">
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("settlementInfo")}
+            iconName="ActivateOrders"
+          />
+          <div className="content">
+            <div className="row">
+              <TextField
+                label={t("contractNo")}
+                name="ContractNo"
+                value={details?.ContractNo ?? ""}
+                readOnly
               />
-            ) : (
-              <PrimaryButton
-                menuIconProps={{
-                  iconName: "Send",
-                }}
-                text={t("register")}
-                className="continue norotate"
-              >
-                {isSaving && <Spinner size={SpinnerSize.small} />}
-              </PrimaryButton>
-            )}
+              <TextField
+                label={t("settlementNumber")}
+                name="SettlementNo"
+                value={details?.SettlementNo ?? ""}
+                readOnly
+              />
+              <DatePicker
+                label={t("operationStartDate")}
+                value={details?.OperationStartDate}
+                onChange={handleDateChange}
+                isRequired
+              />
+              <DatePicker
+                label={t("operationEndDate")}
+                value={details?.OperationEndDate}
+                onChange={handleDateChange}
+                isRequired
+              />
+            </div>
+            <div className="row">
+              <Dropdown
+                label={t("settlementDocumentType")}
+                options={documentTypes}
+                selectedKey={details?.DocumentType ?? ""}
+                onValidationChange={SetValidity}
+                required
+              />
+              <TextField
+                label={t("description")}
+                name="Description"
+                value={details?.Description ?? ""}
+                onChange={handleInputChange}
+              />
+              <TextField
+                label={t("notes")}
+                name="Notes"
+                value={details?.Notes ?? ""}
+                onChange={handleInputChange}
+              />
+            </div>
           </div>
         </div>
+
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("workItems")}
+            iconName="ActivateOrders"
+          />
+        </div>
       </div>
-    </LayoutContent>
+    </div>
   );
 };

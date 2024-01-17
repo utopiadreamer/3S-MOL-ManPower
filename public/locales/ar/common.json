@@ -1,9 +1,22 @@
 {
     "save": "حفظ",
+    "saveAndContinue": "حفظ وإستكمال",
     "cancel": "إلغاء",
     "edit": "تعديل",
     "nbItemPerPage": "النتائج لكل صفحة:",
     "totalRecord": "النتائج:",
-    "search": "بحث"
-    
+    "search": "بحث",
+    "NoRecords": "لا توجد بيانات",
+    "govern": "المحافظة",
+    "city": "المدينة",
+    "district": "الحي",
+    "address": "العنوان بالتفصيل",
+    "send": "إرسال", 
+    "view": "عرض",
+    "BrowseFile": "عرض الملف",
+    "ChooseAnother": "اختر ملف اخر",
+    "Delete": "حذف",
+    "Download": "تحميل",
+    "UnSelect": "الغاء",
+    "new": "جديد"
 }

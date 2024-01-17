@@ -1,49 +1,56 @@
-@import  "../../styles/colors";
+@import "../../styles/colors";
 
-.mol-section{
+.mol-section {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+
+  h1 {
+    margin: unset;
+  }
+  h2 {
+    margin: unset;
+    font-weight: $ms-font-weight-semilight;
+  }
+  h3 {
+    margin: unset;
+    font-weight: $ms-font-weight-semilight;
+  }
+  .header {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0px;
+    margin-right: 32px;
+    margin-bottom: 8px;
+    color: #3a4651;
+
+    i{
+        padding: 4px 5px;
+        font-size: 20px;
+        color: #3a4651;
+    }
+  }
+  .space {
+    flex-grow: 1;
+  }
+  .action {
     display: flex;
     flex-direction: column;
-    width: fit-content;
-    
-    h1{
-        margin: unset;
-    }
-    h2{
-        margin: unset;
-        font-weight: $ms-font-weight-semilight;
-    }
-    h3{
-        margin: unset;
-        font-weight: $ms-font-weight-semilight;
-    }
-    .header{
-        display: flex;
-        flex-direction: row;
-        margin-left: 0px;
-        margin-right: 32px;
-        margin-bottom: 8px;
-    }
-    .space{
-        flex-grow: 1;
-       }
-    .action{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-right: 10px;
-        margin-left: 10px;
-    }
-    .lineSeparator{
-        background: $themeDarker;
-        height: 1.5px;
-        width: 100%;
-    }
+    justify-content: center;
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .lineSeparator {
+    background: $themeDarker;
+    height: 1.5px;
+    width: 100%;
+  }
 }
-html[dir='rtl']{ 
-    .mol-section{
-        .header{
-            margin-left: 32px;
-            margin-right: 0px;
-        }
+html[dir="rtl"] {
+  .mol-section {
+    .header {
+      margin-left: 32px;
+      margin-right: 0px;
     }
+  }
 }

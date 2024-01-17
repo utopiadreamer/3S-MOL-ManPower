@@ -1,14 +1,14 @@
 {
     "home": "الرئيسية",
     "defineEstablishment": "الجهات",
-    "requestContract": "طلب تسجيل تعاقد",
+    "contracts": "العقود",
     "processSettlement": "المخالصات المميكنة",
-    "registeringEmploymentData": "تسجيل بيانات العمالة بالمرحلة",
-    "extractingSecuredExtracts": "استخراج المخالصات المؤمّتة",
+    "registeringWorkersData": "تسجيل بيانات العمالة بالمرحلة",
+    "extractingSecuredClearances": "استخراج المخالصات المؤمّتة",
     "discountRequest": "طلب تخفيض",
     "exemptionRequest": "طلب إعفاء",
     "mol": "وزارة القوي العاملة",
-    "employment": "كشف العمال",
+    "workers": "سجل العمال",
     "persons": "أفراد",
     "companies": "شركات",
     "governments": "جهات حكومية",
@@ -18,5 +18,7 @@
     "codes": "الأكواد",
     "security": "المستخدمين والصلاحيات",
     "regulations": "اللوائح",
-    "help": "مساعدة"
+    "help": "مساعدة",
+    "newSettlement": "تسوية جديدة",
+    "searchSettlements": "بحث التسويات"
 }

@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from "react";
-import { SelectionMode, DetailsListLayoutMode } from "@fluentui/react";
+import {
+  SelectionMode,
+  DetailsListLayoutMode,
+  IconButton,
+  CommandBar,
+} from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import "../styles/EstablishmentsList.scss";
 import {
@@ -8,12 +13,11 @@ import {
   FilteredColumn,
   SortedColumnInfo,
 } from "../../../shared/components/customDetailList/CustomDetailList";
-import {
-  ColumnInfo,
-  FilterType,
-} from "../../../shared/components/customDetailList/FilteredHeaderColumn";
-import { EstablishmentDTO } from "../../settlements/context/DTOs";
+import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
 import { EstablishmentType } from "../../../shared/constants/constants";
+import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
+import { NavLink } from "react-router-dom";
+import '../styles/EstablishmentsList.scss'
 
 interface GridProps {
   type?: string;
@@ -31,7 +35,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
   const [columns, setColumns] = useState<ColumnInfo[]>();
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(1);
   const { items: itemsProps, onChanged, onNbItemPerPageChanged, type } = props;
 
   const [items, setItems] = useState<EstablishmentDTO[]>([]);
@@ -40,27 +44,12 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
     setItems(itemsProps?.slice());
   }, [itemsProps]);
 
-  const establishmentTypes = [
-    {
-      key: EstablishmentType.Person,
-      text: t("person"),
-    },
-    {
-      key: EstablishmentType.Company,
-      text: t("company"),
-    },
-    {
-      key: EstablishmentType.Government,
-      text: t("government"),
-    },
-  ];
-
   useEffect(() => {
     const personsColumns = [
       {
         key: "nationalID",
         name: t("nationalID"),
-        fieldName: "nationalID",
+        fieldName: "NationalID",
         minWidth: 150,
         maxWidth: 150,
         isRowHeader: true,
@@ -69,7 +58,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
       {
         key: "insuranceNumber",
         name: t("insuranceNumber"),
-        fieldName: "insuranceNumber",
+        fieldName: "InsuranceNumber",
         minWidth: 150,
         maxWidth: 150,
         isRowHeader: true,
@@ -81,7 +70,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
       {
         key: "commRegistrationNo",
         name: t("commRegistrationNo"),
-        fieldName: "commRegistrationNo",
+        fieldName: "CommRegistrationNo",
         minWidth: 150,
         maxWidth: 150,
         isRowHeader: true,
@@ -90,7 +79,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
       {
         key: "taxNumber",
         name: t("taxNumber"),
-        fieldName: "taxNumber",
+        fieldName: "TaxNumber",
         minWidth: 150,
         maxWidth: 150,
         isRowHeader: true,
@@ -102,7 +91,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
       {
         key: "institutionalCode",
         name: t("institutionalCode"),
-        fieldName: "institutionalCode",
+        fieldName: "InstitutionalCode",
         minWidth: 200,
         maxWidth: 200,
         isRowHeader: true,
@@ -112,20 +101,29 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
 
     const restColumns = [
       {
-        key: "address",
-        name: t("address"),
-        fieldName: "address",
+        key: "agentName",
+        name: t("agentName"),
+        fieldName: "AgentName",
         minWidth: 200,
         maxWidth: 200,
         isRowHeader: true,
         isResizable: true,
       },
       {
+        key: "address",
+        name: t("address"),
+        fieldName: "Address",
+        minWidth: 160,
+        maxWidth: 160,
+        isRowHeader: true,
+        isResizable: true,
+      },
+      {
         key: "phoneNumber",
         name: t("phoneNumber"),
-        fieldName: "phoneNumber",
-        minWidth: 150,
-        maxWidth: 150,
+        fieldName: "PhoneNo",
+        minWidth: 120,
+        maxWidth: 120,
         isRowHeader: true,
         isResizable: true,
       },
@@ -133,42 +131,38 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
         key: "action",
         name: "",
         fieldName: "",
-        minWidth: 40,
-        maxWidth: 40,
+        minWidth: 50,
+        maxWidth: 50,
         isRowHeader: true,
         isResizable: false,
+        onRender: () => {
+          return (
+            <div>
+              <IconButton iconProps={{ iconName: "Edit" }} />
+            </div>
+          );
+        },
       },
     ];
 
     let gridColumns = [
       {
-        key: "establishmentType",
-        name: t("establishmentType"),
-        fieldName: "establishmentType",
-        filterOption: {
-          placeholder: "",
-          type: FilterType.Enum,
-          fieldNames: [
-            {
-              fieldName: "establishmentType",
-              displayName: t("establishmentType"),
-              options: establishmentTypes,
-            },
-          ],
-        },
-        minWidth: 150,
-        maxWidth: 150,
-        isRowHeader: true,
-        isResizable: true,
-      },
-      {
         key: "name",
         name: t("name"),
-        fieldName: "name",
+        fieldName: "Name",
         minWidth: 200,
         maxWidth: 200,
         isRowHeader: true,
         isResizable: true,
+        onRender: (item: EstablishmentDTO) => {
+          return (
+            <div>
+              <NavLink to={`${"/establishments/"}${type}/${item.ID}`} className={'navLink'}>
+                {item.Name}
+              </NavLink>
+            </div>
+          );
+        },
       },
     ];
 
@@ -186,9 +180,9 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
 
   return (
     <DetailsList
-      className="grid submissionDetails"
+      className="grid"
       columns={columns ?? []}
-      items={[items]}
+      items={items}
       selectionMode={SelectionMode.none}
       layoutMode={DetailsListLayoutMode.fixedColumns}
       noItemsPlaceholder={<span>{t("common:NoRecords")}</span>}

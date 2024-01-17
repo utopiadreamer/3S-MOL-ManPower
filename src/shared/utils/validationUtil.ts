@@ -1,10 +1,12 @@
-import { TFunction } from 'i18next';
-import { InputType } from '../components/forms/CustomTextField';
-import { ValidationType } from '../constants/constants';
+import { TFunction } from "i18next";
+import { InputType } from "../components/forms/CustomTextField";
+import { ValidationType } from "../constants/constants";
 
 export class ValidationUtil {
-
-  public static checkFormat = (val: string | undefined, inputType?: InputType) => {
+  public static checkFormat = (
+    val: string | undefined,
+    inputType?: InputType
+  ) => {
     if (inputType && val) {
       switch (inputType) {
         case InputType.Number:
@@ -21,20 +23,29 @@ export class ValidationUtil {
     return true;
   };
 
-  public static validate = (validation: ValidationType, validationVal: string, name: string, t: TFunction, label?: string) => {
+  public static validate = (
+    validation: ValidationType,
+    validationVal: string,
+    name: string,
+    t: TFunction,
+    label?: string
+  ) => {
     if (validation === ValidationType.Required) {
-      return ValidationUtil.isRequired(t, validationVal, name ?? '', label);
-    } 
-    if (validation === ValidationType.Email && validationVal !== '') {
-      return ValidationUtil.isValidEmail(t, validationVal, name ?? '');
-    } 
+      return ValidationUtil.isRequired(t, validationVal, name ?? "", label);
+    }
+    if (validation === ValidationType.Email && validationVal !== "") {
+      return ValidationUtil.isValidEmail(t, validationVal, name ?? "");
+    }
     if (validation === ValidationType.NationalID) {
-      return ValidationUtil.isValidNationalID(t, validationVal, name ?? '');
-    } 
+      const isValid = ValidationUtil.isValidNationalID(
+        validationVal
+      );
+      if (!isValid) return t("validation:invalidNationalID", { name });
+    }
     if (validation === ValidationType.MobileNo) {
-      return ValidationUtil.isValidMobileNo(t, validationVal, name ?? '');
-    } 
-  }
+      return ValidationUtil.isValidMobileNo(t, validationVal, name ?? "");
+    }
+  };
 
   public static isSelectionRequired(
     t: TFunction,
@@ -52,7 +63,7 @@ export class ValidationUtil {
     if (value && value !== -1) {
       return undefined;
     }
-    return t('validation:selectionRequired', { label });
+    return t("validation:selectionRequired", { label });
   }
 
   public static isValidEmail(
@@ -65,10 +76,9 @@ export class ValidationUtil {
         return undefined;
       }
     }
-    return t('validation:invalidEmail', { fieldName });
+    return t("validation:invalidEmail", { fieldName });
   }
-  
-  
+
   public static isValidMobileNo(
     t: TFunction,
     value: string | undefined,
@@ -79,20 +89,22 @@ export class ValidationUtil {
         return undefined;
       }
     }
-    return t('validation:invalidMobileNo', { fieldName });
+    return t("validation:invalidMobileNo", { fieldName });
   }
 
   public static isValidNationalID(
-    t: TFunction,
-    value: string | undefined,
-    fieldName: string
-  ): string | undefined {
+    value: string | undefined
+  ): boolean {
     if (value) {
-      if (/^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(value)) {
-        return undefined;
+      if (
+        /^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(
+          value
+        )
+      ) {
+        return true;
       }
     }
-    return t('validation:invalidNationalID', { fieldName });
+    return false;
   }
 
   public static isRequired(
@@ -112,6 +124,6 @@ export class ValidationUtil {
     if (value) {
       return undefined;
     }
-    return t('validation:isRequired', { Label: label });
+    return t("validation:isRequired", { Label: label });
   }
 }

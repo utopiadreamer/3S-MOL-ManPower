@@ -21,13 +21,13 @@ const MenuItems: LayoutMenuItem[] = [
                 pathname: '/establishments/persons',
             },
             {
-                iconName: 'Bank',
+                iconName: 'CityNext2',
                 id: 'companies',
                 title: 'companies',
                 pathname: '/establishments/companies',
             },
             {
-                iconName: 'Bank',
+                iconName: 'CityNext',
                 id: 'governments',
                 title: 'governments',
                 pathname: '/establishments/governments',
@@ -36,16 +36,34 @@ const MenuItems: LayoutMenuItem[] = [
         
     },
     {
+        id: 'contracts',
+        iconName: 'ActivateOrders',
+        title: 'contracts',
+        pathname: '/contracts',
+    },
+    {
         id: 'processSettlement',
         iconName: 'ActivateOrders',
         title: 'processSettlement',
-        pathname: '/settlements',
+        pathname: '',
+        subItems: [{
+            iconName: 'Add',
+            id: 'newSettle',
+            title: 'newSettlement',
+            pathname: '/settlements/new',
+        },
+        {
+            iconName: 'Search',
+            id: 'searchSettlements',
+            title: 'searchSettlements',
+            pathname: '/settlements/search',
+        },]
     },
     {
-        id: 'employment',
+        id: 'workers',
         iconName: 'FabricUserFolder',
-        title: 'employment',
-        pathname: '/employment',
+        title: 'workers',
+        pathname: '/workers',
     },
     {
         id: 'codes',

@@ -1,0 +1,89 @@
+@import "../../styles/colors";
+
+.mol-fileSelector {
+  max-width: 400px;
+
+  input[type=File] {
+    display: none;
+  }
+
+  .fileSelection {
+    display: flex;
+    flex-flow: column;
+    align-content: stretch;
+    border: 1px solid #8a8886;
+    box-sizing: border-box;
+    border-radius: 2px;
+
+    .filePlaceHolder {
+      height: 32px;
+      display: flex;
+      flex-grow: 1;
+      flex-flow: row;
+      align-items: center;
+
+      .icon {
+        flex-grow: 0;
+        padding-left: 5px;
+        padding-right: 0;
+      }
+
+      .iconMenu {
+        flex-grow: 0;
+        color: $themePrimary;
+      }
+
+      .text {
+        flex-grow: 2;
+        margin-left: 5px;
+        margin-right: 5px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &.clickable {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .ms-ProgressIndicator-itemProgress {
+      padding: 0;
+    }
+  }
+ 
+  .fileSelection.readonly {
+    border: 1px solid $mol_readonlyBorderColor;
+  }
+  .fileSelection.noBorder{
+    border: unset;
+  }
+  .fileSelection.error {
+    border: 1px solid darkred;
+    box-sizing: border-box;
+    border-radius: 2px;
+  }
+
+  label.error {
+    color: darkred;
+  }
+}
+
+html[dir="rtl"] {
+  .mol-fileSelector {
+    .fileSelection {
+      .filePlaceHolder {
+        display: flex;
+        flex-grow: 1;
+        flex-flow: row;
+        align-items: center;
+
+        .icon {
+          padding-left: 0;
+          padding-right: 5px;
+        }
+      }
+    }
+  }
+}

@@ -35,7 +35,7 @@ export const Section: FC<PropsWithChildren<SectionProps>> = (
         {actionButton && <div className="action">{actionButton}</div>}
         {toolTip && <HelperButton>{toolTip}</HelperButton>}
       </div>
-      <div className="lineSeparator" />
+      {/* <div className="lineSeparator" /> */}
       {children}
     </div>
   );

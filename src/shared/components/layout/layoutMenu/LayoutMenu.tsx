@@ -64,7 +64,7 @@ export function GetCurrentMenuItemEntry(
 }
 
 const mapDispatchToProps = {
-  dispatchChangeBreadcrumb: changeBreadcrumb
+  dispatchChangeBreadcrumb: changeBreadcrumb,
 };
 
 const mapStateToProps = (state: RootState) => {
@@ -141,11 +141,13 @@ const LayoutMenuComponent: FC<
             id={item.id}
             title={t(item.title)}
             to={{ pathname: item.pathname }}
-            className={clsx(
-              "layout-menu-nav-item",
-              disabled && "layout-menu-nav-item--disabled"
-            )}
-            // activeClassName="layout-menu-nav-item--active"
+            className={({ isActive }) =>
+              clsx(
+                "layout-menu-nav-item",
+                disabled && "layout-menu-nav-item--disabled",
+                isActive ? "layout-menu-nav-item--active" : ""
+              )
+            }
             onClick={(ev) => {
               if (disabled) {
                 ev.preventDefault();

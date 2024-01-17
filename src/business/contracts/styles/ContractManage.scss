@@ -1,0 +1,18 @@
+.contractManage {
+  .body {
+    .search {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 30px;
+    }
+
+    .searchTitle {
+      display: flex;
+      gap: 15px;
+    }
+
+    .searchEst {
+      background-color: rgb(38 155 255);
+    }
+  }
+}

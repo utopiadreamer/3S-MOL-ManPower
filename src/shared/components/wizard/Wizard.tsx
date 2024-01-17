@@ -8,6 +8,7 @@ export interface WizardProps{
 export const WizardContext = createContext<WizardStateAndLogic>({state: { translationNamespace:'', tabs:[],selectedTabKey:'', showTabState:true, canGoBack:false,canGoNext:false},
     reset: ()=> {/* */ },   
     changeTabVisibility: ()=>{/* */}, 
+    changeTabDisability: ()=>{/* */}, 
     ChangeTabState: ()=>{/* */},
     selectTab: ()=>{/* */},
     nextTab:()=>{/* */},

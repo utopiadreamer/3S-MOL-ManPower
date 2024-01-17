@@ -15,6 +15,15 @@
     }
 }
 
+.optionCont {
+    display: flex;
+    align-items: inherit;
+}
+
+.optionIcon {
+    padding: 6px 6px;
+}
+
 
 div.ms-Callout.ms-Dropdown-callout{
     &.applyContentFit{

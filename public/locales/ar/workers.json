@@ -9,5 +9,9 @@
     "address": "العنوان",
     "phoneNo": "رقم التليفون",
     "notes": "ملاحظات",
-    "addWorker": "إضافة عامل"
+    "addWorker": "إضافة عامل",
+    "settleNo": "رقم التسوية",
+    "importWorkersSheet": "إستيراد",
+    "workersRecordInfo": "بيانات كشف العمال",
+    "workersInfo": "كشف العمال"
 }

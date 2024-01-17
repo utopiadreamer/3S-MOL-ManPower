@@ -45,7 +45,7 @@ export class DatesUtil {
   public static getLocalizedDateTime = (
     type: string,
     date: Date | undefined,
-    locale?: string,
+    locale = "ar",
     toUTC = false,
     hour12 = true,
     showSeconds = false,

@@ -12,6 +12,7 @@ import "./CustomTextField.scss";
 import { FormFieldWithValidationInterface } from "./FormFieldWithValidationInterface";
 import { ValidationUtil } from "../../utils/validationUtil";
 import { ValidationType } from "../../constants/constants";
+import { GeneralUtil } from "../../utils/generalUtil";
 
 export enum InputType {
   None,
@@ -47,6 +48,9 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
   } = props;
   const [errorMessage, setErrorMessage] = useState<string | JSX.Element>();
   const [isValid, setIsValid] = useState<boolean | undefined>(undefined);
+  const [isValidInput, setIsValidInput] = useState<boolean | undefined>(
+    undefined
+  );
   const { t } = useTranslation("validation");
 
   const getError = (val?: string) => {
@@ -60,7 +64,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
         newIsValid = false;
       }
     } else if ((validations && validations?.length > 0) || required) {
-      const validationVal = val?.trim();
+      const validationVal = val?.toString().trim();
       if (required) {
         error = ValidationUtil.validate(
           ValidationType.Required,
@@ -88,7 +92,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
     if (previousError !== error.error) {
       setErrorMessage(error.error);
     }
-    if (error) {
+    if (error.error) {
       error.newIsValid = false;
     }
     if (error?.newIsValid !== isValid) {
@@ -97,8 +101,9 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
         if (previousError) {
           if (!isManualErrorMessageBlock || !errorMessageFromProps) {
             setErrorMessage(undefined);
+            setIsValidInput(true);
           }
-        }
+        } else setIsValidInput(true);
       }
       if (onValidationChange) {
         onValidationChange(name ?? "", error?.newIsValid ?? false);
@@ -125,6 +130,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
         const error = getError(value);
         if (error.error === undefined && errorMessage) {
           setErrorMessage(undefined); // when value change by binding remove the previous error message
+          setIsValidInput(true);
         }
         onValidationChange(name ?? "", error.error === undefined);
       } else {
@@ -133,34 +139,55 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
     }
   }, [value, onValidationChange]);
 
+  const borderClass =
+    errorMessage !== undefined
+      ? "invalidClass"
+      : (isValidInput && !GeneralUtil.isNothing(value))
+      ? "validClass"
+      : undefined;
   const useClassName = clsx(
+    "mol-cTextField",
     className,
     readOnly ? "mol-cTextFieldReadOnly" : "",
-    arabic ? "rtlTextField" : ""
+    arabic ? "rtlTextField" : "",
+    borderClass
   );
   return (
     <div className={clsx("vertialFlexDiv", containerClassName)}>
       {label && <Label required={required}>{label}</Label>}
-      <TextField
-        {...props}
-        label={undefined}
-        required={undefined}
-        className={useClassName}
-        errorMessage={
-          readOnly || disabled
-            ? undefined
-            : errorMessageFromProps ?? errorMessage
-        }
-        value={value ?? ""}
-        onChange={(e, v) => {
-          if (ValidationUtil.checkFormat(v, inputType)) {
-            onChangeValue(v);
-            if (onChange) {
-              onChange(e, v);
-            }
+      <div className="textContainer">
+        {/* <div className="textIcon">
+          <Icon iconName="Edit"></Icon>
+        </div> */}
+        <TextField
+          {...props}
+          label={undefined}
+          required={undefined}
+          className={useClassName}
+          errorMessage={
+            readOnly || disabled
+              ? undefined
+              : errorMessageFromProps ?? errorMessage
           }
-        }}
-      />
+          value={value ?? ""}
+          onChange={(e, v) => {
+            if (ValidationUtil.checkFormat(v, inputType)) {
+              onChangeValue(v);
+              if (onChange) {
+                onChange(e, v);
+              }
+            }
+          }}
+          iconProps={{
+            iconName:
+              errorMessage !== undefined
+                ? "StatusErrorFull"
+                : (isValidInput && !GeneralUtil.isNothing(value))
+                ? "CompletedSolid"
+                : undefined,
+          }}
+        />
+      </div>
     </div>
   );
 };

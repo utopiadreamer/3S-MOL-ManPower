@@ -1,30 +1,34 @@
 import React, { createContext, useContext, useState } from 'react';
-import { ContractDTO, EmploymentDTO, EstablishmentDTO, ExtractDTO, WorkItemDTO } from './DTOs';
+import { ContractDTO } from '../../../shared/models/ContractDTO';
+import { ClearanceDTO } from '../../../shared/models/ClearanceDTO';
+import { EstablishmentDTO } from '../../../shared/models/EstablishmentDTO';
+import { WorkItemDTO } from '../../../shared/models/WorkItemDTO';
+import { WorkersRecordDTO } from '../../../shared/models/WorkersRecordDTO';
 
 
-export interface SettlementContextData {
+export interface ClearanceContextData {
     contract: ContractDTO;
     assignEstablishment: EstablishmentDTO;
     execEstablishment: EstablishmentDTO;
     workItems: WorkItemDTO;
-    employment: EmploymentDTO;
-    extract: ExtractDTO;
+    workersRecord: WorkersRecordDTO;
+    clearance: ClearanceDTO;
 
     updateContract: Function;
     updateAssignEstablishment: Function;
     updateExecEstablishment: Function;
     updateWorkItems: Function;
-    updateEmployment: Function;
-    updateExtract: Function;
+    updateWorkersRecord: Function;
+    updateClearance: Function;
 }
 
-const SettlementContext = createContext<SettlementContextData>({
+const ClearanceContext = createContext<ClearanceContextData>({
     contract: new ContractDTO(),
     assignEstablishment: new EstablishmentDTO(),
     execEstablishment: new EstablishmentDTO(),
     workItems: new WorkItemDTO(),
-    employment: new EmploymentDTO(),
-    extract: new ExtractDTO(),
+    workersRecord: new WorkersRecordDTO(),
+    clearance: new ClearanceDTO(),
 
     updateContract: () => {
         /* */
@@ -38,29 +42,29 @@ const SettlementContext = createContext<SettlementContextData>({
     updateWorkItems: () => {
         /* */
     },
-    updateEmployment: () => {
+    updateWorkersRecord: () => {
         /* */
     },
-    updateExtract: () => {
+    updateClearance: () => {
         /* */
     }
 });
 
-export const useSettlementContext = () => {
-    return useContext(SettlementContext);
+export const useClearanceContext = () => {
+    return useContext(ClearanceContext);
 };
 
 interface Props {
     children: JSX.Element;
 }
 
-export const SettlementContextProvider: React.FC<Props> = (props: Props) => {
+export const ClearanceContextProvider: React.FC<Props> = (props: Props) => {
     const [contract, setContract] = useState<ContractDTO>(new ContractDTO());
     const [assignEstablishment, setAssignEstablishment] = useState<EstablishmentDTO>(new EstablishmentDTO());
     const [execEstablishment, setExecEstablishment] = useState<EstablishmentDTO>(new EstablishmentDTO());
     const [workItems, setWorkItems] = useState<WorkItemDTO>(new WorkItemDTO());
-    const [employment, setEmployment] = useState<EmploymentDTO>(new EmploymentDTO());
-    const [extract, setExtract] = useState<ExtractDTO>(new ExtractDTO());
+    const [workersRecord, setWorkers] = useState<WorkersRecordDTO>(new WorkersRecordDTO());
+    const [clearance, setClearance] = useState<ClearanceDTO>(new ClearanceDTO());
 
     const updateContract = (
         details: ContractDTO
@@ -86,36 +90,36 @@ export const SettlementContextProvider: React.FC<Props> = (props: Props) => {
         setWorkItems(details);
     };
 
-    const updateEmployment = (
-        details: EmploymentDTO,
+    const updateWorkersRecord = (
+        details: WorkersRecordDTO,
     ) => {
-        setEmployment(details);
+        setWorkers(details);
     };
 
-    const updateExtract = (
-        details: ExtractDTO,
+    const updateClearance = (
+        details: ClearanceDTO,
     ) => {
-        setExtract(details);
+        setClearance(details);
     };
     const {children} = props;
     return (
-        <SettlementContext.Provider
+        <ClearanceContext.Provider
             value={{
                 contract,
                 assignEstablishment,
                 execEstablishment,
                 workItems,
-                employment,
-                extract,
+                workersRecord,
+                clearance,
                 updateContract,
                 updateAssignEstablishment,
                 updateExecEstablishment,
                 updateWorkItems,
-                updateEmployment,
-                updateExtract                
+                updateWorkersRecord,
+                updateClearance                
             }}
         >
             {children}
-        </SettlementContext.Provider>
+        </ClearanceContext.Provider>
     );
 };

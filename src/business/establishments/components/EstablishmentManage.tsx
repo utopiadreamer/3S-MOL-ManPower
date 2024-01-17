@@ -1,90 +1,77 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import "../styles/EstablishmentDetails.scss";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
-import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
-import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
 import {
   EstablishmentType,
   ValidationType,
 } from "../../../shared/constants/constants";
-import { Panel } from "../../../shared/components/forms/Panel";
-import {
-  DefaultButton,
-  IDropdownOption,
-  PrimaryButton,
-  Spinner,
-  SpinnerSize,
-} from "@fluentui/react";
+import { IDropdownOption } from "@fluentui/react";
 import { Form } from "../../../shared/components/forms/Form";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
+import { FileSelector } from "../../../shared/components/forms/FileSelector";
+import { getEstablishments } from "../../../shared/mockups/Establishments";
+import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
+import { Mode } from "../../../shared/constants/types";
 
 export interface Props {
-  editMode?: boolean;
+  mode: Mode;
+  id?: string;
 }
 
 export const EstablishmentManage: FC<Props> = (props: Props) => {
-  const initData = { establishmentType: EstablishmentType.Person };
 
-  const { editMode } = props;
-  const [formData, setFormData] = useState<any>(initData);
+  const { mode, id } = props;
+  const [details, setDetails] = useState<EstablishmentDTO>();
   const { t } = useTranslation(["establishments", "common"]);
-  const [isEditable, setEditable] = useState<boolean>(editMode ?? false);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [isCanceling, setIsCanceling] = useState<boolean>(false);
+  const [isEditable, setEditable] = useState<boolean>(mode !== Mode.View);
+  const [] = useState<boolean>(false);
 
   const form = useRef(new Form({}));
   const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
   form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
 
-  const establishmentTypes = [
+  const types = [
     {
       key: EstablishmentType.Person,
       text: t("person"),
+      data: { icon: 'ReminderPerson' }
     },
     {
       key: EstablishmentType.Company,
       text: t("company"),
+      data: { icon: 'CityNext2' }
     },
     {
       key: EstablishmentType.Government,
       text: t("government"),
+      data: { icon: 'CityNext' }
     },
   ];
 
-  const onFormCanceled = async () => {
-    setIsCanceling(true);
-    setEditable(false);
-    setFormData({});
-    setIsFormValid(false);
-    setIsCanceling(false);
-  };
-
-  const onFormEdit = async () => {
-    setEditable(true);
-  };
+  useEffect(() => {
+    setEditable(mode !== Mode.View ?? false);
+  }, [mode]);
+  
+  useEffect(() => {
+    let list = getEstablishments();
+    const est = list.filter((i) => i.ID === id)[0];
+    setDetails(est);
+  }, [id]);
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData: any) => ({
+    setDetails((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleDateChange = () => {};
-
   const onTypeChange = (e: any, option?: IDropdownOption) => {
-    setFormData((prevData: any) => ({
+    setDetails((prevData: any) => ({
       ...prevData,
-      establishmentType: option?.key?.toString(),
+      Type: option?.key?.toString(),
     }));
-  };
-
-  const onFormSave = () => {
-    if (form.current.isValid) {
-      alert("saved");
-    }
   };
 
   const SetValidity = (name: string, isValid: boolean) => {
@@ -95,10 +82,20 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
     <div className="establishmentDetails">
       <div className="body">
         <div className="row">
+          <TextField
+            label={t("id")}
+            name="ID"
+            value={details?.ID ?? ""}
+            onChange={handleInputChange}
+            readOnly={!isEditable}
+            onValidationChange={SetValidity}
+            required
+          />
           <Dropdown
             label={t("establishmentType")}
-            options={establishmentTypes}
-            selectedKey={formData?.establishmentType ?? ""}
+            name="Type"
+            options={types}
+            selectedKey={details?.Type ?? ""}
             onChange={onTypeChange}
             onValidationChange={SetValidity}
             readOnly={!isEditable}
@@ -106,19 +103,19 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
           />
           <TextField
             label={t("name")}
-            name="name"
-            value={formData?.name ?? ""}
+            name="Name"
+            value={details?.Name ?? ""}
             onChange={handleInputChange}
             readOnly={!isEditable}
             onValidationChange={SetValidity}
             required
           />
-          {formData.establishmentType === EstablishmentType.Company && (
+          {details?.Type === EstablishmentType.Company && (
             <>
               <TextField
                 label={t("commRegistrationNo")}
-                name="commRegistrationNo"
-                value={formData?.commRegistrationNo ?? ""}
+                name="CommRegistrationNo"
+                value={details?.CommRegistrationNo ?? ""}
                 onChange={handleInputChange}
                 readOnly={!isEditable}
                 onValidationChange={SetValidity}
@@ -126,8 +123,8 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
               />
               <TextField
                 label={t("taxNumber")}
-                name="taxNumber"
-                value={formData?.taxNumber ?? ""}
+                name="TaxNumber"
+                value={details?.TaxNumber ?? ""}
                 onChange={handleInputChange}
                 readOnly={!isEditable}
                 onValidationChange={SetValidity}
@@ -135,23 +132,23 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
               />
             </>
           )}
-          {formData.establishmentType === EstablishmentType.Government && (
+          {details?.Type === EstablishmentType.Government && (
             <TextField
               label={t("institutionalCode")}
-              name="institutionalCode"
-              value={formData?.institutionalCode ?? ""}
+              name="InstitutionalCode"
+              value={details?.InstitutionalCode ?? ""}
               onChange={handleInputChange}
               readOnly={!isEditable}
               onValidationChange={SetValidity}
               required
             />
           )}
-          {formData.establishmentType === EstablishmentType.Person && (
+          {details?.Type === EstablishmentType.Person && (
             <TextField
               label={t("nationalID")}
-              name="nationalID"
+              name="NationalID"
               maxLength={14}
-              value={formData?.nationalID ?? ""}
+              value={details?.NationalID ?? ""}
               onChange={handleInputChange}
               validations={[ValidationType.NationalID]}
               readOnly={!isEditable}
@@ -161,26 +158,26 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
           )}
           <TextField
             label={t("insuranceNumber")}
-            name="insuranceNumber"
-            value={formData?.insuranceNumber ?? ""}
+            name="InsuranceNumber"
+            value={details?.InsuranceNumber ?? ""}
             onChange={handleInputChange}
             readOnly={!isEditable}
             onValidationChange={SetValidity}
             required
           />
-          {formData.establishmentType === EstablishmentType.Company && (
+          {details?.Type === EstablishmentType.Company && (
             <TextField
               label={t("agentName")}
-              name="agentName"
-              value={formData?.agentName ?? ""}
+              name="AgentName"
+              value={details?.AgentName ?? ""}
               onChange={handleInputChange}
               readOnly={!isEditable}
             />
           )}
           <TextField
             label={t("phoneNumber")}
-            name="phoneNumber"
-            value={formData?.phoneNumber ?? ""}
+            name="PhoneNo"
+            value={details?.PhoneNo ?? ""}
             onChange={handleInputChange}
             readOnly={!isEditable}
             maxLength={11}
@@ -190,15 +187,51 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
           />
           <TextField
             label={t("address")}
-            name="address"
-            value={formData?.address ?? ""}
+            name="Address"
+            value={details?.Address ?? ""}
             onChange={handleInputChange}
-            multiline
-            rows={4}
             readOnly={!isEditable}
             onValidationChange={SetValidity}
             required
           />
+          {mode !== Mode.View && details?.Type === EstablishmentType.Company && (
+            <>
+              <FileSelector
+                title={t("taxCardImage")}
+                labels={{
+                  selectFile: t("common:BrowseFile"),
+                  chooseAnotherFile: t("common:ChooseAnother"),
+                  unSelectFile: t("common:UnSelect"),
+                  viewFile: t("common:view"),
+                }}
+                extensionFilter=".jpg"
+              />
+              <FileSelector
+                title={t("commRegistrationImage")}
+                labels={{
+                  selectFile: t("common:BrowseFile"),
+                  chooseAnotherFile: t("common:ChooseAnother"),
+                  unSelectFile: t("common:UnSelect"),
+                  viewFile: t("common:view"),
+                }}
+                extensionFilter=".jpg"
+              />
+            </>
+          )}
+          {mode !== Mode.View && details?.Type === EstablishmentType.Person && (
+            <>
+              <FileSelector
+                title={t("nationalIDImage")}
+                labels={{
+                  selectFile: t("common:BrowseFile"),
+                  chooseAnotherFile: t("common:ChooseAnother"),
+                  unSelectFile: t("common:UnSelect"),
+                  viewFile: t("common:view"),
+                }}
+                extensionFilter=".jpg"
+              />
+            </>
+          )}
         </div>
       </div>
     </div>

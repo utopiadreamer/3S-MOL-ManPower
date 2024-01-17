@@ -1,80 +1,123 @@
-import { FC, useRef, useState } from "react";
-import "../styles/ContractDetails.scss";
-import { TextField } from "../../../shared/components/forms/CustomTextField";
+import { FC, useEffect, useRef, useState } from "react";
+import "../styles/ContractManage.scss";
+import {
+  InputType,
+  TextField,
+} from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
 import { ContractType } from "../../../shared/constants/constants";
-import { IDropdownOption } from "@fluentui/react";
+import { CommandBar, IDropdownOption } from "@fluentui/react";
 import { Form } from "../../../shared/components/forms/Form";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { EstablishmentManage } from "../../establishments/components/EstablishmentManage";
+import { EstablishmentsSearch } from "../../establishments/components/EstablishmentsSearch";
+import { useParams } from "react-router-dom";
+import { getContracts } from "../../../shared/mockups/Contracts";
+import { ContractDTO } from "../../../shared/models/ContractDTO";
+import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
+import { Mode } from "../../../shared/constants/types";
+import clsx from "clsx";
 
 export interface Props {
-  editMode?: boolean;
+  mode: Mode;
+  onValidate?: (valid: boolean) => void;
 }
 
 export const ContractManage: FC<Props> = (props: Props) => {
-  const { editMode } = props;
-  const [formData, setFormData] = useState<any>({});
+  const { mode, onValidate } = props;
+  const { id } = useParams();
+  const [details, setDetails] = useState<ContractDTO>();
+  const [assignEstDetails, setAssignEstDetails] = useState<EstablishmentDTO>();
+  const [execEstDetails, setEexcEstDetails] = useState<EstablishmentDTO>();
   const { t } = useTranslation(["contracts", "common"]);
-  const [isEditable, setEditable] = useState<boolean>(editMode ?? false);
+  const [isEditable, setEditable] = useState<boolean>(mode !== Mode.View);
+  const [assignEditMode, setAssignEditMode] = useState<Mode>(mode);
+  const [execEditMode, setExecEditMode] = useState<Mode>(mode);
+  const [showAssignEstSearch, setShowAssignEstSearch] =
+    useState<boolean>(false);
+  const [showExecEstSearch, setShowExecEstSearch] = useState<boolean>(false);
 
   const form = useRef(new Form({}));
   const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
   form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
 
+  useEffect(() => {
+    if (id) {
+      const contracts = getContracts();
+      const contract = contracts.filter((i) => i.ID === id)[0];
+      setAssignEstDetails(contract.AssignEstablishment);
+      setEexcEstDetails(contract.ExecEstablishment);
+      setDetails(contract);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (onValidate) onValidate(true);
+  });
+
+  const icon = { icon: "TextDocumentShared" };
   const contractTypes = [
     {
       key: ContractType.Contract,
       text: t("contract"),
+      data: icon,
     },
     {
       key: ContractType.Tender,
       text: t("tender"),
+      data: icon,
     },
     {
       key: ContractType.AssignmentOrder,
       text: t("assignmentOrder"),
+      data: icon,
     },
     {
       key: ContractType.SupplyOrder,
       text: t("supplyOrder"),
+      data: icon,
     },
     {
       key: ContractType.AttributionOrder,
       text: t("attributionOrder"),
+      data: icon,
     },
     {
       key: ContractType.License,
       text: t("license"),
+      data: icon,
     },
     {
       key: ContractType.RepairOrder,
       text: t("repairOrder"),
+      data: icon,
     },
     {
       key: ContractType.PurchaseOrder,
       text: t("purchaseOrder"),
+      data: icon,
     },
     {
       key: ContractType.Other,
       text: t("other"),
+      data: icon,
     },
   ];
 
   const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prevData: any) => ({
+    setDetails((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const onTypeChange = (e: any, option?: IDropdownOption) => {
-    setFormData((prevData: any) => ({
+    setDetails((prevData: any) => ({
       ...prevData,
-      establishmentType: option?.key?.toString(),
+      ContractType: option?.key,
     }));
   };
 
@@ -84,163 +127,318 @@ export const ContractManage: FC<Props> = (props: Props) => {
     form.current.SetValidity(name, isValid);
   };
 
+  const getActions = () => {
+    const saveAction = {
+      key: "action",
+      className: clsx("actionButton", "newAction"),
+      text: t("common:save"),
+      iconProps: { iconName: "Save" },
+      onClick: () => {
+        setEditable(false);
+      },
+    };
+    const arr = [
+      {
+        key: "action",
+        className: clsx(
+          "actionButton",
+          isEditable ? "cancelAction" : "editAction"
+        ),
+        text: t(isEditable ? "common:cancel" : "common:edit"),
+        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+        onClick: () => {
+          if (isEditable) setEditable(false);
+          else {
+            setEditable(true);
+          }
+        },
+      },
+    ];
+    if (isEditable) arr.splice(0, 0, saveAction);
+    return arr;
+  };
+
   return (
-    <div className="contractDetails">
+    <div className="contractManage panel">
       <div className="body">
-        <Section size={SectionSize.h2} title={t("contractInfo")} />
-        <div className="row">
-          <TextField
-            label={t("requestNo")}
-            name="requestNo"
-            value={formData?.requestNo ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <DatePicker
-            label={t("requestDate")}
-            value={new Date()}
-            onChange={handleDateChange}
-            disabled={!isEditable}
-            isRequired
-          />
-        </div>
-        <Section size={SectionSize.h2} title={t("assignEstInfo")} />
-        <div>
-          <EstablishmentManage editMode />
-        </div>
-        <Section size={SectionSize.h2} title={t("execEstInfo")} />
-        <div>
-          <EstablishmentManage editMode />
-        </div>
-        <Section size={SectionSize.h2} title={t("assignEstInfo")} />
-        <div className="row">
-          <TextField
-            label={t("recordNumber")}
-            name="recordNumber"
-            value={formData?.recordNumber ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <TextField
-            label={t("commRegistrationNo")}
-            name="commRegistrationNo"
-            value={formData?.commRegistrationNo ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-          />
-        </div>
-        <Section size={SectionSize.h2} title={t("workInfo")} />
-        <div className="row">
-          <Dropdown
-            label={t("contractType")}
-            options={contractTypes}
-            selectedKey={formData?.establishmentType ?? ""}
-            onChange={onTypeChange}
-            onValidationChange={SetValidity}
-            readOnly={!isEditable}
-            required
-          />
-          <TextField
-            label={t("contractNumber")}
-            name="contractNumber"
-            value={formData?.contractNumber ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <TextField
-            label={t("scopeOfWork")}
-            name="scopeOfWork"
-            value={formData?.scopeOfWork ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <TextField
-            label={t("worksDescription")}
-            name="worksDescription"
-            value={formData?.worksDescription ?? ""}
-            onChange={handleInputChange}
-            multiline
-            rows={4}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-        </div>
-        <div className="row">
-          <DatePicker
-            label={t("contractStartDate")}
-            value={new Date()}
-            onChange={handleDateChange}
-            disabled={!isEditable}
-            isRequired
-          />
-          <DatePicker
-            label={t("contractStartDate")}
-            value={new Date()}
-            onChange={handleDateChange}
-            disabled={!isEditable}
-            isRequired
-          />
-        </div>
-        <Section size={SectionSize.h2} title={t("financialInfo")} />
-        <div className="row">
-          <TextField
-            label={t("totalAmount")}
-            name="totalAmount"
-            value={formData?.totalAmount ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <TextField
-            label={t("realAmount")}
-            name="realAmount"
-            value={formData?.scopeOfWork ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
-          <TextField
-            label={t("taxRate")}
-            name="taxRate"
-            value={formData?.taxRate ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
-            required
-          />
+        <div className="section">
+          <div className="actionsHeader">
+            <Section
+              size={SectionSize.h2}
+              title={t("contractInfo")}
+              iconName="ActivateOrders"
+            />
+            {id !== undefined && (
+              <CommandBar items={[]} farItems={getActions()} />
+            )}
+          </div>
+          <div className="content">
+            <div className="row">
+              {mode !== Mode.New && (
+                <TextField
+                  label={t("contractNo")}
+                  name="ContractNo"
+                  value={details?.ContractNo ?? ""}
+                  onChange={handleInputChange}
+                  readOnly={!isEditable}
+                  onValidationChange={SetValidity}
+                  maxLength={8}
+                  required
+                />
+              )}
+              <TextField
+                label={t("name")}
+                name="Name"
+                value={details?.Name ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                required
+              />
+              <Dropdown
+                label={t("contractType")}
+                options={contractTypes}
+                selectedKey={details?.ContractType ?? ""}
+                onChange={onTypeChange}
+                onValidationChange={SetValidity}
+                readOnly={!isEditable}
+                required
+              />
+              <TextField
+                label={t("refContractNo")}
+                name="ReferenceContrctNo"
+                value={details?.ReferenceContrctNo ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                maxLength={100}
+              />
+            </div>
+          </div>
         </div>
 
-        <Section size={SectionSize.h2} title={t("otherInfo")} />
-        <div className="row">
-          <TextField
-            label={t("description")}
-            name="description"
-            value={formData?.description ?? ""}
-            onChange={handleInputChange}
-            multiline
-            rows={4}
-            readOnly={!isEditable}
+        <div className="section">
+          <div className="flex justify-Between">
+            <div className="searchTitle">
+              <Section
+                size={SectionSize.h2}
+                title={t("assignEstInfo")}
+                iconName="CityNext2"
+              />
+              {showAssignEstSearch && (
+                <EstablishmentsSearch
+                  onSearch={(est?: EstablishmentDTO) =>
+                    setAssignEstDetails(est)
+                  }
+                />
+              )}
+            </div>
+            {mode !== Mode.View && (
+              <CommandBar
+                items={[]}
+                farItems={[
+                  {
+                    key: "new",
+                    className: "actionButton editAction",
+                    text: t("common:new"),
+                    iconProps: { iconName: "Add" },
+                    onClick: () => {
+                      setAssignEstDetails(new EstablishmentDTO());
+                      setAssignEditMode(Mode.New);
+                      setShowAssignEstSearch(false);
+                    },
+                  },
+                  {
+                    key: "search",
+                    className: "actionButton newAction",
+                    text: t("common:search"),
+                    iconProps: { iconName: "Search" },
+                    onClick: () => {
+                      setAssignEditMode(Mode.View);
+                      setShowAssignEstSearch(!showAssignEstSearch);
+                    },
+                  },
+                ]}
+              />
+            )}
+          </div>
+
+          <div className="content">
+            <EstablishmentManage
+              mode={assignEditMode}
+              id={assignEstDetails?.ID}
+            />
+          </div>
+        </div>
+        <div className="section">
+          <div className="flex justify-Between">
+            <div className="searchTitle">
+              <Section
+                size={SectionSize.h2}
+                title={t("execEstInfo")}
+                iconName="CityNext"
+              />
+              {showExecEstSearch && (
+                <EstablishmentsSearch
+                  onSearch={(est?: EstablishmentDTO) => setEexcEstDetails(est)}
+                />
+              )}
+            </div>
+            {mode !== Mode.View && (
+              <CommandBar
+                items={[]}
+                farItems={[
+                  {
+                    key: "new",
+                    className: "actionButton editAction",
+                    text: t("common:new"),
+                    iconProps: { iconName: "Add" },
+                    onClick: () => {
+                      setEexcEstDetails(new EstablishmentDTO());
+                      setExecEditMode(Mode.New);
+                      setShowExecEstSearch(false);
+                    },
+                  },
+                  {
+                    key: "search",
+                    className: "actionButton newAction",
+                    text: t("common:search"),
+                    iconProps: { iconName: "Search" },
+                    onClick: () => {
+                      setShowExecEstSearch(!showExecEstSearch);
+                      setExecEditMode(Mode.View);
+                    },
+                  },
+                ]}
+              />
+            )}
+          </div>
+          <div className="content">
+            <EstablishmentManage mode={execEditMode} id={execEstDetails?.ID} />
+          </div>
+        </div>
+
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("workInfo")}
+            iconName="WorkItem"
           />
-          <TextField
-            label={t("notes")}
-            name="notes"
-            value={formData?.notes ?? ""}
-            onChange={handleInputChange}
-            multiline
-            rows={4}
-            readOnly={!isEditable}
+          <div className="content">
+            <div className="row">
+              <TextField
+                label={t("scopeOfWork")}
+                name="scopeOfWork"
+                value={details?.ScopeOfWork ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                required
+              />
+              <TextField
+                label={t("worksDescription")}
+                name="worksDescription"
+                value={details?.Description ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                required
+              />
+              <DatePicker
+                label={t("contractStartDate")}
+                value={details?.ContractStartDate}
+                onChange={handleDateChange}
+                disabled={!isEditable}
+                isRequired
+              />
+              <DatePicker
+                label={t("contractStartDate")}
+                value={details?.ContractEndDate}
+                onChange={handleDateChange}
+                disabled={!isEditable}
+                isRequired
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("financialInfo")}
+            iconName="Money"
           />
+          <div className="content">
+            <div className="row">
+              <TextField
+                label={t("totalAmount")}
+                name="totalAmount"
+                inputType={InputType.DecimalNumber}
+                value={details?.TotalAmount?.toString() ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                maxLength={12}
+                required
+              />
+              <TextField
+                label={t("realAmount")}
+                name="realAmount"
+                inputType={InputType.DecimalNumber}
+                value={details?.RealAmount?.toString() ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                maxLength={12}
+                required
+              />
+              <TextField
+                label={t("taxRate")}
+                name="taxRate"
+                inputType={InputType.DecimalNumber}
+                value={details?.TaxRate?.toString() ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+                onValidationChange={SetValidity}
+                maxLength={2}
+                required
+                suffix="%"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("otherInfo")}
+            iconName="EditNote"
+          />
+          <div className="content">
+            <div className="row">
+              <TextField
+                label={t("description")}
+                name="description"
+                value={details?.Description ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+              />
+              <TextField
+                label={t("notes")}
+                name="notes"
+                value={details?.Notes ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="section">
+          <Section
+            size={SectionSize.h2}
+            title={t("settlements")}
+            iconName="EditNote"
+          />
+          <div className="row">{/* <SettlementsGrid /> */}</div>
         </div>
       </div>
     </div>

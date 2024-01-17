@@ -20,7 +20,7 @@ export const ContractDetails: FC = () => {
     <LayoutContent>
       <div className="contractDetails card">
         <div className="body">
-          <Section title={t("contractDetails")} size={SectionSize.h1} />
+          <Section title={t("contractDetails")} size={SectionSize.h1} iconName="ActivateOrders" />
           <div className="row">
             <TextField
               readOnly
@@ -82,6 +82,7 @@ export const ContractDetails: FC = () => {
               value={details?.requestNo ?? ""}
             />
           </div>
+          
         </div>
       </div>
     </LayoutContent>

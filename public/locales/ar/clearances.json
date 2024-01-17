@@ -1,4 +1,5 @@
 {
+    "clearanceInfo": "بيانات المخالصة",
     "requestNo": "رقم الطلب",
     "requestType": "نوع الطلب",
     "requestDate": "تاريخ الطلب",
@@ -6,8 +7,8 @@
     "recordType": "طبيعة التسوية",
     "contractNumber": "رقم العقد",
     "contractOperationType": "نوع النشاط للتعاقد",
-    "contractStartDate": "تاريخ بداية الأعمال للتعاقد",
-    "contractEndDate": "تاريخ نهاية الأعمال للتعاقد",
+    "contractStartDate": "تاريخ بداية الأعمال",
+    "contractEndDate": "تاريخ نهاية الأعمال",
     "totalAmount": "القيمة الإجمالية للتعاقد",
     "contractRealAmount": "القيمة الفعلية للتعاقد",
     "taxRate": "نسبة الضريبة للتعاقد",
@@ -19,6 +20,18 @@
     "extractionDate": "تاريخ التحرير",
     "workersRecordNumber": "رقم السجل لكشف العمالة",
     "description": "نص توضيحي",
-    "notes": "ملاحظات"
+    "notes": "ملاحظات",
+    "contractRequest": "العقد",
+    "establishment": "تسجيل بيانات الجهات",
+    "workItems": "التسوية (بنود الأعمال)",
+    "workers": "كشف العمال",
+    "clearance": "المخالصة المميكنة",
+    "contractNo": "رقم العقد",
+    "settleNo": "رقم التسوية",
+    "current": "جاري",
+    "final": "ختامي",
+    "discount": "تخفيض",
+    "exemption": "إعفاء",
+    "status": "حالة الطلب"
 
 }
