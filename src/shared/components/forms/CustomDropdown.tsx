@@ -8,7 +8,6 @@ import {
   getId,
   Icon,
   IDropdown,
-  IDropdownOption,
   IDropdownProps,
   ISelectableDroppableTextProps,
   ISelectableOption,

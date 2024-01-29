@@ -10,6 +10,9 @@ import { ContractManage } from "../../business/contracts/components/ContractMana
 import { SettlementsList } from "../../business/settlements/components/SettlementsList";
 import { ClearanceManage } from "../../business/clearances/components/ClearanceManage";
 import { Mode } from "../constants/types";
+import { WorkerDetails } from "../../business/workers/components/WorkerDetails";
+import { CodesList } from "../../business/codes/components/CodesList";
+import { RequestsList } from "../../business/requests/components/RequestsList";
 
 export const MenuRoutes: FC = () => {
   return (
@@ -18,17 +21,25 @@ export const MenuRoutes: FC = () => {
         <Route path="/" element={<Layout />}>
           <Route path="home" element={<Dashboard />} />
           <Route path="workers" element={<WorkersList />} />
+          <Route path="workers/record/:id" element={<WorkersList />} />
+          <Route path="workers/:id" element={<WorkerDetails />} />
 
           <Route path="contracts" element={<ContractsList />} />
           <Route path="contracts/new" element={<ContractManage mode={Mode.New} />} />
           <Route path="contracts/:id" element={<ContractManage mode={Mode.View} />} />
 
-          <Route path="establishments/:type" element={<EstablishmentsList />} />
+          <Route path="establishments" element={<EstablishmentsList />} />
           <Route path="establishments/:type/:id" element={<EstablishmentDetails />} />
 
-          <Route path="settlements/search" element={<SettlementsList />} />
-          <Route path="settlements/new" element={<ClearanceManage mode={Mode.New} />} />
-          <Route path="settlements/:id" element={<ClearanceManage mode={Mode.View} />} />
+          <Route path="requests/mine" element={<RequestsList />} />
+          <Route path="requests/mine/:mode" element={<ClearanceManage />} />
+          <Route path="requests/mine/:mode/:id" element={<ClearanceManage />} />
+
+          <Route path="requests/new" element={<ClearanceManage />} />
+          <Route path="requests/search" element={<SettlementsList />} />
+          <Route path="requests/search/:mode" element={<ClearanceManage />} />
+          <Route path="requests/search/:mode/:id" element={<ClearanceManage />} />
+          <Route path="codes" element={<CodesList />} />
         </Route>
       </Routes>      
       <Outlet />

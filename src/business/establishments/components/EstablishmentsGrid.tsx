@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from "react";
 import {
   SelectionMode,
   DetailsListLayoutMode,
   IconButton,
-  CommandBar,
 } from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import "../styles/EstablishmentsList.scss";
@@ -14,9 +14,8 @@ import {
   SortedColumnInfo,
 } from "../../../shared/components/customDetailList/CustomDetailList";
 import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
-import { EstablishmentType } from "../../../shared/constants/constants";
 import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import '../styles/EstablishmentsList.scss'
 
 interface GridProps {
@@ -37,6 +36,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
   const { items: itemsProps, onChanged, onNbItemPerPageChanged, type } = props;
+  const navigate = useNavigate();
 
   const [items, setItems] = useState<EstablishmentDTO[]>([]);
 
@@ -126,24 +126,26 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
         maxWidth: 120,
         isRowHeader: true,
         isResizable: true,
-      },
-      {
-        key: "action",
-        name: "",
-        fieldName: "",
-        minWidth: 50,
-        maxWidth: 50,
-        isRowHeader: true,
-        isResizable: false,
-        onRender: () => {
-          return (
-            <div>
-              <IconButton iconProps={{ iconName: "Edit" }} />
-            </div>
-          );
-        },
-      },
+      }
     ];
+
+    const action = 
+    {
+      key: "action",
+      name: "",
+      fieldName: "",
+      minWidth: 60,
+      maxWidth: 60,
+      isRowHeader: true,
+      isResizable: true,
+      onRender: (item: EstablishmentDTO) => {
+        return (
+          <div>
+            <IconButton iconProps={{ iconName: "View" }} onClick={() => navigate(`${"/establishments/"}${type}/${item.ID}`)} />
+          </div>
+        );
+      },
+    };
 
     let gridColumns = [
       {
@@ -157,9 +159,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
         onRender: (item: EstablishmentDTO) => {
           return (
             <div>
-              <NavLink to={`${"/establishments/"}${type}/${item.ID}`} className={'navLink'}>
                 {item.Name}
-              </NavLink>
             </div>
           );
         },
@@ -175,6 +175,7 @@ export const EstablishmentsGrid: FC<GridProps> = (props: GridProps) => {
       arr = [...gridColumns, ...governColumns];
     }
     const cols = [...arr, ...restColumns];
+    cols.push(action);
     setColumns(cols);
   }, [type]);
 

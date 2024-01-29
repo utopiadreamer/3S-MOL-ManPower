@@ -1,6 +1,6 @@
 import { TFunction } from "i18next";
 import { InputType } from "../components/forms/CustomTextField";
-import { ValidationType } from "../constants/constants";
+import { ValidationType } from "../constants/types";
 
 export class ValidationUtil {
   public static checkFormat = (
@@ -34,16 +34,16 @@ export class ValidationUtil {
       return ValidationUtil.isRequired(t, validationVal, name ?? "", label);
     }
     if (validation === ValidationType.Email && validationVal !== "") {
-      return ValidationUtil.isValidEmail(t, validationVal, name ?? "");
+      const isValid = ValidationUtil.isValidEmail(validationVal);
+      if (!isValid) return t("validation:invalidEmail", { name });
     }
     if (validation === ValidationType.NationalID) {
-      const isValid = ValidationUtil.isValidNationalID(
-        validationVal
-      );
+      const isValid = ValidationUtil.isValidNationalID(validationVal);
       if (!isValid) return t("validation:invalidNationalID", { name });
     }
     if (validation === ValidationType.MobileNo) {
-      return ValidationUtil.isValidMobileNo(t, validationVal, name ?? "");
+      const isValid = ValidationUtil.isValidMobileNo(validationVal);
+      if (!isValid) return t("validation:invalidMobileNo", { name });
     }
   };
 
@@ -66,35 +66,25 @@ export class ValidationUtil {
     return t("validation:selectionRequired", { label });
   }
 
-  public static isValidEmail(
-    t: TFunction,
-    mail: string | undefined,
-    fieldName: string
-  ): string | undefined {
+  public static isValidEmail(mail: string | undefined): boolean {
     if (mail) {
       if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-        return undefined;
+        return true;
       }
     }
-    return t("validation:invalidEmail", { fieldName });
+    return false;
   }
 
-  public static isValidMobileNo(
-    t: TFunction,
-    value: string | undefined,
-    fieldName: string
-  ): string | undefined {
+  public static isValidMobileNo(value: string | undefined): boolean {
     if (value) {
       if (/^01[0125][0-9]{8}$/.test(value)) {
-        return undefined;
+        return true;
       }
     }
-    return t("validation:invalidMobileNo", { fieldName });
+    return false;
   }
 
-  public static isValidNationalID(
-    value: string | undefined
-  ): boolean {
+  public static isValidNationalID(value: string | undefined): boolean {
     if (value) {
       if (
         /^([1-9]{1})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})[0-9]{3}([0-9]{1})[0-9]{1}$/.test(

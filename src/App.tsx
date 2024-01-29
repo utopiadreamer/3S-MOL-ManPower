@@ -7,12 +7,16 @@ import { LanguageUtil } from "./shared/utils/languageUtil";
 import { changeLang } from "./redux/language/languageSlice";
 import { useEffect } from "react";
 import { setRTL } from "@fluentui/react";
+import { Role } from "./shared/constants/auth";
 
 export default function App() {
   const reduxLanguage = useSelector((state: RootState) => state).reduxLanguage;
   const dispatch = useDispatch<AppDispatch>();
 
   const init = () => {
+    const currentRole = localStorage.getItem("CurrentRole");
+    if (GeneralUtil.isNothing(currentRole)) return Role.Researcher.toString();
+
     if (GeneralUtil.isNothing(reduxLanguage.language.lang)) {
       let lang = i18n.language;
       if (GeneralUtil.isNothing(lang)) lang = LanguageUtil.getCurrentLang();

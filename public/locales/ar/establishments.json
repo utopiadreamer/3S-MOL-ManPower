@@ -18,12 +18,13 @@
     "government": "جهة حكومية",
     "persons": "افراد",
     "companies": "شركات",
-    "governments": "جهة حكومية",
+    "governments": "جهات حكومية",
     "name": "إسم الجهة",
     "taxCardImage": "صورة البطاقة الضريبية",
     "commRegistrationImage": "صورة السجل التجاري",
     "nationalIDImage": "صورة بطاقة الرقم القومي",
     "searchCriteria": "محدد البحث",
     "id": "رقم الجهة",
-    "contractDetails": "العقود المرتبطة"
+    "contractDetails": "العقود المرتبطة",
+    "type": "الجهة"
 }

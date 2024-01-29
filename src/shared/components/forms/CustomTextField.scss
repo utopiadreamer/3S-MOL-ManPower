@@ -25,17 +25,37 @@
 
 .textContainer {
   // display: flex;
+  height: 32px;
 
   .textIcon {
     border-radius: 0px 6px 6px 0px;
-    background-color: #1b1e24;
-    color: white;
+    background-color: #f0f1f1;
+    border-left-width: 0px !important;
+    border: 1px solid;
+    color: #333;
     font-size: 12px;
     padding: 8px;
+    padding-top: 10px;
+    
+    [data-icon-name="StatusErrorFull"] {
+      color: rgb(164, 38, 44);
+    }
+
+    [data-icon-name="CompletedSolid"] {
+      color: green;
+    }
   }
 }
 .validClass {
+  border-color: green !important;
   .ms-TextField-fieldGroup {
     border-color: green !important;
+  }
+}
+
+.invalidClass {
+  color: rgb(164, 38, 44) !important;
+  .ms-TextField-fieldGroup {
+    color: rgb(164, 38, 44) !important;
   }
 }

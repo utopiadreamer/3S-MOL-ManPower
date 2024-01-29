@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fluentui/example-data": "^8.4.15",
     "@fluentui/react": "^8.114.0",
     "@fluentui/react-charting": "^5.19.8",
     "@reduxjs/toolkit": "^2.0.1",
@@ -10,6 +11,7 @@
     "clsx": "^2.1.0",
     "cra-template-typescript": "1.2.0",
     "file-saver": "^2.0.5",
+    "firebase": "^10.7.2",
     "history": "^5.3.0",
     "i18next": "^23.7.11",
     "i18next-browser-languagedetector": "^7.2.0",

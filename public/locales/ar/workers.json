@@ -13,5 +13,12 @@
     "settleNo": "رقم التسوية",
     "importWorkersSheet": "إستيراد",
     "workersRecordInfo": "بيانات كشف العمال",
-    "workersInfo": "كشف العمال"
+    "workersInfo": "كشف العمال",
+    "workerDetails": "بيانات العامل",
+    "email": "البريد الالكتروني",
+    "contractDetails": "العقود المرتبطة",
+    "type": "العامل",
+    "workerRecordNo": "رقم الكشف",
+    "contractNo": "رقم العقد",
+    "settlementNo": "رقم التسوية"
 }

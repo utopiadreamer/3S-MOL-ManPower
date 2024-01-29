@@ -19,21 +19,20 @@ import {
 import { ClearanceWizardKey } from "../../../shared/constants/constants";
 import { WorkersManage } from "../../workers/components/WorkersManage";
 import { SettlementManage } from "../../settlements/components/SettlementManage";
-import { Mode } from "../../../shared/constants/types";
-import { useParams } from "react-router-dom";
+import { Action, Mode } from "../../../shared/constants/types";
 import { ClearanceDetails } from "./ClearanceDetails";
+import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
+import { useParams } from "react-router-dom";
 
-export interface Props {
-  mode: Mode;
-}
-
-export const ClearanceManage: FC<Props> = (props: Props) => {
+export const ClearanceManage: FC = () => {
   const { t } = useTranslation(["clearances", "common"]);
-  const [isSaving, setIsSaving] = useState<boolean>(false);
   const [goNextDisabled, setGoNextDisabled] = useState<boolean>(false);
   const [tabsDisabled, setTabsDisabled] = useState<boolean>(true);
-  const { mode } = props;
-  const { id } = useParams();
+  const [showRejectDialog, setShowRejectDialog] = useState<boolean>(false);
+  const [showReturnDialog, setShowReturnDialog] = useState<boolean>(false);
+  const params = useParams();
+  const mode = params.mode as Mode;
+  const [currentMode, setCurrentMode] = useState<Mode>(mode ?? "");
 
   const ContractTab = ClearanceWizardKey.Contract;
   const WorkItemsTab = ClearanceWizardKey.WorkItems;
@@ -130,54 +129,122 @@ export const ClearanceManage: FC<Props> = (props: Props) => {
     }
   }, [wizard?.state.selectedTabKey]);
 
+  useEffect(() => {
+    if (mode === Mode.View) {
+      setTabsDisabled(false);
+      wizard.changeTabDisability(ClearanceWizardKey.WorkItems, false);
+      wizard.changeTabDisability(ClearanceWizardKey.Workers, false);
+      wizard.changeTabDisability(ClearanceWizardKey.Clearance, false);
+    }
+    setCurrentMode(mode);
+  }, [mode]);
+
   return (
     <LayoutContent>
       <div className="clearanceManage">
         <Wizard state={wizard}>
           <WizardPivotHeader />
           <WizardPivotPanel panelKey={ContractTab}>
-            <ContractManage
-              mode={mode}
-              onValidate={(valid: boolean) => onValidate(valid)}
-            />
+            <div className="contractPanel">
+              <ContractManage
+                mode={currentMode}
+                onValidate={(valid: boolean) => onValidate(valid)}
+              />
+            </div>
           </WizardPivotPanel>
           <WizardPivotPanel panelKey={WorkItemsTab}>
-            <SettlementManage mode={mode} />
+            <SettlementManage mode={currentMode} />
           </WizardPivotPanel>
           <WizardPivotPanel panelKey={WorkersTab}>
-            <WorkersManage mode={mode} />
+            <WorkersManage mode={currentMode} />
           </WizardPivotPanel>
           <WizardPivotPanel panelKey={ClearanceTab}>
-            <ClearanceDetails mode={mode} />
+            <ClearanceDetails mode={currentMode} />
           </WizardPivotPanel>
         </Wizard>
-        <div className="footer">
-          <div className="navigation">
-            <PrimaryButton
-              className="actionButton editAction"
-              iconProps={{ iconName: "Save" }}
-              text={t("common:save")}
-            />
-            {wizard?.state.selectedTabKey === ClearanceTab ? (
-              <PrimaryButton
-                className="actionButton newAction"
-                iconProps={{ iconName: "Save" }}
-                text={t("common:send")}
-              />
-            ) : (
-              <PrimaryButton
-                className="actionButton newAction"
-                iconProps={{ iconName: "Save" }}
-                text={t("common:saveAndContinue")}
-                onClick={() => {
-                  setTabsDisabled(false);
-                  changeNextTabDisability();
-                }}
-              />
-            )}
+        {currentMode !== Mode.View && (
+          <div className="footer">
+            <div className="navigation">
+              <div>
+                {currentMode === Mode.Edit && (
+                  <>
+                    <PrimaryButton
+                      className="actionButton subAction"
+                      iconProps={{ iconName: "Cancel" }}
+                      text={t("common:reject")}
+                      onClick={() => {
+                        setShowRejectDialog(true);
+                      }}
+                    />
+                    <PrimaryButton
+                      className="actionButton primeAction"
+                      iconProps={{ iconName: "ReturnToSession" }}
+                      text={t("common:return")}
+                      onClick={() => {
+                        setShowReturnDialog(true);
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+              <div>
+                {wizard?.state.selectedTabKey !== ClearanceTab && (
+                  <PrimaryButton
+                    className="actionButton subAction"
+                    iconProps={{ iconName: "Save" }}
+                    text={t("common:save")}
+                  />
+                )}
+                {wizard?.state.selectedTabKey === ClearanceTab ? (
+                  <PrimaryButton
+                    className="actionButton primeAction"
+                    iconProps={{ iconName: "Save" }}
+                    text={t("common:send")}
+                  />
+                ) : (
+                  <PrimaryButton
+                    className="actionButton primeAction"
+                    iconProps={{ iconName: "Save" }}
+                    text={t("common:saveAndContinue")}
+                    onClick={() => {
+                      setTabsDisabled(false);
+                      changeNextTabDisability();
+                    }}
+                  />
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
+      {showRejectDialog && (
+        <ConfirmAction
+          action={Action.Reject}
+          hidden={!showRejectDialog}
+          onCancel={() => {
+            setShowRejectDialog(false);
+          }}
+          name={t("type")}
+          type={t("type")}
+          onConfirm={() => {
+            setShowRejectDialog(false);
+          }}
+        />
+      )}
+      {showReturnDialog && (
+        <ConfirmAction
+          action={Action.Return}
+          hidden={!showReturnDialog}
+          onCancel={() => {
+            setShowReturnDialog(false);
+          }}
+          name={t("type")}
+          type={t("type")}
+          onConfirm={() => {
+            setShowReturnDialog(false);
+          }}
+        />
+      )}
     </LayoutContent>
   );
 };

@@ -13,4 +13,6 @@ export class SettlementDTO {
     DocumentDate!: Date;    
     WorkItems!: WorkItemDTO[];
     Description?: string;
+    AssignEstablishment!: string;
+    ExecEstablishment!: string;
 }

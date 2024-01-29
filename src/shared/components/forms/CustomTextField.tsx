@@ -11,7 +11,7 @@ import { TextField, ITextFieldProps, Label } from "@fluentui/react";
 import "./CustomTextField.scss";
 import { FormFieldWithValidationInterface } from "./FormFieldWithValidationInterface";
 import { ValidationUtil } from "../../utils/validationUtil";
-import { ValidationType } from "../../constants/constants";
+import { ValidationType } from "../../constants/types";
 import { GeneralUtil } from "../../utils/generalUtil";
 
 export enum InputType {
@@ -142,7 +142,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
   const borderClass =
     errorMessage !== undefined
       ? "invalidClass"
-      : (isValidInput && !GeneralUtil.isNothing(value))
+      : isValidInput && !GeneralUtil.isNothing(value)
       ? "validClass"
       : undefined;
   const useClassName = clsx(
@@ -156,8 +156,16 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
     <div className={clsx("vertialFlexDiv", containerClassName)}>
       {label && <Label required={required}>{label}</Label>}
       <div className="textContainer">
-        {/* <div className="textIcon">
-          <Icon iconName="Edit"></Icon>
+        {/* <div className={clsx("textIcon", borderClass)}>
+          <Icon
+            iconName={
+              errorMessage !== undefined
+                ? "StatusErrorFull"
+                : isValidInput && !GeneralUtil.isNothing(value)
+                ? "CompletedSolid"
+                : "Edit"
+            }
+          ></Icon>
         </div> */}
         <TextField
           {...props}
@@ -182,7 +190,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
             iconName:
               errorMessage !== undefined
                 ? "StatusErrorFull"
-                : (isValidInput && !GeneralUtil.isNothing(value))
+                : isValidInput && !GeneralUtil.isNothing(value)
                 ? "CompletedSolid"
                 : undefined,
           }}

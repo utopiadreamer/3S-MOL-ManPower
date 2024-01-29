@@ -4,7 +4,6 @@ import "../styles/ClearanceManage.scss";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
-import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
 import { ClearanceDTO } from "../../../shared/models/ClearanceDTO";
 import { Form } from "../../../shared/components/forms/Form";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
@@ -14,6 +13,7 @@ import {
 } from "../../../shared/constants/constants";
 import { Mode } from "../../../shared/constants/types";
 import { ChoiceGroup, IChoiceGroupOption } from "@fluentui/react";
+import '../styles/ClearanceManage.scss';
 
 export interface Props {
   mode: Mode;
@@ -66,7 +66,7 @@ export const ClearanceDetails: FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="contractManage panel">
+    <div className="clearanceManage panel">
       <div className="body">
         <div className="section">
           <Section

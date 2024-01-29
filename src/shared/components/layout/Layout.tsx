@@ -3,15 +3,19 @@ import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import * as H from "history";
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren, useEffect, useState } from "react";
 import "./Layout.scss";
 import { LayoutMenuItem } from "./layoutMenu/LayoutMenuItem";
 import { LayoutMenu } from "./layoutMenu/LayoutMenu";
 import { LayoutContentHeader } from "./layoutContent/LayoutContentHeader";
 import MenuItems from "../../constants/menu";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store/store";
 import Header from "./Header";
+import { getCurrentUser } from "../../mockups/User";
+import { Claim } from "../../constants/auth";
+
+export interface LayoutMenuItemExtended extends LayoutMenuItem {
+  isVisible: (claims: Claim[]) => boolean;
+}
 
 export function GetCurrentMenuItemEntry(
   location: H.Location,
@@ -35,18 +39,26 @@ export function GetCurrentMenuItemEntry(
 }
 export const Layout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
   const { t } = useTranslation(["menu"]);
-  const { children } = props;
-  const currentLang = useSelector(
-    (state: RootState) => state.reduxLanguage.language
-  );
-  const currentMenuEntry = GetCurrentMenuItemEntry(useLocation(), MenuItems);
+  const role = getCurrentUser();
+  const [menuItemsState, setMenuItemsState] = useState(MenuItems);
+  const [currentMenuItemsState, setCurrentMenuItemsState] = useState<LayoutMenuItem[]>();
 
-  const { isRtl, lang } = currentLang;
+  const location = useLocation();
+  useEffect(() => {
+    const activeMenuItems = MenuItems.filter(
+      (m) => m && m?.isVisible(role.Claims)
+    );
+    setMenuItemsState(activeMenuItems);
+    const currentItems = GetCurrentMenuItemEntry(location, activeMenuItems);
+    setCurrentMenuItemsState(currentItems);
+  }, []);
+
+  const isRtl = true;
   const dir = isRtl ? "rtl" : "ltr";
   return (
     <div dir={dir} className={clsx("layout", isRtl && "rtl")}>
       <div className="layout-container">
-        <LayoutMenu className="main-menu" menuItems={MenuItems} opened>
+        <LayoutMenu className="main-menu" menuItems={menuItemsState} opened>
           {/* {isLoading ? (
                         <div className="layout-container-loading">
                             <Spinner
@@ -57,8 +69,8 @@ export const Layout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
                     ) : ( */}
           <div className="layout-container-rightPart" data-is-scrollable="true">
             <Header mainTitle={t("mol")} />
-            <LayoutContentHeader menuEntry={currentMenuEntry} />
-        <Outlet />
+            <LayoutContentHeader menuEntry={currentMenuItemsState} />
+            <Outlet />
           </div>
           {/* )} */}
         </LayoutMenu>

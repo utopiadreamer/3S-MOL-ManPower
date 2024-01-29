@@ -32,6 +32,9 @@
     "final": "ختامي",
     "discount": "تخفيض",
     "exemption": "إعفاء",
-    "status": "حالة الطلب"
+    "status": "حالة الطلب",
+    "type": "المخالصة",
+    "requests": "الطلبات",
+    "requestInfo": "تفاصيل الطلب"
 
 }

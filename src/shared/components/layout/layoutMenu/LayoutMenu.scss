@@ -4,6 +4,7 @@
 @import "../../../../shared/styles/dimensions";
 
 @mixin mol-menu-item {
+  line-height: 18px;
   height: 18px;
   display: flex;
   margin: 0;
@@ -31,6 +32,7 @@
 
   .layout-menu-nav-item-label {
     color: $mol_menuItem;
+    line-height: 16px;
     @include text-ellipsis();
     font-size: small;
 

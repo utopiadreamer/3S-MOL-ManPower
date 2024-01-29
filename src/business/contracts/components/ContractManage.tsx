@@ -17,8 +17,18 @@ import { useParams } from "react-router-dom";
 import { getContracts } from "../../../shared/mockups/Contracts";
 import { ContractDTO } from "../../../shared/models/ContractDTO";
 import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
-import { Mode } from "../../../shared/constants/types";
+import { Action, Mode } from "../../../shared/constants/types";
 import clsx from "clsx";
+import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
+import { SettlementsGrid } from "../../settlements/components/SettlementsGrid";
+import { SettlementDTO } from "../../../shared/models/SettlementDTO";
+import { getSettlements } from "../../../shared/mockups/Settlements";
+import { WorkerRecordsGrid } from "../../workers/components/WorkerRecordsGrid";
+import { getWorkersRecords } from "../../../shared/mockups/WorkersRecord";
+import { WorkersRecordDTO } from "../../../shared/models/WorkersRecordDTO";
+import { AuthUtil } from "../../../shared/utils/authUtil";
+import { Claim } from "../../../shared/constants/auth";
+import { FileSelector } from "../../../shared/components/forms/FileSelector";
 
 export interface Props {
   mode: Mode;
@@ -28,28 +38,44 @@ export interface Props {
 export const ContractManage: FC<Props> = (props: Props) => {
   const { mode, onValidate } = props;
   const { id } = useParams();
+  const { t } = useTranslation(["contracts", "common"]);
   const [details, setDetails] = useState<ContractDTO>();
   const [assignEstDetails, setAssignEstDetails] = useState<EstablishmentDTO>();
   const [execEstDetails, setEexcEstDetails] = useState<EstablishmentDTO>();
-  const { t } = useTranslation(["contracts", "common"]);
-  const [isEditable, setEditable] = useState<boolean>(mode !== Mode.View);
+  const [settlements, setSettlements] = useState<SettlementDTO[]>([]);
+  const [workersRecords, setWorkersRecords] = useState<WorkersRecordDTO[]>([]);
+  const [isEditable, setIsEditable] = useState<boolean>(mode !== Mode.View);
   const [assignEditMode, setAssignEditMode] = useState<Mode>(mode);
   const [execEditMode, setExecEditMode] = useState<Mode>(mode);
   const [showAssignEstSearch, setShowAssignEstSearch] =
     useState<boolean>(false);
   const [showExecEstSearch, setShowExecEstSearch] = useState<boolean>(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
+  const [currentMode, setCurrentMode] = useState<Mode>(mode ?? '');
 
   const form = useRef(new Form({}));
-  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  const [, setIsFormValid] = useState<boolean>(form.current.isValid);
   form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  useEffect(() => {
+    setCurrentMode(mode);
+    setIsEditable(mode !== Mode.View);    
+  }, [mode]);
+
 
   useEffect(() => {
     if (id) {
       const contracts = getContracts();
       const contract = contracts.filter((i) => i.ID === id)[0];
-      setAssignEstDetails(contract.AssignEstablishment);
-      setEexcEstDetails(contract.ExecEstablishment);
+      setAssignEstDetails(contract?.AssignEstablishment);
+      setEexcEstDetails(contract?.ExecEstablishment);
       setDetails(contract);
+
+      const settles = getSettlements().filter((i) => i.ContractNo === id);
+      setSettlements(settles);
+
+      const records = getWorkersRecords().filter((i) => i.ContractNo === id);
+      setWorkersRecords(records);
     }
   }, [id]);
 
@@ -57,51 +83,59 @@ export const ContractManage: FC<Props> = (props: Props) => {
     if (onValidate) onValidate(true);
   });
 
+  useEffect(() => {
+    if (currentMode === Mode.New) { 
+      setDetails(new ContractDTO());
+      setAssignEstDetails(new EstablishmentDTO());
+      setEexcEstDetails(new EstablishmentDTO());
+    }
+  }, [currentMode]);
+
   const icon = { icon: "TextDocumentShared" };
   const contractTypes = [
     {
       key: ContractType.Contract,
-      text: t("contract"),
+      text: t("Contract"),
       data: icon,
     },
     {
       key: ContractType.Tender,
-      text: t("tender"),
+      text: t("Tender"),
       data: icon,
     },
     {
       key: ContractType.AssignmentOrder,
-      text: t("assignmentOrder"),
+      text: t("AssignmentOrder"),
       data: icon,
     },
     {
       key: ContractType.SupplyOrder,
-      text: t("supplyOrder"),
+      text: t("SupplyOrder"),
       data: icon,
     },
     {
       key: ContractType.AttributionOrder,
-      text: t("attributionOrder"),
+      text: t("AttributionOrder"),
       data: icon,
     },
     {
       key: ContractType.License,
-      text: t("license"),
+      text: t("License"),
       data: icon,
     },
     {
       key: ContractType.RepairOrder,
-      text: t("repairOrder"),
+      text: t("RepairOrder"),
       data: icon,
     },
     {
       key: ContractType.PurchaseOrder,
-      text: t("purchaseOrder"),
+      text: t("PurchaseOrder"),
       data: icon,
     },
     {
       key: ContractType.Other,
-      text: t("other"),
+      text: t("Other"),
       data: icon,
     },
   ];
@@ -128,33 +162,47 @@ export const ContractManage: FC<Props> = (props: Props) => {
   };
 
   const getActions = () => {
-    const saveAction = {
-      key: "action",
-      className: clsx("actionButton", "newAction"),
-      text: t("common:save"),
-      iconProps: { iconName: "Save" },
+    // const saveAction = {
+    //   key: "save",
+    //   className: clsx("actionButton", "primeAction"),
+    //   text: t("common:save"),
+    //   iconProps: { iconName: "Save" },
+    //   onClick: () => {
+    //     setEditable(false);
+    //   },
+    // };
+    const primeAction = {
+      key: "delete",
+      className: clsx("actionButton", "primeAction"),
+      text: t("common:delete"),
+      iconProps: { iconName: "Delete" },
       onClick: () => {
-        setEditable(false);
+        setShowDeleteDialog(true);
       },
     };
-    const arr = [
-      {
-        key: "action",
-        className: clsx(
-          "actionButton",
-          isEditable ? "cancelAction" : "editAction"
-        ),
-        text: t(isEditable ? "common:cancel" : "common:edit"),
-        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
-        onClick: () => {
-          if (isEditable) setEditable(false);
-          else {
-            setEditable(true);
-          }
-        },
-      },
-    ];
-    if (isEditable) arr.splice(0, 0, saveAction);
+    // const subAction = {
+    //   key: "edit",
+    //   className: clsx(
+    //     "actionButton",
+    //     isEditable ? "subAction" : "subAction"
+    //   ),
+    //   text: t(isEditable ? "common:cancel" : "common:edit"),
+    //   iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+    //   onClick: () => {
+    //     if (isEditable) setEditable(false);
+    //     else {
+    //       setEditable(true);
+    //     }
+    //   },
+    // };
+    const arr = [];
+    // if (AuthUtil.hasPermission(Claim.EditContract)) arr.push(subAction);
+    // if (isEditable) {
+    //   arr.splice(0, 0, saveAction);
+    // } else
+    if (currentMode === Mode.Edit && AuthUtil.hasPermission(Claim.DeleteContract)) {
+      arr.push(primeAction);
+    }
     return arr;
   };
 
@@ -174,7 +222,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
           </div>
           <div className="content">
             <div className="row">
-              {mode !== Mode.New && (
+              {currentMode !== Mode.New && (
                 <TextField
                   label={t("contractNo")}
                   name="ContractNo"
@@ -232,13 +280,13 @@ export const ContractManage: FC<Props> = (props: Props) => {
                 />
               )}
             </div>
-            {mode !== Mode.View && (
+            {currentMode !== Mode.View && (
               <CommandBar
                 items={[]}
                 farItems={[
                   {
                     key: "new",
-                    className: "actionButton editAction",
+                    className: "actionButton subAction",
                     text: t("common:new"),
                     iconProps: { iconName: "Add" },
                     onClick: () => {
@@ -249,7 +297,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
                   },
                   {
                     key: "search",
-                    className: "actionButton newAction",
+                    className: "actionButton primeAction",
                     text: t("common:search"),
                     iconProps: { iconName: "Search" },
                     onClick: () => {
@@ -283,13 +331,13 @@ export const ContractManage: FC<Props> = (props: Props) => {
                 />
               )}
             </div>
-            {mode !== Mode.View && (
+            {currentMode !== Mode.View && (
               <CommandBar
                 items={[]}
                 farItems={[
                   {
                     key: "new",
-                    className: "actionButton editAction",
+                    className: "actionButton subAction",
                     text: t("common:new"),
                     iconProps: { iconName: "Add" },
                     onClick: () => {
@@ -300,7 +348,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
                   },
                   {
                     key: "search",
-                    className: "actionButton newAction",
+                    className: "actionButton primeAction",
                     text: t("common:search"),
                     iconProps: { iconName: "Search" },
                     onClick: () => {
@@ -432,15 +480,84 @@ export const ContractManage: FC<Props> = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="section">
-          <Section
-            size={SectionSize.h2}
-            title={t("settlements")}
-            iconName="EditNote"
-          />
-          <div className="row">{/* <SettlementsGrid /> */}</div>
-        </div>
+        {currentMode !== Mode.View && (
+          <div className="section">
+            <Section
+              size={SectionSize.h2}
+              title={t("common:attachments")}
+              iconName="EditNote"
+            />
+            <div className="content">
+              <div className="row">
+                <FileSelector
+                  title={t("common:attachments")}
+                  labels={{
+                    selectFile: t("common:BrowseFile"),
+                    chooseAnotherFile: t("common:ChooseAnother"),
+                    unSelectFile: t("common:UnSelect"),
+                    viewFile: t("common:view"),
+                  }}
+                  extensionFilter=".jpg"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+        {currentMode === Mode.View && (
+          <div className="section">
+            <Section
+              size={SectionSize.h2}
+              title={t("settlements")}
+              iconName="EditNote"
+            />
+            <div className="content">
+              <SettlementsGrid
+                items={settlements}
+                onChanged={() => {
+                  return false;
+                }}
+                onNbItemPerPageChanged={() => {
+                  return false;
+                }}
+              />
+            </div>
+          </div>
+        )}
+        {currentMode === Mode.View && (
+          <div className="section">
+            <Section
+              size={SectionSize.h2}
+              title={t("workersRecords")}
+              iconName="FabricUserFolder"
+            />
+            <div className="content">
+              <WorkerRecordsGrid
+                items={workersRecords}
+                onChanged={() => {
+                  return false;
+                }}
+                onNbItemPerPageChanged={() => {
+                  return false;
+                }}
+              />
+            </div>
+          </div>
+        )}
       </div>
+      {showDeleteDialog && (
+        <ConfirmAction
+          action={Action.Delete}
+          hidden={!showDeleteDialog}
+          onCancel={() => {
+            setShowDeleteDialog(false);
+          }}
+          name={details?.Name}
+          type={t("type")}
+          onConfirm={() => {
+            setShowDeleteDialog(false);
+          }}
+        />
+      )}
     </div>
   );
 };

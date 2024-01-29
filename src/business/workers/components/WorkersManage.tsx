@@ -1,21 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useEffect, useState } from "react";
-import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
 
-import { getWorkers } from "../../../shared/mockups/Workers";
 import { WorkersGrid } from "./WorkersGrid";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { WorkersRecordDTO } from "../../../shared/models/WorkersRecordDTO";
-import { Action, Mode } from "../../../shared/constants/types";
+import { Mode } from "../../../shared/constants/types";
 import { GeneralUtil } from "../../../shared/utils/generalUtil";
-import { ValidationType } from "../../../shared/constants/constants";
+import { ValidationType } from "../../../shared/constants/types";
 import { ValidationUtil } from "../../../shared/utils/validationUtil";
 import { WorkerDTO } from "../../../shared/models/WorkerDTO";
 import FilePicker from "../../../shared/components/forms/FilePicker";
 import "../styles/WorkersManage.scss";
-import { PrimaryButton } from "@fluentui/react";
-import { EditableItem } from "../models/EditableItem";
+import { CommandBar } from "@fluentui/react";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import clsx from "clsx";
+import { useParams } from "react-router-dom";
+import { getWorkers } from "../../../shared/mockups/Workers";
 
 export interface Props {
   mode: Mode;
@@ -25,15 +26,16 @@ export const WorkersManage: FC<Props> = (props: Props) => {
   const { t } = useTranslation(["workers", "common"]);
   const [details, setDetails] = useState<WorkersRecordDTO>();
   const [isEditable, setEditable] = useState<boolean>(false);
-  const [disableAdd, setDisableAdd] = useState<boolean>(false);
+  const [disableAdd, setDisableAdd] = useState<boolean>(true);
   const [newWorkerMode, setNewWorkerMode] = useState<Mode>(Mode.View);
   const [workers, setWorkers] = useState<WorkerDTO[]>([]);
   const { mode } = props;
+  const { id } = useParams();
 
   useEffect(() => {
     if (mode === Mode.View) {
       const list = getWorkers();
-      setWorkers(list.Workers);
+      setWorkers(list);
     }
   }, [mode]);
 
@@ -62,11 +64,8 @@ export const WorkersManage: FC<Props> = (props: Props) => {
         "",
         t
       );
-      const workerNationalIdValid = ValidationUtil.validate(
-        ValidationType.NationalID,
-        workerData.NationalID ?? "",
-        "",
-        t
+      const workerNationalIdValid = ValidationUtil.isValidNationalID(
+        workerData.NationalID ?? ""
       );
       const workerProfessionRequired = ValidationUtil.validate(
         ValidationType.Required,
@@ -80,19 +79,16 @@ export const WorkersManage: FC<Props> = (props: Props) => {
         "",
         t
       );
-      const workerPhoneNumValid = ValidationUtil.validate(
-        ValidationType.MobileNo,
-        GeneralUtil.normalizeMobileString(workerData.PhoneNo) ?? "",
-        "",
-        t
+      const workerPhoneNumValid = ValidationUtil.isValidMobileNo(
+        workerData.PhoneNo ?? ""
       );
 
       if (
         workerNameRequired ||
         workerNationalIdRequired ||
-        workerNationalIdValid ||
+        workerNationalIdValid === false ||
         workerPhoneNumRequired ||
-        workerPhoneNumValid ||
+        workerPhoneNumValid === false ||
         workerProfessionRequired
       ) {
         return false;
@@ -117,19 +113,45 @@ export const WorkersManage: FC<Props> = (props: Props) => {
     for (let index = 0; index < workersData.length; index++) {
       workersData[index].ID = index.toString();
     }
-    // if (validateWorkersData(workersData))
-    setWorkers(workersData);
-  };
-
-  const addNewWorker = () => {
-    setNewWorkerMode(Mode.New);
+    if (validateWorkersData(workersData)) setWorkers(workersData);
   };
 
   useEffect(() => {
     if (newWorkerMode) {
-      setNewWorkerMode(Mode.View);
+      setNewWorkerMode(newWorkerMode);
     }
   }, [newWorkerMode]);
+
+  const getActions = () => {
+    const saveAction = {
+      key: "save",
+      className: clsx("actionButton", "primeAction"),
+      text: t("common:save"),
+      iconProps: { iconName: "Save" },
+      onClick: () => {
+        setEditable(false);
+        setDisableAdd(false);
+      },
+    };
+    const arr = [
+      {
+        key: "edit",
+        className: clsx(
+          "actionButton",
+          isEditable ? "subAction" : "subAction"
+        ),
+        text: t(isEditable ? "common:cancel" : "common:edit"),
+        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+        onClick: () => {
+          setDisableAdd(!disableAdd);
+          setEditable(!isEditable);
+          setNewWorkerMode(Mode.Edit);
+        },
+      },
+    ];
+    if (isEditable) arr.splice(0, 0, saveAction);
+    return arr;
+  };
 
   return (
     <div className="workersManage panel">
@@ -141,28 +163,32 @@ export const WorkersManage: FC<Props> = (props: Props) => {
               title={t("workersRecordInfo")}
               iconName="ReminderPerson"
             />
+            {id !== undefined && mode === Mode.Edit && (
+              <CommandBar items={[]} farItems={getActions()} />
+            )}
           </div>
           <div className="content">
-              <div className="row">
-                <TextField
-                  label={t("settleNo")}
-                  name="RecordNo"
-                  value={details?.RecordNo ?? ""}
-                  readOnly
-                />
-                <TextField
-                  label={t("recordNumber")}
-                  name="RecordNo"
-                  value={details?.RecordNo ?? ""}
-                  readOnly
-                />
-                <TextField
-                  label={t("notes")}
-                  name="Notes"
-                  value={details?.Notes ?? ""}
-                  onChange={handleInputChange}
-                />
-              </div>
+            <div className="row">
+              <TextField
+                label={t("settleNo")}
+                name="RecordNo"
+                value={details?.SettlementNo ?? ""}
+                readOnly
+              />
+              <TextField
+                label={t("recordNumber")}
+                name="RecordNo"
+                value={details?.RecordNo ?? ""}
+                readOnly
+              />
+              <TextField
+                label={t("notes")}
+                name="Notes"
+                value={details?.Notes ?? ""}
+                onChange={handleInputChange}
+                readOnly={!isEditable && mode === Mode.View}
+              />
+            </div>
           </div>
         </div>
         <div className="section">
@@ -172,16 +198,16 @@ export const WorkersManage: FC<Props> = (props: Props) => {
               title={t("workersInfo")}
               iconName="ReminderPerson"
             />
-            {!disableAdd && (
+            {mode !== Mode.View && (
               <div className="import">
-                <PrimaryButton
-                  className="actionButton editAction"
+                {/* <PrimaryButton
+                  className="actionButton subAction"
                   iconProps={{ iconName: "Add" }}
                   text={t("addWorker")}
                   onClick={() => {
                     addNewWorker();
                   }}
-                />
+                /> */}
                 <FilePicker
                   name="ImportWorkersSheet"
                   label={t("importWorkersSheet")}
@@ -195,7 +221,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
           <div className="content">
             <div className="row g-1">
               <WorkersGrid
-                mode={newWorkerMode}
+                mode={Mode.View}
                 items={workers}
                 onChanged={() => {
                   return false;

@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useState } from "react";
-import { SelectionMode, DetailsListLayoutMode } from "@fluentui/react";
+import { SelectionMode, DetailsListLayoutMode, IconButton } from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import {
   DetailsList,
@@ -9,7 +10,7 @@ import {
 } from "../../../shared/components/customDetailList/CustomDetailList";
 import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
 import { ContractDTO } from "../../../shared/models/ContractDTO";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../styles/ContractsList.scss";
 import { DatesUtil } from "../../../shared/utils/datesUtil";
 
@@ -32,6 +33,7 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
   const { items: itemsProps, onChanged, onNbItemPerPageChanged } = props;
 
   const [items, setItems] = useState<ContractDTO[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setItems(itemsProps?.slice());
@@ -50,9 +52,7 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
         onRender: (item: ContractDTO) => {
           return (
             <div>
-              <NavLink to={`${"/contracts"}/${item.ID}`} className={"navLink"}>
                 {item.ID}
-              </NavLink>
             </div>
           );
         },
@@ -69,10 +69,10 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
           return (
             <div>
               <NavLink
-                to={`${"/establishments"}/${item.AssignEstablishment.Type}/${item.AssignEstablishment.ID}`}
+                to={`${"/establishments"}/${item?.AssignEstablishment?.Type}/${item?.AssignEstablishment?.ID}`}
                 className={"navLink"}
               >
-                {item.AssignEstablishment.Name}
+                {item?.AssignEstablishment?.Name}
               </NavLink>
             </div>
           );
@@ -90,10 +90,10 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
           return (
             <div>
               <NavLink
-                to={`${"/establishments"}/${item.ExecEstablishment.Type}/${item.ExecEstablishment.ID}`}
+                to={`${"/establishments"}/${item.ExecEstablishment?.Type}/${item.ExecEstablishment?.ID}`}
                 className={"navLink"}
               >
-                {item.ExecEstablishment.Name}
+                {item.ExecEstablishment?.Name}
               </NavLink>
             </div>
           );
@@ -108,15 +108,15 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
         isRowHeader: true,
         isResizable: true,
         onRender: (item: ContractDTO) => {
-          return <div>{item.ContractType}</div>;
+          return <div>{t(item.ContractType)}</div>;
         },
       },
       {
         key: "contractStartDate",
         name: t("contractStartDate"),
         fieldName: "ContractStartDate",
-        minWidth: 150,
-        maxWidth: 150,
+        minWidth: 120,
+        maxWidth: 120,
         isRowHeader: true,
         isResizable: true,
         onRender: (item: ContractDTO) => {
@@ -131,14 +131,30 @@ export const ContractsGrid: FC<GridProps> = (props: GridProps) => {
         key: "contractEndDate",
         name: t("contractEndDate"),
         fieldName: "ContractEndDate",
-        minWidth: 150,
-        maxWidth: 150,
+        minWidth: 120,
+        maxWidth: 120,
         isRowHeader: true,
         isResizable: true,
         onRender: (item: ContractDTO) => {
           return (
             <div>
               {DatesUtil.getLocalizedDateTime("Date", item.ContractEndDate)}
+            </div>
+          );
+        },
+      },
+      {
+        key: "action",
+        name: "",
+        fieldName: "",
+        minWidth: 60,
+        maxWidth: 60,
+        isRowHeader: true,
+        isResizable: true,
+        onRender: (item: ContractDTO) => {
+          return (
+            <div>
+              <IconButton iconProps={{ iconName: "View" }} onClick={() => navigate(`/contracts/${item.ID}`)} />
             </div>
           );
         },

@@ -3,8 +3,7 @@ import "../styles/EstablishmentDetails.scss";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import {
-  EstablishmentType,
-  ValidationType,
+  EstablishmentType
 } from "../../../shared/constants/constants";
 import { IDropdownOption } from "@fluentui/react";
 import { Form } from "../../../shared/components/forms/Form";
@@ -12,7 +11,7 @@ import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { FileSelector } from "../../../shared/components/forms/FileSelector";
 import { getEstablishments } from "../../../shared/mockups/Establishments";
 import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
-import { Mode } from "../../../shared/constants/types";
+import { Mode, ValidationType } from "../../../shared/constants/types";
 
 export interface Props {
   mode: Mode;
@@ -25,10 +24,9 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
   const [details, setDetails] = useState<EstablishmentDTO>();
   const { t } = useTranslation(["establishments", "common"]);
   const [isEditable, setEditable] = useState<boolean>(mode !== Mode.View);
-  const [] = useState<boolean>(false);
 
   const form = useRef(new Form({}));
-  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  const [, setIsFormValid] = useState<boolean>(form.current.isValid);
   form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
 
   const types = [
@@ -91,6 +89,15 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
             onValidationChange={SetValidity}
             required
           />
+          <TextField
+            label={t("name")}
+            name="Name"
+            value={details?.Name ?? ""}
+            onChange={handleInputChange}
+            readOnly={!isEditable}
+            onValidationChange={SetValidity}
+            required
+          />
           <Dropdown
             label={t("establishmentType")}
             name="Type"
@@ -99,15 +106,6 @@ export const EstablishmentManage: FC<Props> = (props: Props) => {
             onChange={onTypeChange}
             onValidationChange={SetValidity}
             readOnly={!isEditable}
-            required
-          />
-          <TextField
-            label={t("name")}
-            name="Name"
-            value={details?.Name ?? ""}
-            onChange={handleInputChange}
-            readOnly={!isEditable}
-            onValidationChange={SetValidity}
             required
           />
           {details?.Type === EstablishmentType.Company && (

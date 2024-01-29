@@ -17,6 +17,7 @@
     font-weight: $ms-font-weight-semilight;
   }
   .header {
+    align-items: center;
     display: flex;
     flex-direction: row;
     margin-left: 0px;
@@ -24,10 +25,11 @@
     margin-bottom: 8px;
     color: #3a4651;
 
-    i{
-        padding: 4px 5px;
-        font-size: 20px;
-        color: #3a4651;
+    i {
+      margin-top: 6px;
+      padding: 4px 5px;
+      font-size: 20px;
+      color: #3a4651;
     }
   }
   .space {

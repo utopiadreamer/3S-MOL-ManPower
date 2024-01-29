@@ -11,13 +11,6 @@ export const Directions = {
     LTR: 'ltr',
 };
 
-export enum ValidationType {
-    Email = 'Email',
-    Required = 'Required',
-    NationalID = 'NationalID',
-    CommercialRegistrationNo = 'CommercialRegistrationNo',
-    MobileNo = 'MobileNo'
-  }
 
 export const Roles = {
     Reviewer: 'Reviewer',
@@ -30,7 +23,7 @@ export const EstablishmentType = {
     Government: 'governments'
 }
 
-export const RequestType = {
+export const ActionType = {
     Create: 'Create',
     Edit: 'Edit',
     Delete: 'Delete'

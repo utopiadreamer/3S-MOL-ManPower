@@ -1,5 +1,5 @@
 
-import { ValidationType } from '../../constants/constants';
+import { ValidationType } from '../../constants/types';
 import { FormFieldInterface } from './FormFieldInterface';
 
 export interface FormFieldWithValidationInterface extends FormFieldInterface {

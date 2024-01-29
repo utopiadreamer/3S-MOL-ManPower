@@ -1,4 +1,14 @@
 .clearanceManage {
+
+  .contractPanel {
+    .contractManage {
+    margin: 0px;
+    }
+  }
+
+  .panel {
+    padding: 20px;
+  }
   .request {
     padding-top: 20px;
     .ms-ChoiceFieldGroup-flexContainer {
@@ -10,7 +20,7 @@
     .navigation {
       padding-top: 10px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       .ms-Icon {
         transform: rotate(180deg);
       }

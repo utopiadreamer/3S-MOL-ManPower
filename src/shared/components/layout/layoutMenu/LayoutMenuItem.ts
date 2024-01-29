@@ -1,3 +1,5 @@
+import { LayoutMenuItemExtended } from "../Layout";
+
 export interface LayoutMenuItem {
   id: string;
   title: string;
@@ -6,5 +8,5 @@ export interface LayoutMenuItem {
   queryString?: string;
   roles?: number[] | string[];
   showBadge?: boolean;
-  subItems?: LayoutMenuItem[];
+  subItems?: LayoutMenuItemExtended[];
 }

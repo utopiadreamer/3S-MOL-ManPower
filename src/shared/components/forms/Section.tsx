@@ -1,9 +1,10 @@
 /* eslint-disable react/require-default-props */
-import { Icon } from '@fluentui/react';
-import React, { PropsWithChildren, FC } from 'react';
-import { HelperButton } from './HelperButton';
+import { Icon } from "@fluentui/react";
+import React, { PropsWithChildren, FC } from "react";
+import { HelperButton } from "./HelperButton";
 
-import './Section.scss';
+import "./Section.scss";
+import clsx from "clsx";
 
 export enum SectionSize {
   h1,
@@ -16,18 +17,18 @@ export interface SectionProps {
   toolTip?: string;
   actionButton?: React.ReactNode;
   iconName?: string;
+  className?: string;
 }
 
 export const Section: FC<PropsWithChildren<SectionProps>> = (
   props: PropsWithChildren<SectionProps>
 ) => {
-  const { title, size, actionButton, toolTip, children,iconName } = props;
+  const { title, size, actionButton, toolTip, children, iconName, className } =
+    props;
   return (
-    <div className="mol-section">
+    <div className={clsx("mol-section", className)}>
       <div className="header">
-        {iconName && (
-          <Icon iconName={iconName}/>
-        )}
+        {iconName && <Icon iconName={iconName} />}
         {size === SectionSize.h1 && <h1>{title}</h1>}
         {size === SectionSize.h2 && <h2>{title}</h2>}
         {size === SectionSize.h3 && <h3>{title}</h3>}

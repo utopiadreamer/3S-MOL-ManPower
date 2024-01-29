@@ -1,6 +1,10 @@
 @font-face {
-  font-family: Tahoma;
-  src: url('../assets/fonts/Tahoma-Regular-font.ttf');
+  font-family: Helvetica;
+  src: url('../assets/fonts/Helvetica.ttf');
+}
+@font-face {
+  font-family: Tajawal;
+  src: url('../assets/fonts/Tajawal-Regular.ttf');
 }
 // colors
 $printColorLighter: #605e5c;
@@ -55,7 +59,8 @@ $grid_header: #427199;
 $hr_color: #0000001a;
 
 //fonts
-$font_family: tahoma;
+$font_family: Tajawal;
+// $font_family: Tajawal;
 $font_style: normal;
 $font_weight_normal: normal;
 $font_weight_bold: bold;

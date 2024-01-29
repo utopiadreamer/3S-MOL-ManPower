@@ -14,11 +14,12 @@ import {
 } from "../../../shared/components/customDetailList/CustomDetailList";
 import { FilterType } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
 import { WorkerDTO } from "../../../shared/models/WorkerDTO";
-import { Action, Mode } from "../../../shared/constants/types";
+import { Mode } from "../../../shared/constants/types";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { EditableItem } from "../models/EditableItem";
-import { ValidationType } from "../../../shared/constants/constants";
+import { ValidationType } from "../../../shared/constants/types";
 import { ValidationUtil } from "../../../shared/utils/validationUtil";
+import { NavLink } from "react-router-dom";
 
 interface GridProps {
   items: WorkerDTO[];
@@ -37,6 +38,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(10);
   const { items: itemsProps, mode } = props;
+  const [editMode, setEditMode] = useState<Mode>(mode);
   const [editInPlace, setEditInPlace] = useState<boolean>(false);
 
   const [items, setItems] = useState<EditableItem<WorkerDTO>[]>([]);
@@ -51,7 +53,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
   }, [itemsProps]);
 
   useEffect(() => {
-    if (mode === Mode.New) {
+    if (mode !== Mode.View) {
       if (!editInPlace) {
         const newItem = new WorkerDTO();
         newItem.ID = "0";
@@ -64,6 +66,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
         setIsNew(true);
       }
     }
+    setEditMode(mode);
   }, [mode]);
 
   const onValidateEdition = (
@@ -104,7 +107,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
     }
   };
 
-  const onDelete = async (item: EditableItem<WorkerDTO>) => {
+  const onConfirm = async (item: EditableItem<WorkerDTO>) => {
     const originalItem = items.find((i) => i.item.ID === item.item.ID ?? 0);
     if (originalItem) {
       const index = items.indexOf(originalItem);
@@ -213,7 +216,15 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
                 required
               />
             ) : (
-              item.editedItem.Name
+              <div>
+                {/* <Icon iconName="CRMServices" className="workerIcon" /> */}
+                <NavLink
+                  to={`${"/workers/"}${item.item.ID}`}
+                  className={"navLink"}
+                >
+                  {item.editedItem.Name}
+                </NavLink>
+              </div>
             )}
           </div>
         );
@@ -360,29 +371,30 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
       onRender: (item: EditableItem<WorkerDTO>) => {
         return (
           <div className="actions">
-            {item.isEdited ? (
-              <>
-                <IconButton
-                  iconProps={{ iconName: "Save" }}
-                  onClick={() => onSave(item)}
-                ></IconButton>
-                <IconButton
-                  iconProps={{ iconName: "Cancel" }}
-                  onClick={() => onCancelEdit(item)}
-                ></IconButton>
-              </>
-            ) : (
-              <>
-                <IconButton
-                  iconProps={{ iconName: "Edit" }}
-                  onClick={() => onEdit(item)}
-                ></IconButton>
-                <IconButton
-                  iconProps={{ iconName: "Delete" }}
-                  onClick={() => onDelete(item)}
-                ></IconButton>
-              </>
-            )}
+            {editMode !== Mode.View &&
+              (item.isEdited ? (
+                <>
+                  <IconButton
+                    iconProps={{ iconName: "Save" }}
+                    onClick={() => onSave(item)}
+                  ></IconButton>
+                  <IconButton
+                    iconProps={{ iconName: "Cancel" }}
+                    onClick={() => onCancelEdit(item)}
+                  ></IconButton>
+                </>
+              ) : (
+                <>
+                  <IconButton
+                    iconProps={{ iconName: "Edit" }}
+                    onClick={() => onEdit(item)}
+                  ></IconButton>
+                  <IconButton
+                    iconProps={{ iconName: "Delete" }}
+                    onClick={() => onConfirm(item)}
+                  ></IconButton>
+                </>
+              ))}
           </div>
         );
       },

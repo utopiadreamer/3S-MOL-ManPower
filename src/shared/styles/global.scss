@@ -63,7 +63,7 @@ body,
   background-color: $white;
   display: flex;
   flex-direction: column;
-  padding: $panel-padding;
+  padding: 20px;
 }
 
 .row {
@@ -79,11 +79,27 @@ body,
   &.g-22 {
     grid-template-columns: 1fr 1fr !important;
   }
+  &.g-211 {
+    grid-template-columns: 2fr 1fr 1fr !important;
+    margin-left: -30px;
+  }
+  &.g-211 > div:nth-child(1) {
+    margin-left: 0px;
+  }
+  &.g-211 > div:nth-child(2) {
+    margin-left: 14px;
+  }
   &.g-1 {
     grid-template-columns: 1fr !important;
   }
   &.g-2 {
     grid-template-columns: 1fr 1fr !important;
+  }
+  &.g-3 {
+    grid-template-columns: 1fr 1fr 1fr !important;
+  }
+  &.g-31 {
+    grid-template-columns: 3fr 1fr !important;
   }
   &.g-5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
@@ -97,13 +113,14 @@ body,
 .section {
   .mol-section {
     align-self: flex-end;
-    background-color: rgb(38, 155, 255);
+    background-color: #7094aa;
     border-radius: 5px 5px 0px 0px;
     padding: 5px;
     color: gray;
 
     .header {
       margin-bottom: 0px;
+      padding-top: 0px;
 
       i,
       h2 {
@@ -114,7 +131,7 @@ body,
   }
 
   .content {
-    border: 2px solid rgb(38, 155, 255);
+    border: 2px solid #7094aa;
     padding: 15px;
     margin-bottom: 20px;
   }
@@ -130,8 +147,11 @@ body,
   max-height: 32px;
   margin-right: 10px;
   padding: 0px 15px;
+  padding-top: 4px;
   color: white;
+  border-width: 0px;
   cursor: pointer;
+
   i {
     color: white;
   }
@@ -141,39 +161,53 @@ body,
 
     .ms-Button-icon {
       color: white;
+      padding-bottom: 5px;
     }
   }
-}
 
-.newAction {
-  background-color: rgb(38 202 99);
-  &:hover {
-    background-color: rgb(38 202 99);
+  .ms-Button-label {
+    padding-bottom: 6px;
   }
 }
 
-.editAction {
-  background-color: rgb(38, 155, 255);
+.primeAction {
+  background-color: #244a62;
   &:hover {
-    background-color: rgb(38, 155, 255);
+    background-color: #244a62;
   }
 }
 
-.cancelAction {
-  background-color: rgb(155, 18, 36);
+.subAction {
+  background-color: #456f89;
   &:hover {
-    background-color: rgb(155, 18, 36);
+    background-color: #456f89;
   }
+}
+
+.alignEnd {
+  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.searchBar {
+  border-top: 1px solid rgb(223, 223, 223);
+  background-color: white;
+  padding: 15px;
+  align-self: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .searchArea {
   display: flex;
+  justify-content: space-between;
 
   .searchButton {
     width: 30px;
     padding: 0px 20px;
     border-radius: 10px 0px 0px 10px;
-    background-color: rgb(38 155 255);
+    background-color: #244a62;
     color: white;
   }
   .searchText {
@@ -541,9 +575,19 @@ h2 {
 
 // Fix the bold text of the regular fluent ui pivot component
 .ms-Pivot-link {
+  //padding: 0px 30px;
+  margin-left: 0px;
+  background-color: rgb(238, 238, 238);
   &.is-selected {
+    border-top: 4px solid rgb(38, 155, 255);
+    background-color: white;
+    &::before {
+      content: unset;
+    }
+
     .ms-Pivot-text {
       font-weight: bold;
+      color: #333;
     }
   }
 }
@@ -835,6 +879,8 @@ html[dir="rtl"] {
   .ms-DetailsRow-cell {
     text-align: right;
     color: #20a5d3;
+
+    font-size: 14px;
   }
 
   .ms-DetailsHeader-cell {

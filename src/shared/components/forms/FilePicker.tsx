@@ -53,7 +53,7 @@ const FilePicker = ({
         ref={FileInput}
         onChange={handleFileChange}
       />
-      <PrimaryButton className='actionButton newAction' type="button" onClick={handleImportClick}>
+      <PrimaryButton className='actionButton primeAction' type="button" onClick={handleImportClick}>
         {label}
       </PrimaryButton>
     </div>

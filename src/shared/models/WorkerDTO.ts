@@ -6,4 +6,5 @@ export class WorkerDTO {
     Address!: string;
     PhoneNo!: string;
     Email?: string;
+    WorkersRecordNo!: string;
 }
