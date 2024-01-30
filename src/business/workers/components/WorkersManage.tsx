@@ -136,10 +136,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
     const arr = [
       {
         key: "edit",
-        className: clsx(
-          "actionButton",
-          isEditable ? "subAction" : "subAction"
-        ),
+        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
         text: t(isEditable ? "common:cancel" : "common:edit"),
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
@@ -154,20 +151,20 @@ export const WorkersManage: FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="workersManage panel">
+    <div className="workersManage">
       <div className="body">
         <div className="section">
-          <div className="actionsHeader">
-            <Section
-              size={SectionSize.h2}
-              title={t("workersRecordInfo")}
-              iconName="ReminderPerson"
-            />
-            {id !== undefined && mode === Mode.Edit && (
-              <CommandBar items={[]} farItems={getActions()} />
-            )}
-          </div>
           <div className="content">
+            <div className="actionsHeader">
+              <Section
+                size={SectionSize.h2}
+                title={t("workersRecordInfo")}
+                iconName="ReminderPerson"
+              />
+              {id !== undefined && mode === Mode.Edit && (
+                <CommandBar items={[]} farItems={getActions()} />
+              )}
+            </div>
             <div className="row">
               <TextField
                 label={t("settleNo")}
@@ -192,15 +189,16 @@ export const WorkersManage: FC<Props> = (props: Props) => {
           </div>
         </div>
         <div className="section">
-          <div className="actionsHeader">
-            <Section
-              size={SectionSize.h2}
-              title={t("workersInfo")}
-              iconName="ReminderPerson"
-            />
-            {mode !== Mode.View && (
-              <div className="import">
-                {/* <PrimaryButton
+          <div className="content">
+            <div className="actionsHeader">
+              <Section
+                size={SectionSize.h2}
+                title={t("workersInfo")}
+                iconName="ReminderPerson"
+              />
+              {mode !== Mode.View && (
+                <div className="import">
+                  {/* <PrimaryButton
                   className="actionButton subAction"
                   iconProps={{ iconName: "Add" }}
                   text={t("addWorker")}
@@ -208,17 +206,16 @@ export const WorkersManage: FC<Props> = (props: Props) => {
                     addNewWorker();
                   }}
                 /> */}
-                <FilePicker
-                  name="ImportWorkersSheet"
-                  label={t("importWorkersSheet")}
-                  handleImportedFile={(data: any[]) => {
-                    processImportedFile(data);
-                  }}
-                />
-              </div>
-            )}
-          </div>
-          <div className="content">
+                  <FilePicker
+                    name="ImportWorkersSheet"
+                    label={t("importWorkersSheet")}
+                    handleImportedFile={(data: any[]) => {
+                      processImportedFile(data);
+                    }}
+                  />
+                </div>
+              )}
+            </div>
             <div className="row g-1">
               <WorkersGrid
                 mode={Mode.View}

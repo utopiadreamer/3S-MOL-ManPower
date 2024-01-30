@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router-dom";
@@ -51,7 +52,7 @@ export const Layout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
     setMenuItemsState(activeMenuItems);
     const currentItems = GetCurrentMenuItemEntry(location, activeMenuItems);
     setCurrentMenuItemsState(currentItems);
-  }, []);
+  }, [location]);
 
   const isRtl = true;
   const dir = isRtl ? "rtl" : "ltr";

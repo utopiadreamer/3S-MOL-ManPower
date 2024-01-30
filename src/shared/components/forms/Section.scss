@@ -10,7 +10,8 @@
   }
   h2 {
     margin: unset;
-    font-weight: $ms-font-weight-semilight;
+    font-size: 20px;
+    font-weight: 700;
   }
   h3 {
     margin: unset;
@@ -23,13 +24,14 @@
     margin-left: 0px;
     margin-right: 32px;
     margin-bottom: 8px;
-    color: #3a4651;
+    color: $mol_menu_background;
+    font-weight: 700;
 
     i {
       margin-top: 6px;
       padding: 4px 5px;
       font-size: 20px;
-      color: #3a4651;
+      color: $mol_menu_background;
     }
   }
   .space {

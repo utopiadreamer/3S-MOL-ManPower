@@ -47,9 +47,9 @@ export const WorkerDetails: FC = () => {
         setEditable(false);
       },
     };
-    const primeAction = {
+    const deleteAction = {
       key: "delete",
-      className: clsx("actionButton", "primeAction"),
+      className: clsx("actionButton", "deleteAction"),
       text: t("common:delete"),
       iconProps: { iconName: "Delete" },
       onClick: () => {
@@ -76,7 +76,7 @@ export const WorkerDetails: FC = () => {
     if (AuthUtil.hasPermission(Claim.EditWorker)) arr.push(subAction);
     if (isEditable) {
       arr.splice(0, 0, saveAction);
-    } else if (AuthUtil.hasPermission(Claim.DeleteWorkersRecord)) { arr.push(primeAction); }
+    } else if (AuthUtil.hasPermission(Claim.DeleteWorkersRecord)) { arr.push(deleteAction); }
     return arr;
   };
 
@@ -85,6 +85,7 @@ export const WorkerDetails: FC = () => {
       <div className="workerDetails panel">
         <div className="body">
           <div className="section">
+            <div className="content">
             <div className="actionsHeader">
               <Section
                 title={t("workerDetails")}
@@ -93,7 +94,6 @@ export const WorkerDetails: FC = () => {
               />
               <CommandBar items={[]} farItems={getActions()} />
             </div>
-            <div className="content">
               <div className="row">
                 <TextField
                   readOnly={!isEditable}
@@ -129,6 +129,7 @@ export const WorkerDetails: FC = () => {
             </div>
           </div>
           <div className="section">
+            <div className="content">
             <div className="actionsHeader">
               <Section
                 title={t("contractDetails")}
@@ -136,7 +137,6 @@ export const WorkerDetails: FC = () => {
                 iconName="ActivateOrders"
               />
             </div>
-            <div className="content">
               <ContractsGrid
                 items={contracts}
                 onChanged={() => {

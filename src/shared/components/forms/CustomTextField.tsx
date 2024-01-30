@@ -172,6 +172,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
           label={undefined}
           required={undefined}
           className={useClassName}
+          placeholder={`${t('insert')} ${label}`}
           errorMessage={
             readOnly || disabled
               ? undefined

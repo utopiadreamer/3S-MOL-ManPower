@@ -28,7 +28,8 @@ const Header: FC<HeaderProps> = (props: HeaderProps) => {
 
       <div className="layout-header-content ">
         <HeaderUserMenu
-          userName={'name' ?? ""}
+          userName={'محمد شوقي احمد' ?? ""}
+          role={'باحث'}
           actions={[
             {
               key: "Name",

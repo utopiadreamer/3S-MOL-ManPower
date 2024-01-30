@@ -1,0 +1,12 @@
+{
+    "code": "الكود",
+    "name": "الاسم",
+    "codeType": "نوع الكود",
+    "codes": "الاكواد",
+    "codesTypes": "انواع الاكواد",
+    "parentID": "الكود الاساسي",
+    "type": "الكود",
+    "codeDetails": "بيانات الكود",
+    "codeTypeDetails": "بيانات نوع الكود",
+    "parentType": "نوع الكود الاساسي"
+}

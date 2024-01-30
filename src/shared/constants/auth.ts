@@ -40,8 +40,10 @@ export enum Claim {
 }
 
 export enum Role {
-  Researcher = 'Researcher',
-  FinancialManger = 'FinancialManger',
-  Reviewer = 'Reviewer',
-  GeneralManager = 'GeneralManager'
-}
+  Admin= 'Admin',
+  CommitteeMember= 'CommitteeMember',
+  DirectorateManager= 'DirectorateManager',
+  ReportViewer= 'ReportViewer',
+  Reviewer= 'Reviewer',
+  Researcher= 'Researcher'
+};

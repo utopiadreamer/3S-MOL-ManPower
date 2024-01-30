@@ -18,13 +18,14 @@ export interface HeaderMenuActionProps {
 
 export interface HeaderUserMenuProps {
   userName?: string;
+  role?: string;
   actions?: HeaderMenuActionProps[];
 }
 
 export const HeaderUserMenu: FC<HeaderUserMenuProps> = (
   props: HeaderUserMenuProps
 ) => {
-  const { userName, actions } = props;
+  const { userName, actions, role } = props;
 
   const menuCaretRef = useRef<HTMLDivElement>(null);
   const [calloutOpen, setCalloutOpen] = useState<boolean>(false);
@@ -51,8 +52,11 @@ export const HeaderUserMenu: FC<HeaderUserMenuProps> = (
     window.location.reload();
   };
 
-  const roles = [
+  const roles = [    
     {
+      key: Role.Admin.toString(),
+      text: "مسئول النظام",
+    },{
       key: Role.Researcher.toString(),
       text: "باحث",
     },
@@ -61,13 +65,17 @@ export const HeaderUserMenu: FC<HeaderUserMenuProps> = (
       text: "مراجع",
     },
     {
-      key: Role.FinancialManger.toString(),
-      text: "مقرر اللجنة المالية",
+      key: Role.DirectorateManager.toString(),
+      text: "مدير المديرية",
     },
     {
-      key: Role.GeneralManager.toString(),
-      text: "المدير العام",
-    }
+      key: Role.CommitteeMember.toString(),
+      text: "عضو لجنة",
+    },
+    {
+      key: Role.ReportViewer.toString(),
+      text: "مراجع التقارير",
+    },
   ];
 
   return (
@@ -79,7 +87,7 @@ export const HeaderUserMenu: FC<HeaderUserMenuProps> = (
           setCalloutOpen(!calloutOpen);
         }}
       >
-        <div>
+        {/* <div>
           <Dropdown
             options={roles}
             selectedKey={currentUser}
@@ -87,11 +95,13 @@ export const HeaderUserMenu: FC<HeaderUserMenuProps> = (
               setUser(option?.key.toString() ?? "");
             }}
           />
-        </div>
+        </div> */}
         <Persona
           className="header-user-menu-avatar"
           text={userName}
+          secondaryText={role}
           size={PersonaSize.size24}
+          showSecondaryText
         />
         <div ref={menuCaretRef}>
           <Icon className="header-user-caret-button" iconName="ChevronDown" />

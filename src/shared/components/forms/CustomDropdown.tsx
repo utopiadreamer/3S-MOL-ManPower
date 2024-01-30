@@ -134,6 +134,7 @@ const CustomDropdown: FC<
       <Dropdown
         {...props}
         onRenderOption={onRenderOption}
+        placeholder={`${t('select')} ${label}`}
         id={fieldId}
         calloutProps={{
           className: callOutWidth !== "Fixed" ? "applyContentFit" : "",

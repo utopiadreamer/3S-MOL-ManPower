@@ -1,40 +1,41 @@
 @import "../../styles/colors";
 @import "../../styles/custom_variables";
 
-$SelectedBackground: #7094aa;
+$SelectedBackground: $mol_menu_background;
 
 .WizardPivot {
   .ms-Pivot {
     display: flex;
     flex-wrap: wrap;
-    margin-left: 56px;
+    padding-bottom: 25px;
     button {
       background-color: transparent;
-      padding: 0px;
-    }
-  }
 
-  .is-selected {
-    &:hover {
-      background-color: transparent;
+      &::after {
+        content: 'dddddd';
+        width: 30px;
+        height: 20px;
+        background-color: red;
+      }
     }
   }
 }
+hr {
+  border: none;
+  border-top: 2px dashed #E0E0E0;
+}
+
 .wizardHeader {
-  background-color: #bacee0;
+  background: $themeLighterAlt;
   display: flex;
   flex-direction: row;
+  border-radius: 8px;
   min-width: 210px;
-  padding: 10px;
-  gap: 10px;
-
-  .tabIcon {
-    width: 32x;
-    height: 32px;
-  }
+  height: 40px;
+  margin-left: -56px;
+  padding: 8px 16px 8px 16px;
 
   div {
-    color: #333;
     font-family: $font_family;
     font-style: normal;
     font-weight: normal;
@@ -43,19 +44,24 @@ $SelectedBackground: #7094aa;
     /* identical to box height, or 143% */
     display: flex;
     align-items: center;
-    /* theme / Type / OverAccent */
+    /* themeETA / Type / OverAccent */
+    color: #333333;
     margin-left: 6px;
     margin-right: 3px;
   }
   .circle {
+    align-self: center;
+    border-radius: 18px;
+    background: $themeLighter;
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 28px;
-    width: 28px;
+    height: 24px;
+    width: 24px;
     margin-top: 2px;
     margin-left: 2px;
-
+    box-shadow: 0px 0.3px 0.9px rgba(0, 0, 0, 0.1),
+      0px 1.6px 3.6px rgba(0, 0, 0, 0.13);
     i {
       width: inherit;
       line-height: 20px;
@@ -77,12 +83,31 @@ $SelectedBackground: #7094aa;
     }
   }
 
-  &.state_completed {
+  &.state_none {
+    .circle {
+      background: #878D96;
+      p {
+        color: white;
+      }
+    }
     div {
-      //   color: $valid;
+      color: #878d96;
+    }
+  }
+  &.state_error {
+    div {
+      color: $rejected;
     }
     .circle {
-      //   background: $valid;
+      background: $rejected;
+    }
+  }
+  &.state_completed {
+    div {
+      color: $mol_menu_background;
+    }
+    .circle {
+      background: $mol_menu_background;
     }
   }
   &.selected {
@@ -91,23 +116,25 @@ $SelectedBackground: #7094aa;
       color: #ffffff;
     }
     .circle {
-      // background: $white;
-      // box-shadow: 0px 1.2px 3.6px rgba(0, 0, 0, 0.1), 0px 6.4px 14.4px rgba(0, 0, 0, 0.13);
+      background: $white;
+      box-shadow: 0px 1.2px 3.6px rgba(0, 0, 0, 0.1),
+        0px 6.4px 14.4px rgba(0, 0, 0, 0.13);
       p {
         font-weight: bold;
+        color: $mol_menu_background;
       }
     }
     &.state_completed {
       .circle {
         i {
-          //   color: $valid;
+          color: $mol_menu_background;
         }
       }
     }
     &.state_error {
       .circle {
         i {
-          // color: $rejected;
+          color: $rejected;
         }
       }
     }
@@ -120,14 +147,14 @@ $SelectedBackground: #7094aa;
       color: $gray2;
     }
     .circle {
-      background: $neutralLighter;
+      background: #878D96;
       box-shadow: 0px 0.3px 0.9px rgba(0, 0, 0, 0.1),
         0px 1.6px 3.6px rgba(0, 0, 0, 0.13);
       i {
-        color: $gray2;
+        color: white;
       }
       p {
-        color: $gray2;
+        color: white;
         font-weight: normal;
       }
     }
@@ -140,10 +167,10 @@ $SelectedBackground: #7094aa;
     .circle {
       background: $white;
       i {
-        color: $themePrimary !important;
+        color: $mol_menu_background !important;
       }
       p {
-        color: $themePrimary;
+        color: $mol_menu_background;
         font-weight: normal;
       }
     }

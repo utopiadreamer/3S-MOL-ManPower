@@ -66,15 +66,15 @@ export const ClearanceDetails: FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="clearanceManage panel">
+    <div className="clearanceManage">
       <div className="body">
         <div className="section">
+          <div className="content">
           <Section
             size={SectionSize.h2}
             title={t("clearanceInfo")}
             iconName="ActivateOrders"
           />
-          <div className="content">
             <div className="row">
               <TextField
                 label={t("contractNo")}

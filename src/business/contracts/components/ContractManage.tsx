@@ -51,7 +51,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
     useState<boolean>(false);
   const [showExecEstSearch, setShowExecEstSearch] = useState<boolean>(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
-  const [currentMode, setCurrentMode] = useState<Mode>(mode ?? '');
+  const [currentMode, setCurrentMode] = useState<Mode>(mode ?? "");
 
   const form = useRef(new Form({}));
   const [, setIsFormValid] = useState<boolean>(form.current.isValid);
@@ -59,9 +59,8 @@ export const ContractManage: FC<Props> = (props: Props) => {
 
   useEffect(() => {
     setCurrentMode(mode);
-    setIsEditable(mode !== Mode.View);    
+    setIsEditable(mode !== Mode.View);
   }, [mode]);
-
 
   useEffect(() => {
     if (id) {
@@ -84,7 +83,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
   });
 
   useEffect(() => {
-    if (currentMode === Mode.New) { 
+    if (currentMode === Mode.New) {
       setDetails(new ContractDTO());
       setAssignEstDetails(new EstablishmentDTO());
       setEexcEstDetails(new EstablishmentDTO());
@@ -200,27 +199,30 @@ export const ContractManage: FC<Props> = (props: Props) => {
     // if (isEditable) {
     //   arr.splice(0, 0, saveAction);
     // } else
-    if (currentMode === Mode.Edit && AuthUtil.hasPermission(Claim.DeleteContract)) {
+    if (
+      currentMode === Mode.Edit &&
+      AuthUtil.hasPermission(Claim.DeleteContract)
+    ) {
       arr.push(primeAction);
     }
     return arr;
   };
 
   return (
-    <div className="contractManage panel">
+    <div className="contractManage">
       <div className="body">
         <div className="section">
-          <div className="actionsHeader">
-            <Section
-              size={SectionSize.h2}
-              title={t("contractInfo")}
-              iconName="ActivateOrders"
-            />
-            {id !== undefined && (
-              <CommandBar items={[]} farItems={getActions()} />
-            )}
-          </div>
           <div className="content">
+            <div className="actionsHeader">
+              <Section
+                size={SectionSize.h2}
+                title={t("contractInfo")}
+                iconName="ActivateOrders"
+              />
+              {id !== undefined && (
+                <CommandBar items={[]} farItems={getActions()} />
+              )}
+            </div>
             <div className="row">
               {currentMode !== Mode.New && (
                 <TextField
@@ -265,52 +267,51 @@ export const ContractManage: FC<Props> = (props: Props) => {
         </div>
 
         <div className="section">
-          <div className="flex justify-Between">
-            <div className="searchTitle">
-              <Section
-                size={SectionSize.h2}
-                title={t("assignEstInfo")}
-                iconName="CityNext2"
-              />
-              {showAssignEstSearch && (
-                <EstablishmentsSearch
-                  onSearch={(est?: EstablishmentDTO) =>
-                    setAssignEstDetails(est)
-                  }
+          <div className="content">
+            <div className="flex justify-Between">
+              <div className="searchTitle">
+                <Section
+                  size={SectionSize.h2}
+                  title={t("assignEstInfo")}
+                  iconName="CityNext2"
+                />
+                {showAssignEstSearch && (
+                  <EstablishmentsSearch
+                    onSearch={(est?: EstablishmentDTO) =>
+                      setAssignEstDetails(est)
+                    }
+                  />
+                )}
+              </div>
+              {currentMode !== Mode.View && (
+                <CommandBar
+                  items={[]}
+                  farItems={[
+                    {
+                      key: "new",
+                      className: "actionButton subAction",
+                      text: t("common:new"),
+                      iconProps: { iconName: "Add" },
+                      onClick: () => {
+                        setAssignEstDetails(new EstablishmentDTO());
+                        setAssignEditMode(Mode.New);
+                        setShowAssignEstSearch(false);
+                      },
+                    },
+                    {
+                      key: "search",
+                      className: "actionButton primeAction",
+                      text: t("common:search"),
+                      iconProps: { iconName: "Search" },
+                      onClick: () => {
+                        setAssignEditMode(Mode.View);
+                        setShowAssignEstSearch(!showAssignEstSearch);
+                      },
+                    },
+                  ]}
                 />
               )}
             </div>
-            {currentMode !== Mode.View && (
-              <CommandBar
-                items={[]}
-                farItems={[
-                  {
-                    key: "new",
-                    className: "actionButton subAction",
-                    text: t("common:new"),
-                    iconProps: { iconName: "Add" },
-                    onClick: () => {
-                      setAssignEstDetails(new EstablishmentDTO());
-                      setAssignEditMode(Mode.New);
-                      setShowAssignEstSearch(false);
-                    },
-                  },
-                  {
-                    key: "search",
-                    className: "actionButton primeAction",
-                    text: t("common:search"),
-                    iconProps: { iconName: "Search" },
-                    onClick: () => {
-                      setAssignEditMode(Mode.View);
-                      setShowAssignEstSearch(!showAssignEstSearch);
-                    },
-                  },
-                ]}
-              />
-            )}
-          </div>
-
-          <div className="content">
             <EstablishmentManage
               mode={assignEditMode}
               id={assignEstDetails?.ID}
@@ -318,60 +319,62 @@ export const ContractManage: FC<Props> = (props: Props) => {
           </div>
         </div>
         <div className="section">
-          <div className="flex justify-Between">
-            <div className="searchTitle">
-              <Section
-                size={SectionSize.h2}
-                title={t("execEstInfo")}
-                iconName="CityNext"
-              />
-              {showExecEstSearch && (
-                <EstablishmentsSearch
-                  onSearch={(est?: EstablishmentDTO) => setEexcEstDetails(est)}
+          <div className="content">
+            <div className="flex justify-Between">
+              <div className="searchTitle">
+                <Section
+                  size={SectionSize.h2}
+                  title={t("execEstInfo")}
+                  iconName="CityNext"
+                />
+                {showExecEstSearch && (
+                  <EstablishmentsSearch
+                    onSearch={(est?: EstablishmentDTO) =>
+                      setEexcEstDetails(est)
+                    }
+                  />
+                )}
+              </div>
+              {currentMode !== Mode.View && (
+                <CommandBar
+                  items={[]}
+                  farItems={[
+                    {
+                      key: "new",
+                      className: "actionButton subAction",
+                      text: t("common:new"),
+                      iconProps: { iconName: "Add" },
+                      onClick: () => {
+                        setEexcEstDetails(new EstablishmentDTO());
+                        setExecEditMode(Mode.New);
+                        setShowExecEstSearch(false);
+                      },
+                    },
+                    {
+                      key: "search",
+                      className: "actionButton primeAction",
+                      text: t("common:search"),
+                      iconProps: { iconName: "Search" },
+                      onClick: () => {
+                        setShowExecEstSearch(!showExecEstSearch);
+                        setExecEditMode(Mode.View);
+                      },
+                    },
+                  ]}
                 />
               )}
             </div>
-            {currentMode !== Mode.View && (
-              <CommandBar
-                items={[]}
-                farItems={[
-                  {
-                    key: "new",
-                    className: "actionButton subAction",
-                    text: t("common:new"),
-                    iconProps: { iconName: "Add" },
-                    onClick: () => {
-                      setEexcEstDetails(new EstablishmentDTO());
-                      setExecEditMode(Mode.New);
-                      setShowExecEstSearch(false);
-                    },
-                  },
-                  {
-                    key: "search",
-                    className: "actionButton primeAction",
-                    text: t("common:search"),
-                    iconProps: { iconName: "Search" },
-                    onClick: () => {
-                      setShowExecEstSearch(!showExecEstSearch);
-                      setExecEditMode(Mode.View);
-                    },
-                  },
-                ]}
-              />
-            )}
-          </div>
-          <div className="content">
             <EstablishmentManage mode={execEditMode} id={execEstDetails?.ID} />
           </div>
         </div>
 
         <div className="section">
-          <Section
-            size={SectionSize.h2}
-            title={t("workInfo")}
-            iconName="WorkItem"
-          />
           <div className="content">
+            <Section
+              size={SectionSize.h2}
+              title={t("workInfo")}
+              iconName="WorkItem"
+            />
             <div className="row">
               <TextField
                 label={t("scopeOfWork")}
@@ -410,12 +413,12 @@ export const ContractManage: FC<Props> = (props: Props) => {
         </div>
 
         <div className="section">
-          <Section
-            size={SectionSize.h2}
-            title={t("financialInfo")}
-            iconName="Money"
-          />
           <div className="content">
+            <Section
+              size={SectionSize.h2}
+              title={t("financialInfo")}
+              iconName="Money"
+            />
             <div className="row">
               <TextField
                 label={t("totalAmount")}
@@ -456,12 +459,12 @@ export const ContractManage: FC<Props> = (props: Props) => {
         </div>
 
         <div className="section">
-          <Section
-            size={SectionSize.h2}
-            title={t("otherInfo")}
-            iconName="EditNote"
-          />
           <div className="content">
+            <Section
+              size={SectionSize.h2}
+              title={t("otherInfo")}
+              iconName="EditNote"
+            />
             <div className="row">
               <TextField
                 label={t("description")}
@@ -482,12 +485,12 @@ export const ContractManage: FC<Props> = (props: Props) => {
         </div>
         {currentMode !== Mode.View && (
           <div className="section">
-            <Section
-              size={SectionSize.h2}
-              title={t("common:attachments")}
-              iconName="EditNote"
-            />
             <div className="content">
+              <Section
+                size={SectionSize.h2}
+                title={t("common:attachments")}
+                iconName="EditNote"
+              />
               <div className="row">
                 <FileSelector
                   title={t("common:attachments")}

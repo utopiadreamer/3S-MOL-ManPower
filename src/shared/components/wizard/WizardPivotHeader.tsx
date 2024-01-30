@@ -1,7 +1,13 @@
 import React, { FC, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
-import { Icon, IPivotItemProps, Pivot, PivotItem } from "@fluentui/react";
+import {
+  Icon,
+  IPivotItemProps,
+  Pivot,
+  PivotItem,
+  PivotLinkFormat,
+} from "@fluentui/react";
 import "./WizardPivot.scss";
 import { WizardContext } from "./Wizard";
 
@@ -44,28 +50,31 @@ export const WizardPivotHeader: FC<WizardPivotHeaderProps> = (
     selected: boolean,
     disabled: boolean,
     notClickable: boolean,
-    itemState: TabState,
-    icon?: string,
+    itemState: TabState
   ) => {
     return (
-      <div
-        className={clsx(
-          "wizardHeader",
-          selected ? "selected" : "",
-          disabled ||
-            (notClickable && !selected && (!itemState || itemState === "none"))
-            ? "disabled"
-            : "",
-          `state_${itemState}`
-        )}
-      >
-        <div className="circle"> 
-          <img src={`/images/${icon}.png`} alt="" className="tabIcon" />
-          {/* {itemState === 'none' && <p>{headerIndex}</p>}
-                    {itemState === 'completed' && <Icon iconName="Accept" />}
-                    {itemState === 'error' && <Icon iconName="Cancel" />} */}
+      <div className="flex">
+        <div
+          className={clsx(
+            "wizardHeader",
+            selected ? "selected" : "",
+            disabled ||
+              (notClickable &&
+                !selected &&
+                (!itemState || itemState === "none"))
+              ? "disabled"
+              : "",
+            `state_${itemState}`
+          )}
+        >
+          <div className="circle">
+            {itemState === "none" && <p>{headerIndex}</p>}
+            {itemState === "completed" && <Icon iconName="Accept" />}
+            {itemState === "error" && <Icon iconName="Cancel" />}
+          </div>
+          <div>{itemProps?.headerText ?? ""}</div>
         </div>
-        <div>{itemProps?.headerText ?? ""}</div>
+        <div><hr/></div>
       </div>
     );
   };
@@ -89,7 +98,7 @@ export const WizardPivotHeader: FC<WizardPivotHeaderProps> = (
       }}
     >
       {state.tabs.map((item, index) => {
-        const { itemKey, label, itemState, disabled, notClickable, icon } = item;
+        const { itemKey, label, itemState, disabled, notClickable } = item;
         const number = getNumber(state.tabs, index + 1);
         return (
           !item.hidden && (
@@ -107,8 +116,7 @@ export const WizardPivotHeader: FC<WizardPivotHeaderProps> = (
                   state.selectedTabKey === itemKey,
                   disabled ?? false,
                   notClickable ?? false,
-                  itemState && state.showTabState ? itemState : "none",
-                  icon
+                  itemState && state.showTabState ? itemState : "none"
                 )
               }
             />

@@ -23,6 +23,7 @@ import { Action, Mode } from "../../../shared/constants/types";
 import { ClearanceDetails } from "./ClearanceDetails";
 import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
 import { useParams } from "react-router-dom";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const ClearanceManage: FC = () => {
   const { t } = useTranslation(["clearances", "common"]);
@@ -142,6 +143,12 @@ export const ClearanceManage: FC = () => {
   return (
     <LayoutContent>
       <div className="clearanceManage">
+        <Section
+          size={SectionSize.h1}
+          title={t(mode === Mode.New ? "newRequest" : "requestInfo")}
+          iconName="ActivateOrders"
+          className="requestTitle"
+        />
         <Wizard state={wizard}>
           <WizardPivotHeader />
           <WizardPivotPanel panelKey={ContractTab}>

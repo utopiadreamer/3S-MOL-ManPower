@@ -15,12 +15,14 @@
     "logout": "تسجيل الخروج",
     "reports": "التقارير",
     "audit": "المتابعة والتدقيق",
-    "codes": "إدارة الاكواد",
+    "codes": "الاكواد",
     "security": "المستخدمين والصلاحيات",
     "regulations": "اللوائح",
     "help": "مساعدة",
     "newRequest": "طلب جديد",
     "searchRequests": "بحث الطلبات",
     "settings": "إعدادات النظام",
-    "myRequests": "طلباتي"
+    "myRequests": "طلباتي",
+    "codesTypes": "أنواع الأكواد",
+    "codesManage": "إدارة الأكواد"
 }

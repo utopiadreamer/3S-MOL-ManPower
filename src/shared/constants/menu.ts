@@ -69,9 +69,25 @@ const MenuItems: LayoutMenuItemExtended[] = [
   {
     id: "codes",
     iconName: "Code",
-    title: "codes",
-    pathname: "/codes",
+    title: "codesManage",
+    pathname: "",
     isVisible: () => true,
+    subItems: [
+      {
+        iconName: "FileCode",
+        id: "codesTypes",
+        title: "codesTypes",
+        pathname: "/codesTypes",
+        isVisible: () => true,
+      },
+      {
+        iconName: "Code",
+        id: "codes",
+        title: "codes",
+        pathname: "/codes",
+        isVisible: () => true,
+      },
+    ],
   },
   {
     id: "security",

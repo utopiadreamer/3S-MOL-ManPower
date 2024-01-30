@@ -102,7 +102,7 @@ export const WorkItems: FC = () => {
   };
 
   return (
-    <div className="panel">
+    <div>
       <div className="row">
         <TextField
           label={t("invoiceNo")}
@@ -122,8 +122,6 @@ export const WorkItems: FC = () => {
           value={notes}
           onChange={(_, v) => setNotes(v ?? "")}
         />
-      </div>
-      <div>
         <FileSelector
           title={t("common:attachments")}
           labels={{
@@ -134,6 +132,8 @@ export const WorkItems: FC = () => {
           }}
           extensionFilter=".jpg"
         />
+      </div>
+      <div>
         <div className="alignEnd">
           <PrimaryButton
             iconProps={{ iconName: "Add" }}
@@ -151,7 +151,8 @@ export const WorkItems: FC = () => {
           </PrimaryButton>
         </div>
       </div>
-      <div className="row g-1">
+      <br/>
+      <div>
           <WorkItemsGrid
             reload={reload}
             onDelete={(id: number, invoiceNo: string) =>

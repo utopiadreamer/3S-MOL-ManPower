@@ -75,10 +75,7 @@ export const SettlementManage: FC<Props> = (props: Props) => {
     const arr = [
       {
         key: "edit",
-        className: clsx(
-          "actionButton",
-          isEditable ? "subAction" : "subAction"
-        ),
+        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
         text: t(isEditable ? "common:cancel" : "common:edit"),
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
@@ -91,9 +88,10 @@ export const SettlementManage: FC<Props> = (props: Props) => {
   };
 
   return (
-    <div className="settlementManage panel">
+    <div className="settlementManage">
       <div className="body">
         <div className="section">
+          <div className="content">
           <div className="actionsHeader">
             <Section
               size={SectionSize.h2}
@@ -104,7 +102,6 @@ export const SettlementManage: FC<Props> = (props: Props) => {
               <CommandBar items={[]} farItems={getActions()} />
             )}
           </div>
-          <div className="content">
             <div className="row">
               <TextField
                 label={t("contractNo")}
@@ -161,12 +158,12 @@ export const SettlementManage: FC<Props> = (props: Props) => {
         </div>
 
         <div className="section">
-          <Section
-            size={SectionSize.h2}
-            title={t("workItems")}
-            iconName="ActivateOrders"
-          />
           <div className="content">
+            <Section
+              size={SectionSize.h2}
+              title={t("workItems")}
+              iconName="ActivateOrders"
+            />
             <WorkItems />
           </div>
         </div>

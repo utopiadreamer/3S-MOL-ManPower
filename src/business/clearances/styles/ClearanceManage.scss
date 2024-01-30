@@ -1,3 +1,5 @@
+@import  "../../../shared//styles/colors";
+
 .clearanceManage {
 
   .contractPanel {
@@ -6,9 +8,18 @@
     }
   }
 
-  .panel {
-    padding: 20px;
+  .requestTitle {
+    padding-top: 20px;
+    padding-bottom: 10px;
+    h1, i {
+      font-size: 20px;
+      color: $mol_menu_background;
+    }
+    h1 {
+      font-weight: 700;
+    }
   }
+
   .request {
     padding-top: 20px;
     .ms-ChoiceFieldGroup-flexContainer {

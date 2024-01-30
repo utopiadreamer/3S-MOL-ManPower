@@ -11,7 +11,19 @@ export enum Action {
   Cancel = "Cancel",
   Delete = "Delete",
   Return = "Return",
-  Reject = "Reject"
+  Reject = "Reject",
+}
+
+export enum Status {
+  Active = "Active",
+  Inactive = "Inactive",
+}
+
+export enum CodeType {
+  Government = "Government",
+  City = "City",
+  Region = "Region",
+  Directorate = "Directorate",
 }
 
 export enum RequestType {
@@ -26,9 +38,9 @@ export enum RequestStatus {
 }
 
 export enum ValidationType {
-  Email = 'Email',
-  Required = 'Required',
-  NationalID = 'NationalID',
-  CommercialRegistrationNo = 'CommercialRegistrationNo',
-  MobileNo = 'MobileNo'
+  Email = "Email",
+  Required = "Required",
+  NationalID = "NationalID",
+  CommercialRegistrationNo = "CommercialRegistrationNo",
+  MobileNo = "MobileNo",
 }

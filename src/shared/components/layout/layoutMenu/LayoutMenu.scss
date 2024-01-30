@@ -20,6 +20,8 @@
   &.layout-menu-nav-item--active {
     background-color: $mol_menuItem_Active;
     color: $mol_menuItem_Active_TextColor;
+    margin: 5px;
+    border-radius: 5px;
     .layout-menu-nav-item-label {
       color: $mol_menuItem_Active_TextColor;
     }
@@ -34,7 +36,7 @@
     color: $mol_menuItem;
     line-height: 16px;
     @include text-ellipsis();
-    font-size: small;
+    font-size: 14px;
 
     &:hover {
       color: $mol_menuItem_hover;

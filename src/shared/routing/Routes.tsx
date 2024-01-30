@@ -13,6 +13,9 @@ import { Mode } from "../constants/types";
 import { WorkerDetails } from "../../business/workers/components/WorkerDetails";
 import { CodesList } from "../../business/codes/components/CodesList";
 import { RequestsList } from "../../business/requests/components/RequestsList";
+import { CodesTypesList } from "../../business/codes/components/CodesTypesList";
+import { CodeDetails } from "../../business/codes/components/CodeDetails";
+import { CodeTypeDetails } from "../../business/codes/components/CodeTypeDetails";
 
 export const MenuRoutes: FC = () => {
   return (
@@ -35,11 +38,16 @@ export const MenuRoutes: FC = () => {
           <Route path="requests/mine/:mode" element={<ClearanceManage />} />
           <Route path="requests/mine/:mode/:id" element={<ClearanceManage />} />
 
-          <Route path="requests/new" element={<ClearanceManage />} />
+          <Route path="requests/:mode" element={<ClearanceManage />} />
           <Route path="requests/search" element={<SettlementsList />} />
           <Route path="requests/search/:mode" element={<ClearanceManage />} />
           <Route path="requests/search/:mode/:id" element={<ClearanceManage />} />
           <Route path="codes" element={<CodesList />} />
+          <Route path="codesTypes" element={<CodesTypesList />} />
+          <Route path="codes/:id" element={<CodeDetails mode={Mode.View} />} />
+          <Route path="codesTypes/:id" element={<CodeTypeDetails  mode={Mode.New} />} />
+          <Route path="codes/new" element={<CodeDetails mode={Mode.New}/>} />
+          <Route path="codesTypes/new" element={<CodeTypeDetails mode={Mode.New} />} />
         </Route>
       </Routes>      
       <Outlet />

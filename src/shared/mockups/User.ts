@@ -16,9 +16,6 @@ export function getCurrentUser() {
         Claim.DeleteContract,
       ];
       break;
-    case Role.FinancialManger:
-      user.Claims = [Claim.AddFinancialData, Claim.ApproveDiscount];
-      break;
     case Role.Reviewer:
       user.Claims = [
         Claim.EditContract,
@@ -27,7 +24,7 @@ export function getCurrentUser() {
         Claim.EditClearance,
       ];
       break;
-    case Role.GeneralManager:
+    case Role.DirectorateManager:
       user.Claims = [Claim.ApproveClearance];
       break;
     default:

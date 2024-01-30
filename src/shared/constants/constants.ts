@@ -12,10 +12,6 @@ export const Directions = {
 };
 
 
-export const Roles = {
-    Reviewer: 'Reviewer',
-    Researcher: 'Researcher'
-};
 
 export const EstablishmentType = {
     Person: 'persons',

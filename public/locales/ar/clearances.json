@@ -35,6 +35,7 @@
     "status": "حالة الطلب",
     "type": "المخالصة",
     "requests": "الطلبات",
-    "requestInfo": "تفاصيل الطلب"
+    "requestInfo": "تفاصيل الطلب",
+    "newRequest": "طلب جديد"
 
 }

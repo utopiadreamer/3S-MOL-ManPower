@@ -86,6 +86,7 @@ export const EstablishmentDetails: FC = () => {
       <div className="establishmentDetails panel">
         <div className="body">
           <div className="section">
+            <div className="content">
             <div className="actionsHeader">
               <Section
                 title={t("establishmentDetails")}
@@ -94,7 +95,6 @@ export const EstablishmentDetails: FC = () => {
               />
               <CommandBar items={[]} farItems={getActions()} />
             </div>
-            <div className="content">
               <div className="row">
                 <TextField
                   readOnly={!isEditable}
@@ -158,6 +158,7 @@ export const EstablishmentDetails: FC = () => {
             </div>
           </div>
           <div className="section">
+            <div className="content">
             <div className="actionsHeader">
               <Section
                 title={t("contractDetails")}
@@ -165,7 +166,6 @@ export const EstablishmentDetails: FC = () => {
                 iconName="ActivateOrders"
               />
             </div>
-            <div className="content">
               <ContractsGrid
                 items={contracts}
                 onChanged={() => {
