@@ -6,8 +6,6 @@ import { getCodes } from "../../../shared/mockups/Codes";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { useTranslation } from "react-i18next";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
-import { TextField } from "../../../shared/components/forms/CustomTextField";
-import { CodeTypeDTO } from "../../../shared/models/CodeTypeDTO";
 import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
 import { IDropdownOption, PrimaryButton } from "@fluentui/react";
 

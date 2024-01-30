@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import React, { FC, useRef, useState } from "react";
 import { Persona, PersonaSize, Icon, Callout } from "@fluentui/react";
