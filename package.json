@@ -1,6 +1,7 @@
 {
   "name": "admin-portal",
   "version": "0.1.0",
+  "homepage": "https://gitname.github.io/react-gh-pages",
   "private": true,
   "dependencies": {
     "@fluentui/example-data": "^8.4.15",
@@ -30,6 +31,8 @@
     "xlsx-color": "^0.14.30"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "set PORT=3010 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -57,6 +60,7 @@
     "@types/file-saver": "^2.0.7",
     "@types/jest": "^29.5.11",
     "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18"
+    "@types/react-dom": "^18.2.18",
+    "gh-pages": "^6.1.1"
   }
 }
