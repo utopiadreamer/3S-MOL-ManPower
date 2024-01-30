@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/react-gh-pages/static/css/main.4cfb6e7a.css",
+    "main.js": "/react-gh-pages/static/js/main.09fe7019.js",
+    "static/js/496.6ff7963b.chunk.js": "/react-gh-pages/static/js/496.6ff7963b.chunk.js",
+    "static/media/Helvetica.ttf": "/react-gh-pages/static/media/Helvetica.5c60dd76adb9c7757170.ttf",
+    "static/media/Tajawal-Regular.ttf": "/react-gh-pages/static/media/Tajawal-Regular.f64692a7801882d16939.ttf",
+    "index.html": "/react-gh-pages/index.html",
+    "main.4cfb6e7a.css.map": "/react-gh-pages/static/css/main.4cfb6e7a.css.map",
+    "main.09fe7019.js.map": "/react-gh-pages/static/js/main.09fe7019.js.map",
+    "496.6ff7963b.chunk.js.map": "/react-gh-pages/static/js/496.6ff7963b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4cfb6e7a.css",
+    "static/js/main.09fe7019.js"
+  ]
+}
