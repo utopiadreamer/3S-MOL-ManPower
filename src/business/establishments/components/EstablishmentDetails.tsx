@@ -61,10 +61,7 @@ export const EstablishmentDetails: FC = () => {
     const arr = [
       {
         key: "edit",
-        className: clsx(
-          "actionButton",
-          isEditable ? "subAction" : "subAction"
-        ),
+        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
         text: t(isEditable ? "common:cancel" : "common:edit"),
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
@@ -83,18 +80,18 @@ export const EstablishmentDetails: FC = () => {
 
   return (
     <LayoutContent>
-      <div className="establishmentDetails panel">
+      <div className="establishmentDetails">
         <div className="body">
           <div className="section">
             <div className="content">
-            <div className="actionsHeader">
-              <Section
-                title={t("establishmentDetails")}
-                size={SectionSize.h2}
-                iconName="Bank"
-              />
-              <CommandBar items={[]} farItems={getActions()} />
-            </div>
+              <div className="actionsHeader">
+                <Section
+                  title={t("establishmentDetails")}
+                  size={SectionSize.h2}
+                  iconName="Bank"
+                />
+                <CommandBar items={[]} farItems={getActions()} />
+              </div>
               <div className="row">
                 <TextField
                   readOnly={!isEditable}
@@ -159,13 +156,13 @@ export const EstablishmentDetails: FC = () => {
           </div>
           <div className="section">
             <div className="content">
-            <div className="actionsHeader">
-              <Section
-                title={t("contractDetails")}
-                size={SectionSize.h2}
-                iconName="ActivateOrders"
-              />
-            </div>
+              <div className="actionsHeader">
+                <Section
+                  title={t("contractDetails")}
+                  size={SectionSize.h2}
+                  iconName="ActivateOrders"
+                />
+              </div>
               <ContractsGrid
                 items={contracts}
                 onChanged={() => {

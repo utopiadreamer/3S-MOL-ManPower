@@ -9,7 +9,7 @@ const requestsItems = [
     title: "newRequest",
     pathname: "/requests/new",
     isVisible: () => {
-      return AuthUtil.hasPermission(Claim.AddContract);
+      return AuthUtil.hasClaim(Claim.AddRequest);
     },
   },
   {
@@ -93,7 +93,7 @@ const MenuItems: LayoutMenuItemExtended[] = [
     id: "security",
     iconName: "SecurityGroup",
     title: "security",
-    pathname: "/security",
+    pathname: "/security/users",
     isVisible: () => true,
   },
   {

@@ -8,5 +8,17 @@
     "type": "الكود",
     "codeDetails": "بيانات الكود",
     "codeTypeDetails": "بيانات نوع الكود",
-    "parentType": "نوع الكود الاساسي"
+    "parentType": "نوع الكود الاساسي",
+    "addNewCode": "كود جديد",
+    "addNewCodeType": "نوع كود جديد",
+    "fieldName": "إسم الحقل",
+    "fieldLabel": "عنوان الحقل",
+    "fieldType": "نوع الحقل",
+    "fieldMaxLength": "اقصي عدد من الحروف",
+    "fieldMinValue": "اقل قيمة",
+    "fieldMaxValue": "اكبر قيمة",
+    "metadata": "الحقول الإضافية",
+    "addMetadata": "حقل إضافي جديد",
+    "text": "نص",
+    "number": "رقم"
 }

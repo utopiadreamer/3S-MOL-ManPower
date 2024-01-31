@@ -1,34 +1,16 @@
 export enum Claim {
   //Contract
-  AddContract = 'AddContract',
+  AddRequest = 'AddRequest',
   EditContract = 'EditContract',
   DeleteContract = 'DeleteContract',
 
-  //Settlement
-  AddSettlement = 'AddSettlement',
-  EditSettlement = 'EditSettlement',
-  DeleteSettlement = 'DeleteSettlement',
-
   //Workers
-  AddWorkersRecord = 'AddWorkersRecord',
-  EditWorkersRecord = 'EditWorkersRecord',
-  DeleteWorkersRecord = 'DeleteWorkersRecord',
   EditWorker = 'EditWorker',
   DeleteWorker = 'DeleteWorker',
 
   //Clearances
-  AddClearance = 'AddClearance',
-  EditClearance = 'EditClearance',
-  DeleteClearance = 'DeleteClearance',
-  ApproveDiscount = 'ApproveDiscount',
-  PrintClearance = 'PrintClearance',
-  ReprintClearance = 'ReprintClearance',
-  PrintPayment = 'PrintPayment',
   ApproveClearance = 'ApproveClearance',
-
-  //FinancialData
-  AddFinancialData = 'AddFinancialData',
-  EditFinancialData = 'EditFinancialData',
+  PrintClearance = 'PrintClearance',
 
   //Establishments
   EditEstablishment = 'EditEstablishment',
@@ -37,6 +19,7 @@ export enum Claim {
   AddCode = 'AddCode',
   EditCode = 'EditCode',
   DeleteCode = 'DeleteCode',
+  
 }
 
 export enum Role {

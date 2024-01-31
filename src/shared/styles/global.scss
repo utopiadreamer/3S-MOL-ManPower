@@ -60,7 +60,7 @@ body,
 
 .panel {
   // box-shadow: $contentBGround;
-    box-shadow: 0px 0px 7.5px 1px #57575740;
+  box-shadow: 0px 0px 7.5px 1px #57575740;
   border: 1px solid #57575740;
   background-color: $white;
   display: flex;
@@ -113,11 +113,12 @@ body,
 }
 
 .section {
+  margin-top: 5px;
   .mol-section {
     align-self: flex-end;
     // background-color: $mol_menu_background;
     // border-radius: 5px 5px 0px 0px;
-    padding: 0px 5px 30px 205px;
+    padding: 0px 5px 10px 20px;
 
     .header {
       margin-bottom: 0px;
@@ -125,7 +126,7 @@ body,
 
       i,
       h2 {
-        color: #303030;
+        color: $mol_menu_background;
         font-size: 20px !important;
       }
       h2 {
@@ -140,13 +141,12 @@ body,
     padding: 15px;
     margin-bottom: 20px;
   }
-
-  .actionsHeader {
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
+.actionsHeader {
+  display: flex;
+  justify-content: space-between;
+}
 .actionButton {
   border-radius: 6px;
   max-height: 32px;
@@ -207,7 +207,7 @@ body,
 .searchBar {
   border-top: 1px solid rgb(223, 223, 223);
   background-color: white;
-  padding: 15px;
+  padding-top: 15px;
   align-self: flex-end;
   display: flex;
   justify-content: flex-end;

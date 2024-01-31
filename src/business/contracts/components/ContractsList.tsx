@@ -78,69 +78,73 @@ export const ContractsList: FC = () => {
   return (
     <LayoutContent>
       <div className="contractsList">
-        <div className="panel">
-          <Section size={SectionSize.h2} iconName="Search" title={t('common:searchFilters')} />
-          <div className="row">
-            <TextField
-              label={t("contractNo")}
-              value={contractNo}
-              onChange={(e, newValue) => setContractNo(newValue)}
+        <div className="section">
+          <div className="content">
+            <Section
+              size={SectionSize.h2}
+              iconName="Search"
+              title={t("common:searchFilters")}
             />
-            <TextField
-              label={t("refContractNo")}
-              value={contractRefNo}
-              onChange={(e, newValue) => setContracReftNo(newValue)}
-            />
-            <Dropdown
-              label={t("contractType")}
-              options={contractTypes}
-              selectedKey={contractType ?? ""}
-              onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
-              }}
-            />
-            <Dropdown
-              label={t("district")}
-              options={[]}
-              selectedKey={district ?? ""}
-              onChange={(_, option) => {
-                setDistrict(option?.key.toString() ?? "");
-              }}
-            />
-          </div>
-          <div className="row">
-            <Dropdown
-              label={t("assignEst")}
-              options={[]}
-              selectedKey={contractRefNo}
-              onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
-              }}
-            />
-            <Dropdown
-              label={t("execEst")}
-              options={[]}
-              selectedKey={contractRefNo}
-              onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
-              }}
-            />
-            <DatePicker
-              label={t("contractStartDate")}
-              value={startDate}
-              onSelectDate={(val) => {
-                setStatrtDate(val ?? undefined);
-              }}
-            />
-            <DatePicker
-              label={t("contractEndDate")}
-              value={endDate}
-              onSelectDate={(val) => {
-                setEndDate(val ?? undefined);
-              }}
-            />
-          </div>
-        </div>
+            <div className="row">
+              <TextField
+                label={t("contractNo")}
+                value={contractNo}
+                onChange={(e, newValue) => setContractNo(newValue)}
+              />
+              <TextField
+                label={t("refContractNo")}
+                value={contractRefNo}
+                onChange={(e, newValue) => setContracReftNo(newValue)}
+              />
+              <Dropdown
+                label={t("contractType")}
+                options={contractTypes}
+                selectedKey={contractType ?? ""}
+                onChange={(_, option) => {
+                  setContractType(option?.key.toString() ?? "");
+                }}
+              />
+              <Dropdown
+                label={t("district")}
+                options={[]}
+                selectedKey={district ?? ""}
+                onChange={(_, option) => {
+                  setDistrict(option?.key.toString() ?? "");
+                }}
+              />
+            </div>
+            <div className="row">
+              <Dropdown
+                label={t("assignEst")}
+                options={[]}
+                selectedKey={contractRefNo}
+                onChange={(_, option) => {
+                  setContractType(option?.key.toString() ?? "");
+                }}
+              />
+              <Dropdown
+                label={t("execEst")}
+                options={[]}
+                selectedKey={contractRefNo}
+                onChange={(_, option) => {
+                  setContractType(option?.key.toString() ?? "");
+                }}
+              />
+              <DatePicker
+                label={t("contractStartDate")}
+                value={startDate}
+                onSelectDate={(val) => {
+                  setStatrtDate(val ?? undefined);
+                }}
+              />
+              <DatePicker
+                label={t("contractEndDate")}
+                value={endDate}
+                onSelectDate={(val) => {
+                  setEndDate(val ?? undefined);
+                }}
+              />
+            </div>
             <div className="searchBar">
               <PrimaryButton
                 className="actionButton primeAction"
@@ -157,9 +161,14 @@ export const ContractsList: FC = () => {
                 onClick={() => {}}
               />
             </div>
-        <br />
+          </div>
+        </div>
         <div className="panel">
-          <Section size={SectionSize.h2} iconName="SearchAndApps" title={t("common:searchResults")} />
+          <Section
+            size={SectionSize.h2}
+            iconName="SearchAndApps"
+            title={t("common:searchResults")}
+          />
           <ContractsGrid
             items={contracts}
             onChanged={() => {

@@ -39,66 +39,74 @@ export const SettlementsList: FC = () => {
     },
   ];
 
-
   return (
     <LayoutContent>
       <div className="settlementList">
-        <div className="panel">
-          <Section size={SectionSize.h2} iconName="Search" title={t('common:searchFilters')} />
-          <div className="row g-5">
-            <TextField
-              label={t("settlementNumber")}
-              value={settleNo}
-              onChange={(e, newValue) => setSettleNo(newValue)}
+        <div className="section">
+          <div className="content">
+            <Section
+              size={SectionSize.h2}
+              iconName="Search"
+              title={t("common:searchFilters")}
             />
-            <TextField
-              label={t("contractNo")}
-              value={contractNo}
-              onChange={(e, newValue) => setContractNo(newValue)}
-            />
-            <Dropdown
-              label={t("settlementDocumentType")}
-              options={documentTypes}
-              selectedKey={documentType ?? ""}
-              onChange={(_, option) => {
-                setDocumentType(option?.key.toString() ?? "");
-              }}
-            />
-            <DatePicker
-              label={t("operationStartDate")}
-              value={startDate}
-              onSelectDate={(val) => {
-                setStatrtDate(val ?? undefined);
-              }}
-            />
-            <DatePicker
-              label={t("operationEndDate")}
-              value={endDate}
-              onSelectDate={(val) => {
-                setEndDate(val ?? undefined);
-              }}
-            />
+            <div className="row g-5">
+              <TextField
+                label={t("settlementNumber")}
+                value={settleNo}
+                onChange={(e, newValue) => setSettleNo(newValue)}
+              />
+              <TextField
+                label={t("contractNo")}
+                value={contractNo}
+                onChange={(e, newValue) => setContractNo(newValue)}
+              />
+              <Dropdown
+                label={t("settlementDocumentType")}
+                options={documentTypes}
+                selectedKey={documentType ?? ""}
+                onChange={(_, option) => {
+                  setDocumentType(option?.key.toString() ?? "");
+                }}
+              />
+              <DatePicker
+                label={t("operationStartDate")}
+                value={startDate}
+                onSelectDate={(val) => {
+                  setStatrtDate(val ?? undefined);
+                }}
+              />
+              <DatePicker
+                label={t("operationEndDate")}
+                value={endDate}
+                onSelectDate={(val) => {
+                  setEndDate(val ?? undefined);
+                }}
+              />
+            </div>
+            <div className="searchBar">
+              <PrimaryButton
+                className="actionButton primeAction"
+                iconProps={{ iconName: "Search" }}
+                text={t("common:search")}
+                onClick={() => {
+                  Search();
+                }}
+              />
+              <PrimaryButton
+                className="actionButton subAction"
+                iconProps={{ iconName: "Clear" }}
+                text={t("common:clearSearch")}
+                onClick={() => {}}
+              />
+            </div>
           </div>
         </div>
-        <div className="searchBar">
-          <PrimaryButton
-            className="actionButton primeAction"
-            iconProps={{ iconName: "Search" }}
-            text={t("common:search")}
-            onClick={() => {
-              Search();
-            }}
-          />
-          <PrimaryButton
-            className="actionButton subAction"
-            iconProps={{ iconName: "Clear" }}
-            text={t("common:clearSearch")}
-            onClick={() => {}}
-          />
-        </div>
-        <br />
         <div className="panel">
-          <Section size={SectionSize.h2} iconName="SearchAndApps" title={t("common:searchResults")} />
+          <Section
+            size={SectionSize.h2}
+            iconName="SearchAndApps"
+            title={t("common:searchResults")}
+          />
           <SettlementsGrid
             items={settlements}
             onChanged={() => {

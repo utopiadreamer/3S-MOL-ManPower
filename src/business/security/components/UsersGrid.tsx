@@ -13,12 +13,11 @@ import {
   SortedColumnInfo,
 } from "../../../shared/components/customDetailList/CustomDetailList";
 import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
+import { UserDTO } from "../../../shared/models/UserDTO";
 import { useNavigate } from "react-router-dom";
-import { CodeTypeDTO } from "../../../shared/models/CodeTypeDTO";
-import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
 
 interface GridProps {
-  items: CodeTypeDTO[];
+  items: UserDTO[];
   onChanged?: (
     pageIndex: number,
     filteredColumn: FilteredColumn[],
@@ -27,56 +26,73 @@ interface GridProps {
   onNbItemPerPageChanged: (nbItemPerPage: number) => boolean;
 }
 
-export const CodesTypesGrid: FC<GridProps> = (props: GridProps) => {
-  const { t } = useTranslation(["codes", "common"]);
+export const UsersGrid: FC<GridProps> = (props: GridProps) => {
+  const { t } = useTranslation(["security", "common"]);
   const [columns, setColumns] = useState<ColumnInfo[]>();
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
   const { items: itemsProps, onChanged, onNbItemPerPageChanged } = props;
-
-  const [items, setItems] = useState<CodeTypeDTO[]>([]);
   const navigate = useNavigate();
+
+  const [items, setItems] = useState<UserDTO[]>([]);
 
   useEffect(() => {
     setItems(itemsProps?.slice());
   }, [itemsProps]);
 
-  const getCodeType = (codeTypeId: number) => {
-    const types = getCodesTypes();
-    return types.find((type) => type.ID === codeTypeId)?.Name || "";
-  }
   useEffect(() => {
     let gridColumns = [
-      {
-        key: "code",
-        name: t("code"),
-        fieldName: "Code",
-        minWidth: 120,
-        maxWidth: 120,
-        isRowHeader: true,
-        isResizable: true
-      },
       {
         key: "name",
         name: t("name"),
         fieldName: "Name",
-        minWidth: 300,
-        maxWidth: 300,
-        isRowHeader: true,
-        isResizable: true
-      },
-      {
-        key: "parentID",
-        name: t("parentType"),
-        fieldName: "ParentID",
         minWidth: 200,
         maxWidth: 200,
         isRowHeader: true,
         isResizable: true,
-        onRender: (item: CodeTypeDTO) => {
-          return <div>{getCodeType(item.ParentID ?? 0)}</div>;
+        onRender: (item: UserDTO) => {
+          return <div>{item.Name}</div>;
         },
+      },
+      {
+        key: "userName",
+        name: t("userName"),
+        fieldName: "UserName",
+        minWidth: 150,
+        maxWidth: 150,
+        isRowHeader: true,
+        isResizable: true,
+      },
+      {
+        key: "email",
+        name: t("email"),
+        fieldName: "Email",
+        minWidth: 200,
+        maxWidth: 200,
+        isRowHeader: true,
+        isResizable: true,
+      },
+      {
+        key: "role",
+        name: t("role"),
+        fieldName: "Role",
+        minWidth: 150,
+        maxWidth: 150,
+        isRowHeader: true,
+        isResizable: true,
+        onRender: (item: UserDTO) => {
+          return <div>{t(item.Role)}</div>;
+        },
+      },
+      {
+        key: "claims",
+        name: t("claims"),
+        fieldName: "claims",
+        minWidth: 150,
+        maxWidth: 150,
+        isRowHeader: true,
+        isResizable: true,
       },
       {
         key: "action",
@@ -86,10 +102,13 @@ export const CodesTypesGrid: FC<GridProps> = (props: GridProps) => {
         maxWidth: 60,
         isRowHeader: true,
         isResizable: true,
-        onRender: (item: CodeTypeDTO) => {
+        onRender: (item: UserDTO) => {
           return (
             <div>
-              <IconButton iconProps={{ iconName: "View" }} onClick={() => navigate(`/codesTypes/${item.ID}`)} />
+              <IconButton
+                iconProps={{ iconName: "View" }}
+                onClick={() => navigate(`/security/users/${item.ID}`)}
+              />
             </div>
           );
         },

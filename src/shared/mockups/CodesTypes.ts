@@ -40,7 +40,22 @@ export function getCodesTypes() {
       ID: 7,
       Code: "7",
       Name: "العمل الفرعي",
-      ParentID: 6
+      ParentID: 6,
+      Metadata: [{
+        ID: 1,
+        Name: "rate",
+        Label: "نسبة الخصم",
+        Type: "number",
+        MaxLength: 2,
+        MinValue: 0,
+        MaxValue: 100
+      },{
+        ID: 2,
+        Name: "notes",
+        Label: "ملاحظات",
+        Type: "text",
+        MaxLength: 100
+      }]
     },
   ];
   return arr;

@@ -1,8 +1,10 @@
-import { Claim } from "../constants/auth";
+import { Claim, Role } from "../constants/auth";
 
 export class UserDTO {
     ID!: string;
     Name!: string;
+    UserName!: string;
     Email!: string;
-    Claims!: Claim[]
+    Claims?: Claim[];
+    Role!: Role;
 }

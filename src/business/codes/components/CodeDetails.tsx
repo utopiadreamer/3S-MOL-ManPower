@@ -1,7 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from "react";
 import "../styles/CodeDetails.scss";
 import { useNavigate, useParams } from "react-router-dom";
-import { TextField } from "../../../shared/components/forms/CustomTextField";
+import {
+  InputType,
+  TextField,
+} from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { getCodes } from "../../../shared/mockups/Codes";
@@ -13,6 +17,7 @@ import { ConfirmAction } from "../../../shared/components/business/ConfirmAction
 import { Action, Mode } from "../../../shared/constants/types";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
+import { MetadataDTO } from "../../../shared/models/MetadataDTO";
 
 export interface Props {
   mode: Mode;
@@ -22,6 +27,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
   const { mode } = props;
   let params = useParams();
   const [details, setDetails] = useState<CodeDTO>();
+  const [metadata, setMetadata] = useState<MetadataDTO[]>([]);
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
   const [codeType, setCodeType] = useState<string>();
   const [parentCode, setParentCode] = useState<string>();
@@ -32,14 +38,12 @@ export const CodeDetails: FC<Props> = (props: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    getCodesList(details?.ParentID?.toString() ?? '');
+    getCodesList(details?.ParentID?.toString() ?? "");
     setParentCode(details?.ParentID?.toString());
   }, [details]);
 
   const getCodesList = (id: string) => {
-    const codes = getCodes().filter(
-      (i) => i.ID?.toString() === id
-    );
+    const codes = getCodes().filter((i) => i.ID?.toString() === id);
     const list = codes.map((item) => {
       return {
         key: item.ID.toString(),
@@ -49,20 +53,46 @@ export const CodeDetails: FC<Props> = (props: Props) => {
     setCodes(list);
   };
 
+  const getMetadata = (id: string, metadata: string) => {
+    const type = getTypesList(id);
+    const data = type[0].Metadata;
+    if (type && metadata) {
+      const json = JSON.parse(metadata);
+      data?.forEach((item) => {
+        item.Value = json.find(
+          (el: { name: string }) => el.name === item.Name
+        ).value;
+      });
+    }
+    setMetadata(data ?? []);
+  };
+
   useEffect(() => {
     try {
       const list = getCodes().filter((i) => i.ID.toString() === params.id);
       if (list && list.length > 0) {
         const data = list[0];
         setCodeType(data?.CodeTypeID?.toString());
+        getMetadata(data.CodeTypeID.toString(), data?.Metadata ?? "");
         setDetails(data);
       }
       getTypes();
     } catch {}
   }, [params.id]);
 
+  const getTypesList = (id?: string) => {
+    let types = getCodesTypes();
+    if (id) {
+      const arr = [];
+      const type = types.find((i) => i.ID.toString() === id);
+      if (type) arr.push(type);
+      return arr;
+    }
+    return types;
+  };
+
   const getTypes = () => {
-    const types = getCodesTypes();
+    const types = getTypesList();
     const list = types.map((item) => {
       return {
         key: item.ID.toString(),
@@ -70,7 +100,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
       };
     });
     setCodesTypes(list);
-  }
+  };
 
   const getActions = () => {
     const saveAction = {
@@ -115,24 +145,26 @@ export const CodeDetails: FC<Props> = (props: Props) => {
 
   return (
     <LayoutContent>
-      <div className="codeDetails panel">
+      <div className="codeDetails">
         <div className="body">
-            <div className="content">
           <div className="section">
-            <div className="actionsHeader">
-              <Section
-                title={t("codeDetails")}
-                size={SectionSize.h2}
-                iconName="Bank"
-              />
-              <CommandBar items={[]} farItems={getActions()} />
-            </div>
-              <div className="row">
-                <TextField
-                  readOnly
-                  label={t("code")}
-                  value={details?.Code ?? ""}
+            <div className="content">
+              <div className="actionsHeader">
+                <Section
+                  title={t("codeDetails")}
+                  size={SectionSize.h2}
+                  iconName="Code"
                 />
+                <CommandBar items={[]} farItems={getActions()} />
+              </div>
+              <div className="row">
+                {mode !== Mode.New && (
+                  <TextField
+                    readOnly
+                    label={t("code")}
+                    value={details?.Code ?? ""}
+                  />
+                )}
                 <TextField
                   readOnly={!isEditable}
                   label={t("name")}
@@ -142,19 +174,56 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                   label={t("codeType")}
                   selectedKey={codeType}
                   options={codesTypes}
-                  onChange={(_, option) => { setCodeType(option?.key.toString()); getCodesList(option?.key.toString() ?? '')}}
+                  onChange={(_, option) => {
+                    const key = option?.key.toString() ?? "";
+                    getMetadata(key, "");
+                    setCodeType(key);
+                    getCodesList(key);
+                  }}
                   disabled={!isEditable}
                 />
                 <Dropdown
                   label={t("parentID")}
                   selectedKey={parentCode}
                   options={codes}
-                  onChange={(_, option) => setParentCode(option?.key.toString())}
+                  onChange={(_, option) =>
+                    setParentCode(option?.key.toString())
+                  }
                   disabled={!isEditable}
                 />
               </div>
             </div>
           </div>
+          {metadata.length > 0 && (
+            <div className="section">
+              <div className="content">
+                <Section
+                  title={t("metadata")}
+                  size={SectionSize.h2}
+                  iconName="EditNote"
+                />
+                <div className="row">
+                  {metadata.map((item) => {
+                    return (
+                      <TextField
+                        key={item.Name}
+                        value={item.Value}
+                        label={item.Label}
+                        name={item.Name}
+                        maxLength={item.MaxLength}
+                        inputType={
+                          item.Type === "number"
+                            ? InputType.Number
+                            : InputType.None
+                        }
+                        readOnly={!isEditable}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {showDeleteDialog && (

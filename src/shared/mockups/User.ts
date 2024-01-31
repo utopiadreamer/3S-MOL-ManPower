@@ -11,7 +11,7 @@ export function getCurrentUser() {
   switch (role) {
     case Role.Researcher:
       user.Claims = [
-        Claim.AddContract,
+        Claim.AddRequest,
         Claim.EditContract,
         Claim.DeleteContract,
       ];
@@ -19,9 +19,9 @@ export function getCurrentUser() {
     case Role.Reviewer:
       user.Claims = [
         Claim.EditContract,
-        Claim.EditSettlement,
-        Claim.EditWorkersRecord,
-        Claim.EditClearance,
+        Claim.EditCode,
+        Claim.EditEstablishment,
+        Claim.EditWorker,
       ];
       break;
     case Role.DirectorateManager:
@@ -31,4 +31,49 @@ export function getCurrentUser() {
       break;
   }
   return user;
+}
+
+export function getUsers() {
+  const arr: UserDTO[] = [
+    {
+      ID: "1",
+      Name: "محمد شوقي احمد",
+      UserName: "moo-shoo",
+      Email: "m.shawky@3segypt.com",
+      Role: Role.Admin,
+    },
+    {
+      ID: "2",
+      Name: "كريم جمال",
+      Email: "k.gamal@3segypt.com",
+      UserName: "user1",
+      Claims: [
+        Claim.AddRequest,
+        Claim.EditContract,
+        Claim.DeleteContract,
+      ],
+      Role: Role.Admin,
+    },
+    {
+      ID: "3",
+      Name: "محمد عصام",
+      UserName: "user2",
+      Email: "m.essam@3segypt.com",
+      Claims: [
+        Claim.EditCode,
+        Claim.EditWorker,
+        Claim.EditEstablishment,
+      ],
+      Role: Role.Researcher,
+    },
+    {
+      ID: "4",
+      Name: "فادي جرجس",
+      UserName: "user3",
+      Email: "fady@3segypt.com",
+      Role: Role.Reviewer,
+    }
+  ];
+
+  return arr;
 }

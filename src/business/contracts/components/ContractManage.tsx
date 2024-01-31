@@ -195,13 +195,13 @@ export const ContractManage: FC<Props> = (props: Props) => {
     //   },
     // };
     const arr = [];
-    // if (AuthUtil.hasPermission(Claim.EditContract)) arr.push(subAction);
+    // if (AuthUtil.hasClaim(Claim.EditContract)) arr.push(subAction);
     // if (isEditable) {
     //   arr.splice(0, 0, saveAction);
     // } else
     if (
       currentMode === Mode.Edit &&
-      AuthUtil.hasPermission(Claim.DeleteContract)
+      AuthUtil.hasClaim(Claim.DeleteContract)
     ) {
       arr.push(primeAction);
     }

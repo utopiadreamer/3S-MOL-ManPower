@@ -1,36 +1,34 @@
 import { FC, useEffect, useState } from "react";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
 
-import { WorkersGrid } from "./WorkersGrid";
-import { Mode } from "../../../shared/constants/types";
-import { WorkerDTO } from "../../../shared/models/WorkerDTO";
+import { UsersGrid } from "./UsersGrid";
+import { UserDTO } from "../../../shared/models/UserDTO";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { PrimaryButton } from "@fluentui/react";
-import { getWorkers } from "../../../shared/mockups/Workers";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { getUsers } from "../../../shared/mockups/User";
 
-export const WorkersList: FC = () => {
-  const [workers, setWorkers] = useState<WorkerDTO[]>([]);
-  const { t } = useTranslation(["workers", "common"]);
-  const [nationalID, setNationalID] = useState<string>();
-  const [occupation, setOccupation] = useState<string>();
+export const UsersList: FC = () => {
+  const [users, setUsers] = useState<UserDTO[]>([]);
+  const { t } = useTranslation(["security", "common"]);
+  const [email, setEmail] = useState<string>();
   const [name, setName] = useState<string>();
-  const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     Search();
   });
 
   const Search = () => {
-    const results = getWorkers(name, nationalID, occupation, id);
-    setWorkers(results);
+    const results = getUsers();
+    setUsers(results);
   };
 
   return (
     <LayoutContent>
-      <div className="workersList">
+      <div className="usersList">
         <div className="section">
           <div className="content">
             <Section
@@ -40,19 +38,14 @@ export const WorkersList: FC = () => {
             />
             <div className="row">
               <TextField
-                label={t("workerName")}
+                label={t("userName")}
                 value={name}
                 onChange={(e, newValue) => setName(newValue)}
               />
               <TextField
-                label={t("nationalID")}
-                value={nationalID}
-                onChange={(e, newValue) => setNationalID(newValue)}
-              />
-              <TextField
-                label={t("occupation")}
-                value={occupation}
-                onChange={(e, newValue) => setOccupation(newValue)}
+                label={t("email")}
+                value={email}
+                onChange={(e, newValue) => setEmail(newValue)}
               />
             </div>
             <div className="searchBar">
@@ -73,22 +66,32 @@ export const WorkersList: FC = () => {
             </div>
           </div>
         </div>
-        <div className="panel">
-          <Section
-            size={SectionSize.h2}
-            iconName="SearchAndApps"
-            title={t("common:searchResults")}
-          />
-          <WorkersGrid
-            mode={Mode.View}
-            items={workers}
-            onChanged={() => {
-              return false;
-            }}
-            onNbItemPerPageChanged={() => {
-              return false;
-            }}
-          />
+        <div className="section">
+          <div className="content">
+            <div className="actionsHeader">
+              <Section
+                size={SectionSize.h2}
+                iconName="SearchAndApps"
+                title={t("common:searchResults")}
+              />
+              <PrimaryButton
+                className="actionButton primeAction"
+                iconProps={{ iconName: "Add" }}
+                onClick={() => navigate("/security/users/new")}
+              >
+                {t("addNewUser")}
+              </PrimaryButton>
+            </div>
+            <UsersGrid
+              items={users}
+              onChanged={() => {
+                return false;
+              }}
+              onNbItemPerPageChanged={() => {
+                return false;
+              }}
+            />
+          </div>
         </div>
       </div>
     </LayoutContent>

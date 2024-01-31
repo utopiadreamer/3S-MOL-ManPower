@@ -18,7 +18,7 @@ export const EstablishmentsList: FC = () => {
   const [institutionalCode, setInstitutionalCode] = useState<string>();
   const [id, setID] = useState<string>();
   const [name, setName] = useState<string>();
-  const [estType, setEstType] = useState<string>('persons');
+  const [estType, setEstType] = useState<string>("persons");
 
   const Search = () => {
     const est = getEstablishments();
@@ -29,107 +29,124 @@ export const EstablishmentsList: FC = () => {
   return (
     <LayoutContent>
       <div className="establishmentsList">
-        <div>
-          <Pivot
-            selectedKey={estType}
-            onLinkClick={(item) => {
-              setEstType(item?.props.itemKey ?? "");
-              setEstablishments([]);
-            }}
-          >
-            <PivotItem headerText={t('persons')} itemIcon="ReminderPerson" itemKey="persons">
-              <div className="panel row">
-                <TextField
-                  label={t("id")}
-                  value={id}
-                  onChange={(e, newValue) => setID(newValue)}
-                />
-                <TextField
-                  label={t("name")}
-                  value={name}
-                  onChange={(e, newValue) => setName(newValue)}
-                />
-                <TextField
-                  label={t("nationalID")}
-                  value={nationalID}
-                  onChange={(e, newValue) => setNationalID(newValue)}
-                />
-                <TextField
-                  label={t("insuranceNumber")}
-                  value={insuranceNumber}
-                  onChange={(e, newValue) => setInsuranceNumber(newValue)}
-                />
-              </div>
-            </PivotItem>
-            <PivotItem headerText={t('companies')} itemIcon="CityNext2" itemKey="companies">
-              <div className="panel row">
-                <TextField
-                  label={t("id")}
-                  value={id}
-                  onChange={(e, newValue) => setID(newValue)}
-                />
-                <TextField
-                  label={t("name")}
-                  value={name}
-                  onChange={(e, newValue) => setName(newValue)}
-                />
-                <TextField
-                  label={t("commRegistrationNo")}
-                  value={commRegistrationNo}
-                  onChange={(e, newValue) => setCommRegistrationNo(newValue)}
-                />
-                <TextField
-                  label={t("taxNumber")}
-                  value={taxNumber}
-                  onChange={(e, newValue) => setTaxNumber(newValue)}
-                />
-              </div>
-            </PivotItem>
-            <PivotItem headerText={t('governments')} itemIcon="CityNext" itemKey="governments">
-              <div className="panel row">
-                <TextField
-                  label={t("id")}
-                  value={id}
-                  onChange={(e, newValue) => setID(newValue)}
-                />
-                <TextField
-                  label={t("name")}
-                  value={name}
-                  onChange={(e, newValue) => setName(newValue)}
-                />
-                <TextField
-                  label={t("insuranceNumber")}
-                  value={insuranceNumber}
-                  onChange={(e, newValue) => setInsuranceNumber(newValue)}
-                />
-                <TextField
-                  label={t("institutionalCode")}
-                  value={institutionalCode ?? ""}
-                  onChange={(e, newValue) => setInstitutionalCode(newValue)}
-                />
-              </div>
-            </PivotItem>
-          </Pivot>
+        <div className="section">
+          <div className="content">
+            <Pivot
+              selectedKey={estType}
+              onLinkClick={(item) => {
+                setEstType(item?.props.itemKey ?? "");
+                setEstablishments([]);
+              }}
+            >
+              <PivotItem
+                headerText={t("persons")}
+                itemIcon="ReminderPerson"
+                itemKey="persons"
+              >
+                <div className="row">
+                  <TextField
+                    label={t("id")}
+                    value={id}
+                    onChange={(e, newValue) => setID(newValue)}
+                  />
+                  <TextField
+                    label={t("name")}
+                    value={name}
+                    onChange={(e, newValue) => setName(newValue)}
+                  />
+                  <TextField
+                    label={t("nationalID")}
+                    value={nationalID}
+                    onChange={(e, newValue) => setNationalID(newValue)}
+                  />
+                  <TextField
+                    label={t("insuranceNumber")}
+                    value={insuranceNumber}
+                    onChange={(e, newValue) => setInsuranceNumber(newValue)}
+                  />
+                </div>
+              </PivotItem>
+              <PivotItem
+                headerText={t("companies")}
+                itemIcon="CityNext2"
+                itemKey="companies"
+              >
+                <div className="row">
+                  <TextField
+                    label={t("id")}
+                    value={id}
+                    onChange={(e, newValue) => setID(newValue)}
+                  />
+                  <TextField
+                    label={t("name")}
+                    value={name}
+                    onChange={(e, newValue) => setName(newValue)}
+                  />
+                  <TextField
+                    label={t("commRegistrationNo")}
+                    value={commRegistrationNo}
+                    onChange={(e, newValue) => setCommRegistrationNo(newValue)}
+                  />
+                  <TextField
+                    label={t("taxNumber")}
+                    value={taxNumber}
+                    onChange={(e, newValue) => setTaxNumber(newValue)}
+                  />
+                </div>
+              </PivotItem>
+              <PivotItem
+                headerText={t("governments")}
+                itemIcon="CityNext"
+                itemKey="governments"
+              >
+                <div className="row">
+                  <TextField
+                    label={t("id")}
+                    value={id}
+                    onChange={(e, newValue) => setID(newValue)}
+                  />
+                  <TextField
+                    label={t("name")}
+                    value={name}
+                    onChange={(e, newValue) => setName(newValue)}
+                  />
+                  <TextField
+                    label={t("insuranceNumber")}
+                    value={insuranceNumber}
+                    onChange={(e, newValue) => setInsuranceNumber(newValue)}
+                  />
+                  <TextField
+                    label={t("institutionalCode")}
+                    value={institutionalCode ?? ""}
+                    onChange={(e, newValue) => setInstitutionalCode(newValue)}
+                  />
+                </div>
+              </PivotItem>
+            </Pivot>
+            <div className="searchBar">
+              <PrimaryButton
+                className="actionButton primeAction"
+                iconProps={{ iconName: "Search" }}
+                text={t("common:search")}
+                onClick={() => {
+                  Search();
+                }}
+              />
+              <PrimaryButton
+                className="actionButton subAction"
+                iconProps={{ iconName: "Clear" }}
+                text={t("common:clearSearch")}
+                onClick={() => {}}
+              />
+            </div>
+          </div>
         </div>
-        <div className="searchBar">
-          <PrimaryButton
-            className="actionButton primeAction"
-            iconProps={{ iconName: "Search" }}
-            text={t("common:search")}
-            onClick={() => {
-              Search();
-            }}
-          />
-          <PrimaryButton
-            className="actionButton subAction"
-            iconProps={{ iconName: "Clear" }}
-            text={t("common:clearSearch")}
-            onClick={() => {}}
-          />
-        </div>
-        <br />
         <div className="panel">
-          <Section size={SectionSize.h2} iconName="SearchAndApps" title={t("common:searchResults")} />
+          <Section
+            size={SectionSize.h2}
+            iconName="SearchAndApps"
+            title={t("common:searchResults")}
+          />
           <EstablishmentsGrid
             type={estType}
             items={establishments}

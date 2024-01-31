@@ -47,7 +47,7 @@ export const Layout: FC<PropsWithChildren> = (props: PropsWithChildren) => {
   const location = useLocation();
   useEffect(() => {
     const activeMenuItems = MenuItems.filter(
-      (m) => m && m?.isVisible(role.Claims)
+      (m) => m && m?.isVisible(role.Claims ?? [])
     );
     setMenuItemsState(activeMenuItems);
     const currentItems = GetCurrentMenuItemEntry(location, activeMenuItems);

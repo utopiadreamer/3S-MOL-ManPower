@@ -30,7 +30,7 @@ interface GridProps {
     sortedColumn?: SortedColumnInfo
   ) => boolean;
   onNbItemPerPageChanged: (nbItemPerPage: number) => boolean;
-  onDelete: (id: number, invoiceNo: string) => void;
+  onDelete: () => void;
   onRealod: () => void;
   reload?: boolean;
 }
@@ -84,7 +84,7 @@ export const WorkItemsGrid: FC<GridProps> = (props: GridProps) => {
       }
       setGroups(invoices);
     }
-    onDelete(id, invoiceNo);
+    onDelete();
   };
 
   const _onRenderDetailsHeader = (
@@ -107,23 +107,6 @@ export const WorkItemsGrid: FC<GridProps> = (props: GridProps) => {
         : "";
 
     return <div data-is-focusable={true}>{value}</div>;
-  };
-
-  const _addItem = () => {
-
-    setItems(
-      workItems.concat([
-        {
-          invoiceNo: "1",
-          workItem: "4",
-          amount: 44,
-          id: 1
-        },
-      ])
-    );
-    if (_root.current) {
-      _root.current.focusIndex(workItems.length, true);
-    }
   };
 
   useEffect(() => {

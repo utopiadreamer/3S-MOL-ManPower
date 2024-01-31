@@ -40,7 +40,8 @@ export function getCodes() {
       Code: "6",
       Name: "أعمال الحفر",
       CodeTypeID: 7,
-      ParentID: 5
+      ParentID: 5,
+      Metadata: '[{"name": "rate", "value": "11"}, {"name": "notes", "value": "notes"}]'
     },
     {
       ID: 7,

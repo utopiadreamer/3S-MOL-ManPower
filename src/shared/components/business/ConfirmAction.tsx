@@ -1,11 +1,10 @@
-import { initializeIcons, ActionButton } from "@fluentui/react";
+import { ActionButton } from "@fluentui/react";
 import React, { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./ConfirmAction.scss";
 import { Dialog } from "../forms/CustomDialog";
 import { Action } from "../../constants/types";
 
-initializeIcons();
 interface ConfirmActionProps {
   action: Action;
   type: string;

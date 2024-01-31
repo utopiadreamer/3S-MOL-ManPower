@@ -73,10 +73,10 @@ export const WorkerDetails: FC = () => {
     };
 
     const arr = [];
-    if (AuthUtil.hasPermission(Claim.EditWorker)) arr.push(subAction);
+    if (AuthUtil.hasClaim(Claim.EditWorker)) arr.push(subAction);
     if (isEditable) {
       arr.splice(0, 0, saveAction);
-    } else if (AuthUtil.hasPermission(Claim.DeleteWorkersRecord)) { arr.push(deleteAction); }
+    } else if (AuthUtil.hasClaim(Claim.DeleteWorker)) { arr.push(deleteAction); }
     return arr;
   };
 

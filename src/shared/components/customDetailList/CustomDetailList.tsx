@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FC, useReducer, useEffect } from 'react';
+import React, { FC, useReducer, useEffect } from "react";
 import {
   ShimmeredDetailsList,
   DetailsListLayoutMode,
@@ -8,9 +8,12 @@ import {
   ISelection,
   IRenderFunction,
   IDetailsFooterProps,
-  IDetailsRowProps, DetailsRow
-} from '@fluentui/react';
-import clsx from 'clsx';
+  IDetailsRowProps,
+  DetailsRow,
+  IRefObject,
+  IDetailsList,
+} from "@fluentui/react";
+import clsx from "clsx";
 import {
   copyAndSortItems,
   PageInfo,
@@ -18,16 +21,16 @@ import {
   BuildPagination,
   FilterFunction,
   PaginationSetting,
-} from './ItemHelper';
+} from "./ItemHelper";
 import {
   ColumnInfo,
   FilteredHeaderColumn,
   ValueComparator,
   FilterCriteria,
-} from './FilteredHeaderColumn';
-import './CustomDetailList.scss';
-import Pagination, { NavigationAction } from './Pagination';
-import { CustomHeaderColumn } from './CustomHeaderColumn';
+} from "./FilteredHeaderColumn";
+import "./CustomDetailList.scss";
+import Pagination, { NavigationAction } from "./Pagination";
+import { CustomHeaderColumn } from "./CustomHeaderColumn";
 
 export type OnFilterChanged = (filteredColumn: FilteredColumn[]) => boolean;
 export type OnPageChanged = (pageIndex: number) => boolean;
@@ -47,7 +50,7 @@ export interface CustomDetailListLabelsProps {
   resultPerPage?: string;
   totalRecord?: string;
 }
-export type ReceiveItemsBehavior = 'ResetInternalState'| 'KeepInternalState';
+export type ReceiveItemsBehavior = "ResetInternalState" | "KeepInternalState";
 export interface CustomDetailListProps {
   className?: string;
   selectionMode?: SelectionMode;
@@ -73,6 +76,7 @@ export interface CustomDetailListProps {
   setKey?: string;
   selectionPreservedOnEmptyClick?: boolean;
   loadingMessage?: string;
+  componentRef?: IRefObject<IDetailsList>;
 }
 
 export interface FilteredColumn {
@@ -91,27 +95,30 @@ interface CustomDetailListState {
   nbSelectedItemPerPage?: number;
   sortedColumnName?: string;
   sortedColumnkey?: string;
-  sortedDirection?: 'Asc' | 'Desc';
+  sortedDirection?: "Asc" | "Desc";
   filteredColumns: FilteredColumn[];
 }
 
 export type ReceivedColumnsDefinition = {
-  type: 'receivedColumnsDefinition';
+  type: "receivedColumnsDefinition";
   columns: ColumnInfo[];
 };
-export type ReceivedNewItemsAction = { type: 'receivedNewItems'; payload: {items: any[]; onReceiveItemsBehavior: ReceiveItemsBehavior} };
+export type ReceivedNewItemsAction = {
+  type: "receivedNewItems";
+  payload: { items: any[]; onReceiveItemsBehavior: ReceiveItemsBehavior };
+};
 export type PageSettingChangedAction = {
-  type: 'pageSettingChanged';
+  type: "pageSettingChanged";
   paginationSetting?: PaginationSetting;
 };
 export type FilterAction =
-  | { type: 'Addfilter'; columnName: string; criteria: FilterCriteria[] }
-  | { type: 'Removefilter'; columnName: string }
-  | { type: 'resetFilters'};
+  | { type: "Addfilter"; columnName: string; criteria: FilterCriteria[] }
+  | { type: "Removefilter"; columnName: string }
+  | { type: "resetFilters" };
 
 export type CustomDetailListAction =
-  | { type: 'sortDesc'; columnName: string }
-  | { type: 'sortAsc'; columnName: string }
+  | { type: "sortDesc"; columnName: string }
+  | { type: "sortAsc"; columnName: string }
   | NavigationAction
   | ReceivedNewItemsAction
   | ReceivedColumnsDefinition
@@ -200,28 +207,34 @@ function detailListReducer(
   let newPageInfo;
 
   switch (action.type) {
-    case 'receivedColumnsDefinition':{
+    case "receivedColumnsDefinition": {
       const cols = [...action.columns];
-      if (state.sortedColumnkey){
-        for (let index = 0; index < cols.length;index += 1){
-          if (cols[index].key === state.sortedColumnkey){
+      if (state.sortedColumnkey) {
+        for (let index = 0; index < cols.length; index += 1) {
+          if (cols[index].key === state.sortedColumnkey) {
             cols[index].isSorted = true;
-            cols[index].isSortedDescending = state.sortedDirection === 'Desc';
-          }else{
+            cols[index].isSortedDescending = state.sortedDirection === "Desc";
+          } else {
             cols[index].isSortedDescending = undefined;
             cols[index].isSorted = undefined;
           }
-        } 
+        }
       }
       return { ...state, columns: cols };
     }
-    case 'pageSettingChanged':
-      if (action.paginationSetting){
-        newPageInfo = BuildPagination(action.paginationSetting?.initialPage ?? 0, state.itemsFiltered ?? state.items, {
-          ...action.paginationSetting,
-          nbItemPerPage: state.nbSelectedItemPerPage ?? action.paginationSetting?.nbItemPerPage
-        });
-      }  else{
+    case "pageSettingChanged":
+      if (action.paginationSetting) {
+        newPageInfo = BuildPagination(
+          action.paginationSetting?.initialPage ?? 0,
+          state.itemsFiltered ?? state.items,
+          {
+            ...action.paginationSetting,
+            nbItemPerPage:
+              state.nbSelectedItemPerPage ??
+              action.paginationSetting?.nbItemPerPage,
+          }
+        );
+      } else {
         newPageInfo = undefined;
       }
       return {
@@ -229,52 +242,63 @@ function detailListReducer(
         itemsView: pagination(state.itemsFiltered ?? state.items, newPageInfo),
         pageInfo: newPageInfo,
       };
-    
-    case 'itemsPerPageNumberChanged':
-      if (action.numberOfItemPerPage !== state.nbSelectedItemPerPage){
-          newPageInfo = BuildPagination(0, state.itemsFiltered ?? state.items, {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            ...state.pageInfo!.paginationSetting,
-            nbItemPerPage: action.numberOfItemPerPage,
-          });
-          return {
-            ...state,
-            itemsView: pagination(state.itemsFiltered ?? state.items, newPageInfo),
-            pageInfo: newPageInfo,
-            nbSelectedItemPerPage: action.numberOfItemPerPage,
-          };
-      }
-      return {...state};
-    case 'receivedNewItems':{
-        let filtersItems = action.payload.items;
-          if (action.payload.onReceiveItemsBehavior === 'ResetInternalState'){
-              newPageInfo = BuildPagination(
-                state.pageInfo?.paginationSetting?.initialPage ?? 0,
-                action.payload.items,
-                state.pageInfo?.paginationSetting
-              );
-          }else{
 
-            sortedColumn = state.sortedColumnkey ? state.columns.filter((c) => c.key === state.sortedColumnkey)[0]: null;
-            filtersItems = copyAndSortItems(
-                action.payload.items,
-                getFilterFunctions(state.filteredColumns),
-                sortedColumn?.valueAccesor ?? selfAccess,
-                sortedColumn?.fieldName ?? sortedColumn?.key,
-                state.sortedDirection === 'Desc');
-            newPageInfo = state.pageInfo
-              ? BuildPagination(state.pageInfo?.currentPage ?? (state.pageInfo?.paginationSetting?.initialPage ?? 0) ,filtersItems,state.pageInfo?.paginationSetting)
-              : undefined;
-          }
-          return {
-            ...state,
-            items: action.payload.items,
-            itemsFiltered: filtersItems,
-            itemsView: pagination(filtersItems, newPageInfo),
-            pageInfo: newPageInfo
-          };
-        }
-    case 'Addfilter':
+    case "itemsPerPageNumberChanged":
+      if (action.numberOfItemPerPage !== state.nbSelectedItemPerPage) {
+        newPageInfo = BuildPagination(0, state.itemsFiltered ?? state.items, {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          ...state.pageInfo!.paginationSetting,
+          nbItemPerPage: action.numberOfItemPerPage,
+        });
+        return {
+          ...state,
+          itemsView: pagination(
+            state.itemsFiltered ?? state.items,
+            newPageInfo
+          ),
+          pageInfo: newPageInfo,
+          nbSelectedItemPerPage: action.numberOfItemPerPage,
+        };
+      }
+      return { ...state };
+    case "receivedNewItems": {
+      let filtersItems = action.payload.items;
+      if (action.payload.onReceiveItemsBehavior === "ResetInternalState") {
+        newPageInfo = BuildPagination(
+          state.pageInfo?.paginationSetting?.initialPage ?? 0,
+          action.payload.items,
+          state.pageInfo?.paginationSetting
+        );
+      } else {
+        sortedColumn = state.sortedColumnkey
+          ? state.columns.filter((c) => c.key === state.sortedColumnkey)[0]
+          : null;
+        filtersItems = copyAndSortItems(
+          action.payload.items,
+          getFilterFunctions(state.filteredColumns),
+          sortedColumn?.valueAccesor ?? selfAccess,
+          sortedColumn?.fieldName ?? sortedColumn?.key,
+          state.sortedDirection === "Desc"
+        );
+        newPageInfo = state.pageInfo
+          ? BuildPagination(
+              state.pageInfo?.currentPage ??
+                state.pageInfo?.paginationSetting?.initialPage ??
+                0,
+              filtersItems,
+              state.pageInfo?.paginationSetting
+            )
+          : undefined;
+      }
+      return {
+        ...state,
+        items: action.payload.items,
+        itemsFiltered: filtersItems,
+        itemsView: pagination(filtersItems, newPageInfo),
+        pageInfo: newPageInfo,
+      };
+    }
+    case "Addfilter":
       if (!state.items) return state;
       filteredColumns = addFilter(
         state.filteredColumns,
@@ -290,7 +314,7 @@ function detailListReducer(
         getFilterFunctions(filteredColumns),
         sortedColumn?.valueAccesor ?? selfAccess,
         sortedColumn?.fieldName ?? sortedColumn?.key,
-        state.sortedDirection === 'Desc'
+        state.sortedDirection === "Desc"
       );
       newPageInfo = state.pageInfo
         ? BuildPagination(
@@ -306,7 +330,7 @@ function detailListReducer(
         itemsView: pagination(itemsSortedAndFiltered, newPageInfo),
         pageInfo: newPageInfo,
       };
-    case 'Removefilter':
+    case "Removefilter":
       if (!state.items) return state;
       filteredColumns = removeFilter(state.filteredColumns, action.columnName);
 
@@ -318,7 +342,7 @@ function detailListReducer(
         getFilterFunctions(filteredColumns),
         sortedColumn?.valueAccesor ?? selfAccess,
         sortedColumn?.fieldName ?? sortedColumn?.key,
-        state.sortedDirection === 'Desc'
+        state.sortedDirection === "Desc"
       );
       newPageInfo = state.pageInfo
         ? BuildPagination(
@@ -335,7 +359,7 @@ function detailListReducer(
         itemsView: pagination(itemsSortedAndFiltered, newPageInfo),
         pageInfo: newPageInfo,
       };
-    case 'sortAsc':
+    case "sortAsc":
       if (!state.items) return state;
       [selectedColumn] = state.columns.filter(
         (c) => c.name === action.columnName
@@ -356,11 +380,11 @@ function detailListReducer(
         })),
         sortedColumnName: selectedColumn.name,
         sortedColumnkey: selectedColumn.key,
-        sortedDirection: 'Asc',
+        sortedDirection: "Asc",
         itemsFiltered: itemsSortedAndFiltered,
         itemsView: pagination(itemsSortedAndFiltered, state.pageInfo),
       };
-    case 'sortDesc':
+    case "sortDesc":
       if (!state.items) return state;
       [selectedColumn] = state.columns.filter(
         (c) => c.name === action.columnName
@@ -381,36 +405,34 @@ function detailListReducer(
         })),
         sortedColumnName: selectedColumn.name,
         sortedColumnkey: selectedColumn.key,
-        sortedDirection: 'Desc',
+        sortedDirection: "Desc",
         itemsFiltered: itemsSortedAndFiltered,
         itemsView: pagination(itemsSortedAndFiltered, state.pageInfo),
       };
-    case 'resetFilters':
-      return { ...state,
-        filteredColumns: []
-      };
-    case 'beginNav':
-    case 'endNav':
-    case 'pageNav':
+    case "resetFilters":
+      return { ...state, filteredColumns: [] };
+    case "beginNav":
+    case "endNav":
+    case "pageNav":
       if (state.pageInfo) {
         switch (action.type) {
-          case 'beginNav':
+          case "beginNav":
             newPageInfo = { ...state.pageInfo, currentPage: 0 };
             break;
-          case 'endNav':
+          case "endNav":
             newPageInfo = {
               ...state.pageInfo,
               currentPage: state.pageInfo.totalPage - 1,
             };
             break;
-          case 'pageNav':
+          case "pageNav":
             newPageInfo = {
               ...state.pageInfo,
               currentPage: action.pageNumber,
             };
             break;
           default:
-            throw new Error('navigation page action invalid');
+            throw new Error("navigation page action invalid");
         }
         return {
           ...state,
@@ -430,11 +452,12 @@ function getSortedColumnInfo(
   state: CustomDetailListState
 ): SortedColumnInfo | undefined {
   if (state.sortedColumnName && state.sortedColumnkey) {
-    const col =   state.columns.filter((c) => c.key === state.sortedColumnkey);
+    const col = state.columns.filter((c) => c.key === state.sortedColumnkey);
     return {
       name: state.sortedColumnName,
       key: state.sortedColumnkey,
-      isSortDesc: (col && col.length === 1) ? (col[0]?.isSortedDescending ?? false) : false,
+      isSortDesc:
+        col && col.length === 1 ? col[0]?.isSortedDescending ?? false : false,
     };
   }
   return undefined;
@@ -466,7 +489,8 @@ const CustomDetailList: FC<CustomDetailListProps> = (
     setKey,
     selectionPreservedOnEmptyClick,
     onReceiveItemsBehavior,
-    loadingMessage
+    loadingMessage,
+    componentRef,
   } = props;
   const [state, dispatch] = useReducer(
     detailListReducer,
@@ -487,62 +511,79 @@ const CustomDetailList: FC<CustomDetailListProps> = (
   );
 
   const pageInfo =
-  paginationSetting?.currentPage != null &&
-  paginationSetting?.totalPage != null
-    ? {
-        ...state.pageInfo,
-        currentPage: paginationSetting.currentPage,
-        totalPage: paginationSetting.totalPage,
-        paginationSetting: state.pageInfo
-          ? state.pageInfo.paginationSetting
-          : paginationSetting,
-      }
-    : state.pageInfo;
+    paginationSetting?.currentPage != null &&
+    paginationSetting?.totalPage != null
+      ? {
+          ...state.pageInfo,
+          currentPage: paginationSetting.currentPage,
+          totalPage: paginationSetting.totalPage,
+          paginationSetting: state.pageInfo
+            ? state.pageInfo.paginationSetting
+            : paginationSetting,
+        }
+      : state.pageInfo;
 
   const currentPage = paginationSetting?.currentPage;
   const totalPage = paginationSetting?.totalPage;
 
   useEffect(() => {
-    if (state.pageInfo && paginationSetting){
-      if (state.pageInfo.paginationSetting.nbPageShown === paginationSetting.nbPageShown &&
-        state.pageInfo.paginationSetting.nbItemPerPage === paginationSetting.nbItemPerPage &&
-        paginationSetting.totalPage === undefined && paginationSetting.currentPage === undefined ){
-          // if pagination is not manage externaly and nothing change except paginationSetting.initialPage then do not dispatch action
-          return;
-        }
+    if (state.pageInfo && paginationSetting) {
+      if (
+        state.pageInfo.paginationSetting.nbPageShown ===
+          paginationSetting.nbPageShown &&
+        state.pageInfo.paginationSetting.nbItemPerPage ===
+          paginationSetting.nbItemPerPage &&
+        paginationSetting.totalPage === undefined &&
+        paginationSetting.currentPage === undefined
+      ) {
+        // if pagination is not manage externaly and nothing change except paginationSetting.initialPage then do not dispatch action
+        return;
+      }
     }
-    dispatch({ type: 'pageSettingChanged', paginationSetting });
+    dispatch({ type: "pageSettingChanged", paginationSetting });
   }, [paginationSetting, currentPage, totalPage]);
   useEffect(() => {
     if (items) {
-      dispatch({ type: 'receivedNewItems',payload:{items, onReceiveItemsBehavior: onReceiveItemsBehavior ?? 'ResetInternalState' }});
+      dispatch({
+        type: "receivedNewItems",
+        payload: {
+          items,
+          onReceiveItemsBehavior:
+            onReceiveItemsBehavior ?? "ResetInternalState",
+        },
+      });
     }
-  }, [items,onReceiveItemsBehavior]);
-  useEffect(()=>{
-    
-    let handle = false;
-    if (onFilterChanged){
-      handle =  onFilterChanged([]);
-    }
-    if (onChanged){
-      handle = onChanged(state.pageInfo?.currentPage ?? 0,[], getSortedColumnInfo(state));
-    }
-    if (!handle){
-      dispatch({type: 'resetFilters'});
-    }
-  },[forceResetFilter]);
+  }, [items, onReceiveItemsBehavior]);
   useEffect(() => {
-    dispatch({ type: 'receivedColumnsDefinition', columns });
+    let handle = false;
+    if (onFilterChanged) {
+      handle = onFilterChanged([]);
+    }
+    if (onChanged) {
+      handle = onChanged(
+        state.pageInfo?.currentPage ?? 0,
+        [],
+        getSortedColumnInfo(state)
+      );
+    }
+    if (!handle) {
+      dispatch({ type: "resetFilters" });
+    }
+  }, [forceResetFilter]);
+  useEffect(() => {
+    dispatch({ type: "receivedColumnsDefinition", columns });
   }, [columns]);
-  const onHeaderColumnClick = (pageIndex: number,
+  const onHeaderColumnClick = (
+    pageIndex: number,
     ev?: React.MouseEvent<HTMLElement>,
     col?: ColumnInfo
   ) => {
     if (col) {
       let handled = false;
       if (!col.allowSorting) return;
-       const isSortingDesc = col.isSortedDescending === undefined ? true: col.isSortedDescending;
-       const sortedColumn = {
+      const isSortingDesc =
+        col.isSortedDescending === undefined ? true : col.isSortedDescending;
+      const sortedColumn = {
         name: col.name,
         key: col.key,
         isSortDesc: !isSortingDesc,
@@ -551,21 +592,18 @@ const CustomDetailList: FC<CustomDetailListProps> = (
         handled = onSortChanged(sortedColumn);
       }
       if (onChanged) {
-        handled = onChanged(
-          pageIndex,
-          state.filteredColumns,
-          sortedColumn
-        );
+        handled = onChanged(pageIndex, state.filteredColumns, sortedColumn);
       }
       if (!handled) {
         dispatch({
-          type: sortedColumn.isSortDesc ? 'sortDesc' : 'sortAsc',
+          type: sortedColumn.isSortDesc ? "sortDesc" : "sortAsc",
           columnName: sortedColumn.name,
         });
       }
     }
   };
-  const onHeaderFilterApply = (pageIndex: number,
+  const onHeaderFilterApply = (
+    pageIndex: number,
     col: ColumnInfo,
     criteria?: FilterCriteria[]
   ) => {
@@ -589,7 +627,7 @@ const CustomDetailList: FC<CustomDetailListProps> = (
       }
       if (!handled) {
         dispatch({
-          type: 'Addfilter',
+          type: "Addfilter",
           columnName: col.name,
           criteria,
         });
@@ -600,15 +638,11 @@ const CustomDetailList: FC<CustomDetailListProps> = (
         handled = onFilterChanged(filters);
       }
       if (onChanged) {
-        handled = onChanged(
-          pageIndex,
-          filters,
-          getSortedColumnInfo(state)
-        );
+        handled = onChanged(pageIndex, filters, getSortedColumnInfo(state));
       }
       if (!handled) {
         dispatch({
-          type: 'Removefilter',
+          type: "Removefilter",
           columnName: col.name,
         });
       }
@@ -618,16 +652,16 @@ const CustomDetailList: FC<CustomDetailListProps> = (
     let handled = false;
     let pageIndex = 0;
     switch (action.type) {
-      case 'pageNav':
+      case "pageNav":
         pageIndex = action.pageNumber;
         break;
-      case 'beginNav':
+      case "beginNav":
         pageIndex = 0;
         break;
-      case 'endNav':
+      case "endNav":
         pageIndex = pageInfo?.totalPage ? pageInfo?.totalPage - 1 : 0;
         break;
-      case 'itemsPerPageNumberChanged':
+      case "itemsPerPageNumberChanged":
         if (onNbItemPerPageChanged) {
           if (onNbItemPerPageChanged(action.numberOfItemPerPage)) {
             return;
@@ -651,24 +685,35 @@ const CustomDetailList: FC<CustomDetailListProps> = (
       dispatch(action);
     }
   };
-  const onRenderRow = (detailsRowProps?: IDetailsRowProps):  JSX.Element | null =>{
+  const onRenderRow = (
+    detailsRowProps?: IDetailsRowProps
+  ): JSX.Element | null => {
     if (detailsRowProps) {
       return (
-          <div aria-hidden onClick={()=>{
-              if (onRowClick){
-                onRowClick(detailsRowProps.item);
-              }
-          }}>
-              <DetailsRow  {...detailsRowProps}  />
-          </div>
+        <div
+          aria-hidden
+          onClick={() => {
+            if (onRowClick) {
+              onRowClick(detailsRowProps.item);
+            }
+          }}
+        >
+          <DetailsRow {...detailsRowProps} />
+        </div>
       );
     }
-    return (null);
+    return null;
   };
-  
+
   return (
-    <div className={clsx('mol-detailListWrapper',loadingMessage ? 'readonly':'')}>
+    <div
+      className={clsx(
+        "mol-detailListWrapper",
+        loadingMessage ? "readonly" : ""
+      )}
+    >
       <ShimmeredDetailsList
+        componentRef={componentRef}
         className={className}
         items={state.itemsView ?? []}
         columns={state.columns}
@@ -680,7 +725,9 @@ const CustomDetailList: FC<CustomDetailListProps> = (
         shimmerLines={shimmerLines}
         enableShimmer={enableShimmer}
         onRenderRow={onRenderRow}
-        onColumnHeaderClick={(ev,colInfo)=> onHeaderColumnClick(pageInfo?.currentPage ?? 0,ev,colInfo)}
+        onColumnHeaderClick={(ev, colInfo) =>
+          onHeaderColumnClick(pageInfo?.currentPage ?? 0, ev, colInfo)
+        }
         onRenderDetailsFooter={onRenderDetailsFooter}
         onRenderDetailsHeader={(headerProps, defaultRender?) => {
           if (defaultRender && headerProps) {
@@ -696,8 +743,20 @@ const CustomDetailList: FC<CustomDetailListProps> = (
                       <FilteredHeaderColumn
                         column={columnInfo}
                         filter={columnInfo.filterOption}
-                        onColumnClick={(ev,colInfo)=> onHeaderColumnClick(pageInfo?.currentPage ?? 0,ev,colInfo)}
-                        onfilterApply={(col,criteria)=> onHeaderFilterApply(pageInfo?.currentPage ?? 0,col,criteria)}
+                        onColumnClick={(ev, colInfo) =>
+                          onHeaderColumnClick(
+                            pageInfo?.currentPage ?? 0,
+                            ev,
+                            colInfo
+                          )
+                        }
+                        onfilterApply={(col, criteria) =>
+                          onHeaderFilterApply(
+                            pageInfo?.currentPage ?? 0,
+                            col,
+                            criteria
+                          )
+                        }
                         forceResetFilter={forceResetFilter}
                       />
                     );
@@ -706,7 +765,13 @@ const CustomDetailList: FC<CustomDetailListProps> = (
                     return (
                       <CustomHeaderColumn
                         column={columnInfo}
-                        onColumnClick={(ev,colInfo)=> onHeaderColumnClick(pageInfo?.currentPage ?? 0,ev,colInfo)}
+                        onColumnClick={(ev, colInfo) =>
+                          onHeaderColumnClick(
+                            pageInfo?.currentPage ?? 0,
+                            ev,
+                            colInfo
+                          )
+                        }
                       />
                     );
                   }
@@ -722,11 +787,11 @@ const CustomDetailList: FC<CustomDetailListProps> = (
         }}
       />
       <div className="mol-detailList">
-        { !enableShimmer && state.itemsView && state.itemsView.length === 0 && (
+        {!enableShimmer && state.itemsView && state.itemsView.length === 0 && (
           <div className="centerFlex">{noItemsPlaceholder}</div>
         )}
         <>
-        {pageInfo &&
+          {pageInfo &&
             state.itemsView &&
             state.itemsView.length > 0 &&
             pageInfo.totalPage > 0 && (
@@ -738,7 +803,9 @@ const CustomDetailList: FC<CustomDetailListProps> = (
                   resultPerPage: labels.resultPerPage,
                   totalRecord: labels.totalRecord,
                 }}
-                totalRecordCount={totalItemCount ?? state.itemsView?.length ?? undefined}
+                totalRecordCount={
+                  totalItemCount ?? state.itemsView?.length ?? undefined
+                }
                 nbPagesShown={pageInfo.paginationSetting.nbPageShown}
                 onNavigate={onNavigate}
               />
@@ -749,4 +816,4 @@ const CustomDetailList: FC<CustomDetailListProps> = (
   );
 };
 
-export { CustomDetailList as DetailsList};
+export { CustomDetailList as DetailsList };

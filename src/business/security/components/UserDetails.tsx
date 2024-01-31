@@ -1,64 +1,77 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from "react";
-import "../styles/CodeDetails.scss";
+import "../styles/UserDetails.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { UserDTO } from "../../../shared/models/UserDTO";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
-import { CommandBar, IDropdownOption, PrimaryButton } from "@fluentui/react";
+import { CommandBar, PrimaryButton } from "@fluentui/react";
 import clsx from "clsx";
 import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
 import { Action, Mode } from "../../../shared/constants/types";
+import { getUsers } from "../../../shared/mockups/User";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
-import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
-import { CodeTypeDTO } from "../../../shared/models/CodeTypeDTO";
-import { AddMetadata } from "./MetadataManage";
-import { MetadataDTO } from "../../../shared/models/MetadataDTO";
-import { MetadatasGrid } from "./MetadataGrid";
+import { Claim, Role } from "../../../shared/constants/auth";
+import { ClaimsGrid } from "./ClaimsGrid";
+import { AddClaim } from "./AddClaim";
 
 export interface Props {
   mode: Mode;
 }
 
-export const CodeTypeDetails: FC<Props> = (props: Props) => {
+export const UserDetails: FC<Props> = (props: Props) => {
   const { mode } = props;
   let params = useParams();
-  const [details, setDetails] = useState<CodeTypeDTO>();
-  const [metadata, setMetadata] = useState<MetadataDTO[]>([]);
+  const [details, setDetails] = useState<UserDTO>();
+  const [claims, setClaims] = useState<Claim[]>();
+  const [selectedRole, setRole] = useState<string>("");
+  const [user, setUser] = useState<string>("");
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
-  const [codeType, setCodeType] = useState<string>();
-  const [codesTypes, setCodesTypes] = useState<IDropdownOption[]>([]);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
+  const [showAddClaim, setShowAddClaim] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(false);
-  const [showAddMetadataDialog, setShowAddMetadataDialog] =
-    useState<boolean>(false);
-  const { t } = useTranslation("codes");
+  const { t } = useTranslation(["security", "common"]);
   const navigate = useNavigate();
+
+  const roles = [
+    {
+      key: Role.Admin.toString(),
+      text: t(Role.Admin),
+    },
+    {
+      key: Role.Researcher.toString(),
+      text: t(Role.Researcher),
+    },
+    {
+      key: Role.Reviewer.toString(),
+      text: t(Role.Reviewer),
+    },
+    {
+      key: Role.DirectorateManager.toString(),
+      text: t(Role.DirectorateManager),
+    },
+    {
+      key: Role.CommitteeMember.toString(),
+      text: t(Role.CommitteeMember),
+    },
+    {
+      key: Role.ReportViewer.toString(),
+      text: t(Role.ReportViewer),
+    },
+  ];
 
   useEffect(() => {
     try {
-      const list = getCodesTypes().filter((i) => i.ID.toString() === params.id);
+      const list = getUsers().filter((i) => i.ID === params.id);
       if (list && list.length > 0) {
         const data = list[0];
-        setCodeType(data?.ParentID?.toString());
-        setMetadata(data.Metadata ?? []);
+        setRole(data.Role);
+        setClaims(data.Claims ?? []);
         setDetails(data);
       }
-      getTypes();
     } catch {}
   }, [params.id]);
-
-  const getTypes = () => {
-    const types = getCodesTypes().filter((i) => i.ID.toString() !== params.id);
-    const list = types.map((item) => {
-      return {
-        key: item.ID.toString(),
-        text: item.Name,
-      };
-    });
-    setCodesTypes(list);
-  };
 
   const getActions = () => {
     const saveAction = {
@@ -88,7 +101,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
         onClick: () => {
           if (isEditable) {
             if (mode === Mode.View) setEditable(false);
-            else navigate("/codesTypes");
+            else navigate("/security/users");
           } else {
             setEditable(true);
           }
@@ -101,79 +114,96 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
     return arr;
   };
 
-  const onDeleteMetadata = () => {
+  const addClaim = (claim: string) => {
+    const list = claims;
+    var item: Claim = claim as Claim;
+    const index = list?.findIndex((i) => i.toString() === claim);
+    if (index === -1) list?.push(item);
+    setClaims(list);
     setReload(true);
   };
 
-  const addMetadata = (item?: MetadataDTO) => {
-    const list = metadata;
-    if (item) list?.push(item);
-    setMetadata(list);
+  const onDeleteClaim = () => {
     setReload(true);
   };
 
   return (
     <LayoutContent>
-      <div className="codeDetails">
+      <div className="userDetails">
         <div className="body">
           <div className="section">
             <div className="content">
               <div className="actionsHeader">
                 <Section
-                  title={t("codeTypeDetails")}
+                  title={t("userDetails")}
                   size={SectionSize.h2}
-                  iconName="FileCode"
+                  iconName="UserOptional"
                 />
                 <CommandBar items={[]} farItems={getActions()} />
               </div>
               <div className="row">
-                {mode !== Mode.New && (
+                {mode === Mode.New ? (
+                  <Dropdown
+                    label={t("userName")}
+                    options={[]}
+                    selectedKey={user}
+                    onChange={(_, option) =>
+                      setUser(option?.key.toString() ?? "")
+                    }
+                  />
+                ) : (
                   <TextField
-                    readOnly
-                    label={t("code")}
-                    value={details?.Code ?? ""}
+                    readOnly={!isEditable}
+                    label={t("userName")}
+                    value={t(details?.UserName ?? "")}
                   />
                 )}
                 <TextField
                   readOnly={!isEditable}
                   label={t("name")}
-                  value={t(details?.Name ?? "")}
+                  value={details?.Name ?? ""}
+                />
+                <TextField
+                  readOnly={!isEditable}
+                  label={t("email")}
+                  value={details?.Email ?? ""}
                 />
                 <Dropdown
-                  label={t("parentType")}
-                  selectedKey={codeType}
-                  options={codesTypes}
-                  onChange={(_, option) => setCodeType(option?.key.toString())}
+                  label={t("role")}
+                  options={roles}
+                  selectedKey={selectedRole}
+                  onChange={(_, option) =>
+                    setRole(option?.key.toString() ?? "")
+                  }
                   disabled={!isEditable}
-                />
+                ></Dropdown>
               </div>
             </div>
           </div>
-
           <div className="section">
             <div className="content">
               <div className="actionsHeader">
                 <Section
-                  title={t("metadata")}
+                  title={t("claims")}
                   size={SectionSize.h2}
-                  iconName="EditNote"
+                  iconName="AccountManagement"
                 />
                 {isEditable && (
                   <PrimaryButton
                     className="actionButton primeAction"
                     iconProps={{ iconName: "Add" }}
-                    onClick={() => setShowAddMetadataDialog(true)}
+                    onClick={() => setShowAddClaim(true)}
                   >
-                    {t("addMetadata")}
+                    {t("addClaim")}
                   </PrimaryButton>
                 )}
               </div>
-              <MetadatasGrid
+              <ClaimsGrid
                 mode={!isEditable ? Mode.View : Mode.Edit}
                 reload={reload}
                 onRealod={() => setReload(false)}
-                onDelete={onDeleteMetadata}
-                metadata={metadata ?? []}
+                onDelete={onDeleteClaim}
+                claims={claims ?? []}
                 onChanged={() => {
                   return false;
                 }}
@@ -199,14 +229,15 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
           }}
         />
       )}
-      {showAddMetadataDialog && (
-        <AddMetadata
-          hidden={!showAddMetadataDialog}
+      {showAddClaim && (
+        <AddClaim
+          hidden={!showAddClaim}
           onCancel={() => {
-            setShowAddMetadataDialog(false);
+            setShowAddClaim(false);
           }}
-          onConfirm={(metadata?: MetadataDTO) => {
-            addMetadata(metadata);
+          onConfirm={(claim: string) => {
+            addClaim(claim);
+            setShowAddClaim(false);
           }}
         />
       )}

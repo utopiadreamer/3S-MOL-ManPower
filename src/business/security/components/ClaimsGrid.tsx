@@ -5,6 +5,8 @@ import {
   SelectionMode,
   DetailsListLayoutMode,
   IconButton,
+  IDetailsList,
+  ActionButton,
 } from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,69 +15,80 @@ import {
   SortedColumnInfo,
 } from "../../../shared/components/customDetailList/CustomDetailList";
 import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
-import { useNavigate } from "react-router-dom";
-import { CodeTypeDTO } from "../../../shared/models/CodeTypeDTO";
-import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
+import { Claim } from "../../../shared/constants/auth";
+import { Mode } from "../../../shared/constants/types";
 
 interface GridProps {
-  items: CodeTypeDTO[];
+  claims: Claim[];
   onChanged?: (
     pageIndex: number,
     filteredColumn: FilteredColumn[],
     sortedColumn?: SortedColumnInfo
   ) => boolean;
   onNbItemPerPageChanged: (nbItemPerPage: number) => boolean;
+  onDelete: () => void;
+  onRealod: () => void;
+  reload?: boolean;
+  mode: Mode;
 }
 
-export const CodesTypesGrid: FC<GridProps> = (props: GridProps) => {
-  const { t } = useTranslation(["codes", "common"]);
+export const ClaimsGrid: FC<GridProps> = (props: GridProps) => {
+  const { t } = useTranslation(["security", "common"]);
   const [columns, setColumns] = useState<ColumnInfo[]>();
   const [pageSize, setPageSize] = useState<number>(10);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const { items: itemsProps, onChanged, onNbItemPerPageChanged } = props;
+  const {
+    claims,
+    onChanged,
+    onNbItemPerPageChanged,
+    reload,
+    onRealod,
+    onDelete,
+    mode
+  } = props;
+  const [editMode, setEditMode] = useState<Mode>(mode);
+  const _root = React.createRef<IDetailsList>();
 
-  const [items, setItems] = useState<CodeTypeDTO[]>([]);
-  const navigate = useNavigate();
+  const [items, setItems] = useState<Claim[]>([]);
 
   useEffect(() => {
-    setItems(itemsProps?.slice());
-  }, [itemsProps]);
+    setItems(claims?.slice());
+  }, [claims]);
+  
+  useEffect(() => {
+    setEditMode(mode);
+  }, [mode]);
 
-  const getCodeType = (codeTypeId: number) => {
-    const types = getCodesTypes();
-    return types.find((type) => type.ID === codeTypeId)?.Name || "";
-  }
+  useEffect(() => {
+    if (reload) {
+      onRealod();
+    }
+    _root?.current?.focusIndex(claims.length, true);
+  }, [reload]);
+
+  const deleteClaim = (claim: string) => {
+    const index = claims.findIndex((i) => i.toString() === claim);
+    if (index !== -1) {
+      const filtered = claims;
+      filtered.splice(index, 1);
+      setItems(filtered);
+    }
+    onDelete();
+  };
+
   useEffect(() => {
     let gridColumns = [
       {
-        key: "code",
-        name: t("code"),
-        fieldName: "Code",
-        minWidth: 120,
-        maxWidth: 120,
-        isRowHeader: true,
-        isResizable: true
-      },
-      {
         key: "name",
-        name: t("name"),
+        name: t("claimName"),
         fieldName: "Name",
-        minWidth: 300,
-        maxWidth: 300,
-        isRowHeader: true,
-        isResizable: true
-      },
-      {
-        key: "parentID",
-        name: t("parentType"),
-        fieldName: "ParentID",
-        minWidth: 200,
-        maxWidth: 200,
+        minWidth: 400,
+        maxWidth: 400,
         isRowHeader: true,
         isResizable: true,
-        onRender: (item: CodeTypeDTO) => {
-          return <div>{getCodeType(item.ParentID ?? 0)}</div>;
+        onRender: (item: Claim) => {
+          return <div>{t(item)}</div>;
         },
       },
       {
@@ -86,10 +99,15 @@ export const CodesTypesGrid: FC<GridProps> = (props: GridProps) => {
         maxWidth: 60,
         isRowHeader: true,
         isResizable: true,
-        onRender: (item: CodeTypeDTO) => {
+        onRender: (item: Claim) => {
           return (
             <div>
-              <IconButton iconProps={{ iconName: "View" }} onClick={() => navigate(`/codesTypes/${item.ID}`)} />
+              {editMode !== Mode.View && (
+                <ActionButton
+                  iconProps={{ iconName: "Delete" }}
+                  onClick={() => deleteClaim(item)}
+                />
+              )}
             </div>
           );
         },
@@ -97,10 +115,11 @@ export const CodesTypesGrid: FC<GridProps> = (props: GridProps) => {
     ];
 
     setColumns(gridColumns);
-  }, []);
+  }, [editMode]);
 
   return (
     <DetailsList
+      componentRef={_root}
       className="grid"
       columns={columns ?? []}
       items={items}

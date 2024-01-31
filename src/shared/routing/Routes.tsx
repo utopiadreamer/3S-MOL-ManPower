@@ -16,6 +16,8 @@ import { RequestsList } from "../../business/requests/components/RequestsList";
 import { CodesTypesList } from "../../business/codes/components/CodesTypesList";
 import { CodeDetails } from "../../business/codes/components/CodeDetails";
 import { CodeTypeDetails } from "../../business/codes/components/CodeTypeDetails";
+import { UsersList } from "../../business/security/components/UsersList";
+import { UserDetails } from "../../business/security/components/UserDetails";
 
 export const MenuRoutes: FC = () => {
   return (
@@ -23,6 +25,7 @@ export const MenuRoutes: FC = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="home" element={<Dashboard />} />
+          
           <Route path="workers" element={<WorkersList />} />
           <Route path="workers/record/:id" element={<WorkersList />} />
           <Route path="workers/:id" element={<WorkerDetails />} />
@@ -42,12 +45,18 @@ export const MenuRoutes: FC = () => {
           <Route path="requests/search" element={<SettlementsList />} />
           <Route path="requests/search/:mode" element={<ClearanceManage />} />
           <Route path="requests/search/:mode/:id" element={<ClearanceManage />} />
+
           <Route path="codes" element={<CodesList />} />
-          <Route path="codesTypes" element={<CodesTypesList />} />
           <Route path="codes/:id" element={<CodeDetails mode={Mode.View} />} />
-          <Route path="codesTypes/:id" element={<CodeTypeDetails  mode={Mode.New} />} />
           <Route path="codes/new" element={<CodeDetails mode={Mode.New}/>} />
+
+          <Route path="codesTypes" element={<CodesTypesList />} />
+          <Route path="codesTypes/:id" element={<CodeTypeDetails  mode={Mode.View} />} />
           <Route path="codesTypes/new" element={<CodeTypeDetails mode={Mode.New} />} />
+          
+          <Route path="security/users" element={<UsersList />} />
+          <Route path="security/users/new" element={<UserDetails mode={Mode.New} />} />
+          <Route path="security/users/:id" element={<UserDetails mode={Mode.View} />} />
         </Route>
       </Routes>      
       <Outlet />

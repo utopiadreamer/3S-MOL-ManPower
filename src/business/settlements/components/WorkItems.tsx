@@ -97,7 +97,7 @@ export const WorkItems: FC = () => {
   };
 
 
-  const onDeleteWorkItem = (id: number, invoiceNo: string) => {
+  const onDeleteWorkItem = () => {
     setReload(true);
   };
 
@@ -155,8 +155,8 @@ export const WorkItems: FC = () => {
       <div>
           <WorkItemsGrid
             reload={reload}
-            onDelete={(id: number, invoiceNo: string) =>
-              onDeleteWorkItem(id, invoiceNo)
+            onDelete={() =>
+              onDeleteWorkItem()
             }
             onRealod={() => setReload(false)}
             invoices={invoices}
