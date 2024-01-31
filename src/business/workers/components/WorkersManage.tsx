@@ -1,29 +1,28 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState } from 'react';
 
-import { WorkersGrid } from "./WorkersGrid";
-import { TextField } from "../../../shared/components/forms/CustomTextField";
-import { useTranslation } from "react-i18next";
-import { WorkersRecordDTO } from "../../../shared/models/WorkersRecordDTO";
-import { Mode } from "../../../shared/constants/types";
-import { GeneralUtil } from "../../../shared/utils/generalUtil";
-import { ValidationType } from "../../../shared/constants/types";
-import { ValidationUtil } from "../../../shared/utils/validationUtil";
-import { WorkerDTO } from "../../../shared/models/WorkerDTO";
-import FilePicker from "../../../shared/components/forms/FilePicker";
-import "../styles/WorkersManage.scss";
-import { CommandBar } from "@fluentui/react";
-import { Section, SectionSize } from "../../../shared/components/forms/Section";
-import clsx from "clsx";
-import { useParams } from "react-router-dom";
-import { getWorkers } from "../../../shared/mockups/Workers";
+import { WorkersGrid } from './WorkersGrid';
+import { TextField } from '../../../shared/components/forms/CustomTextField';
+import { useTranslation } from 'react-i18next';
+import { WorkersRecordDTO } from '../../../shared/models/WorkersRecordDTO';
+import { Mode } from '../../../shared/constants/types';
+import { GeneralUtil } from '../../../shared/utils/generalUtil';
+import { ValidationType } from '../../../shared/constants/types';
+import { ValidationUtil } from '../../../shared/utils/validationUtil';
+import { WorkerDTO } from '../../../shared/models/WorkerDTO';
+import FilePicker from '../../../shared/components/forms/FilePicker';
+import '../styles/WorkersManage.scss';
+import { CommandBar } from '@fluentui/react';
+import { Section, SectionSize } from '../../../shared/components/forms/Section';
+import clsx from 'clsx';
+import { useParams } from 'react-router-dom';
+import { getWorkers } from '../../../shared/mockups/Workers';
 
 export interface Props {
   mode: Mode;
 }
 
 export const WorkersManage: FC<Props> = (props: Props) => {
-  const { t } = useTranslation(["workers", "common"]);
+  const { t } = useTranslation(['workers', 'common']);
   const [details, setDetails] = useState<WorkersRecordDTO>();
   const [isEditable, setEditable] = useState<boolean>(false);
   const [disableAdd, setDisableAdd] = useState<boolean>(true);
@@ -48,71 +47,61 @@ export const WorkersManage: FC<Props> = (props: Props) => {
   };
 
   const validateWorkersData = (workersData: WorkerDTO[]): boolean => {
-    // const errorList: [] = [];
+    return workersData.every((worker) => {
+      const validations = [
+        { type: ValidationType.Required, value: worker.Name, message: '' },
 
-    for (let i = 0; i < workersData.length; i++) {
-      const workerData = workersData[i];
-      const workerNameRequired = ValidationUtil.validate(
-        ValidationType.Required,
-        workerData.Name ?? "",
-        "",
-        t
-      );
-      const workerNationalIdRequired = ValidationUtil.validate(
-        ValidationType.Required,
-        workerData.NationalID ?? "",
-        "",
-        t
-      );
-      const workerNationalIdValid = ValidationUtil.isValidNationalID(
-        workerData.NationalID ?? ""
-      );
-      const workerProfessionRequired = ValidationUtil.validate(
-        ValidationType.Required,
-        workerData.Occupation ?? "",
-        "",
-        t
-      );
-      const workerPhoneNumRequired = ValidationUtil.validate(
-        ValidationType.Required,
-        workerData.PhoneNo ?? "",
-        "",
-        t
-      );
-      const workerPhoneNumValid = ValidationUtil.isValidMobileNo(
-        workerData.PhoneNo ?? ""
-      );
+        {
+          type: ValidationType.Required,
+          value: worker.NationalID,
+          message: '',
+        },
+        {
+          type: ValidationType.NationalID,
+          value: worker.NationalID,
+          message: '',
+        },
+        {
+          type: ValidationType.Required,
+          value: worker.Occupation,
+          message: '',
+        },
+        { type: ValidationType.Required, value: worker.PhoneNo, message: '' },
+        { type: ValidationType.MobileNo, value: worker.PhoneNo, message: '' },
+      ];
 
-      if (
-        workerNameRequired ||
-        workerNationalIdRequired ||
-        workerNationalIdValid === false ||
-        workerPhoneNumRequired ||
-        workerPhoneNumValid === false ||
-        workerProfessionRequired
-      ) {
-        return false;
-      }
-    }
-    return true;
+      const isValid = validations.every((validation) => {
+        const result = ValidationUtil.validate(
+          validation.type,
+          validation.value,
+          validation.message,
+          t,
+        );
+        return !result;
+      });
+      return isValid;
+    });
   };
 
   const processImportedFile = (data: WorkerDTO[]) => {
     const mapConfig = {
-      Name: GeneralUtil.normalizeString(t("workerName")),
-      NationalID: GeneralUtil.normalizeString(t("nationalID")),
-      Occupation: GeneralUtil.normalizeString(t("occupation")),
-      Address: GeneralUtil.normalizeString(t("address")),
-      PhoneNo: GeneralUtil.normalizeString(t("phoneNo")),
+      Name: GeneralUtil.normalizeString(t('workerName')),
+      NationalID: GeneralUtil.normalizeString(t('nationalID')),
+      Occupation: GeneralUtil.normalizeString(t('occupation')),
+      Address: GeneralUtil.normalizeString(t('address')),
+      PhoneNo: GeneralUtil.normalizeString(t('phoneNo')),
     };
+
     const workersData: WorkerDTO[] = GeneralUtil.mapJsonDataToObj<WorkerDTO>(
       data,
-      mapConfig
+      mapConfig,
     );
 
-    for (let index = 0; index < workersData.length; index++) {
-      workersData[index].ID = index.toString();
-    }
+    workersData.forEach((worker, index) => {
+      worker.ID = index.toString();
+      worker.PhoneNo =
+        GeneralUtil.normalizeMobileString(worker.PhoneNo.toString()) ?? '';
+    });
     if (validateWorkersData(workersData)) setWorkers(workersData);
   };
 
@@ -124,10 +113,10 @@ export const WorkersManage: FC<Props> = (props: Props) => {
 
   const getActions = () => {
     const saveAction = {
-      key: "save",
-      className: clsx("actionButton", "primeAction"),
-      text: t("common:save"),
-      iconProps: { iconName: "Save" },
+      key: 'save',
+      className: clsx('actionButton', 'primeAction'),
+      text: t('common:save'),
+      iconProps: { iconName: 'Save' },
       onClick: () => {
         setEditable(false);
         setDisableAdd(false);
@@ -135,10 +124,10 @@ export const WorkersManage: FC<Props> = (props: Props) => {
     };
     const arr = [
       {
-        key: "edit",
-        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
-        text: t(isEditable ? "common:cancel" : "common:edit"),
-        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+        key: 'edit',
+        className: clsx('actionButton', isEditable ? 'subAction' : 'subAction'),
+        text: t(isEditable ? 'common:cancel' : 'common:edit'),
+        iconProps: { iconName: isEditable ? 'Cancel' : 'Edit' },
         onClick: () => {
           setDisableAdd(!disableAdd);
           setEditable(!isEditable);
@@ -158,7 +147,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
             <div className="actionsHeader">
               <Section
                 size={SectionSize.h2}
-                title={t("workersRecordInfo")}
+                title={t('workersRecordInfo')}
                 iconName="ReminderPerson"
               />
               {id !== undefined && mode === Mode.Edit && (
@@ -167,21 +156,21 @@ export const WorkersManage: FC<Props> = (props: Props) => {
             </div>
             <div className="row">
               <TextField
-                label={t("settleNo")}
+                label={t('settleNo')}
                 name="RecordNo"
-                value={details?.SettlementNo ?? ""}
+                value={details?.SettlementNo ?? ''}
                 readOnly
               />
               <TextField
-                label={t("recordNumber")}
+                label={t('recordNumber')}
                 name="RecordNo"
-                value={details?.RecordNo ?? ""}
+                value={details?.RecordNo ?? ''}
                 readOnly
               />
               <TextField
-                label={t("notes")}
+                label={t('notes')}
                 name="Notes"
-                value={details?.Notes ?? ""}
+                value={details?.Notes ?? ''}
                 onChange={handleInputChange}
                 readOnly={!isEditable && mode === Mode.View}
               />
@@ -193,7 +182,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
             <div className="actionsHeader">
               <Section
                 size={SectionSize.h2}
-                title={t("workersInfo")}
+                title={t('workersInfo')}
                 iconName="ReminderPerson"
               />
               {mode !== Mode.View && (
@@ -208,7 +197,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
                 /> */}
                   <FilePicker
                     name="ImportWorkersSheet"
-                    label={t("importWorkersSheet")}
+                    label={t('importWorkersSheet')}
                     handleImportedFile={(data: any[]) => {
                       processImportedFile(data);
                     }}
