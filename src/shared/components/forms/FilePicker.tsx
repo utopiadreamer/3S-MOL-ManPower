@@ -14,10 +14,10 @@ const FilePicker = ({
   label,
   handleImportedFile,
 }: Props): React.ReactElement => {
-  const FileInput = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImportClick = useCallback(() => {
-    FileInput.current?.click();
+    fileInputRef.current?.click();
   }, []);
 
   const handleFileChange = useCallback(
@@ -35,6 +35,7 @@ const FilePicker = ({
         const worksheet = workbook.Sheets[firstSheetName];
         const data: Worker[] = utils.sheet_to_json(worksheet);
         handleImportedFile(data);
+        event.target.value = '';
       } catch (error) {
         console.error('Error reading file:', error);
       }
@@ -50,10 +51,14 @@ const FilePicker = ({
         id={name}
         accept=".xlsx, .xls"
         name={name}
-        ref={FileInput}
+        ref={fileInputRef}
         onChange={handleFileChange}
       />
-      <PrimaryButton className='actionButton primeAction' type="button" onClick={handleImportClick}>
+      <PrimaryButton
+        className="actionButton primeAction"
+        type="button"
+        onClick={handleImportClick}
+      >
         {label}
       </PrimaryButton>
     </div>
