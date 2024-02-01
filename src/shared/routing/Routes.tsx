@@ -21,7 +21,7 @@ import { UserDetails } from "../../business/security/components/UserDetails";
 
 export const MenuRoutes: FC = () => {
   return (
-    <div>
+    <div className="h-100">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="home" element={<Dashboard />} />
