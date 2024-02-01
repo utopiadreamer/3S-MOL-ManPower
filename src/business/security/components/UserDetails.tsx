@@ -143,19 +143,21 @@ export const UserDetails: FC<Props> = (props: Props) => {
               </div>
               <div className="row">
                 {mode === Mode.New ? (
-                  <Dropdown
-                    label={t("userName")}
-                    options={[]}
-                    selectedKey={user}
-                    onChange={(_, option) =>
-                      setUser(option?.key.toString() ?? "")
-                    }
-                  />
+                  <>
+                    <TextField
+                      label={t("userName")}
+                      value={t(details?.UserName ?? "")}
+                    />
+                    <TextField
+                      label={t("email")}
+                      value={t(details?.Email ?? "")}
+                    />
+                  </>
                 ) : (
                   <TextField
                     readOnly={!isEditable}
                     label={t("userName")}
-                    value={t(details?.UserName ?? "")}
+                    value={details?.UserName}
                   />
                 )}
                 <TextField

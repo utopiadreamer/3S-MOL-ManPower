@@ -61,44 +61,50 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
   };
 
   const getActions = () => {
-    const saveAction = {
-      key: "save",
-      className: clsx("actionButton", "primeAction"),
-      text: t("common:save"),
-      iconProps: { iconName: "Save" },
-      onClick: () => {
-        setEditable(false);
-      },
-    };
-    const primeAction = {
-      key: "delete",
-      className: clsx("actionButton", "primeAction"),
-      text: t("common:delete"),
-      iconProps: { iconName: "Delete" },
-      onClick: () => {
-        setShowDeleteDialog(true);
-      },
-    };
-    const arr = [
-      {
-        key: "edit",
-        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
-        text: t(isEditable ? "common:cancel" : "common:edit"),
-        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+    if (details?.ReadOnly) return [];
+    if (details) {
+      const saveAction = {
+        key: "save",
+        className: clsx("actionButton", "primeAction"),
+        text: t("common:save"),
+        iconProps: { iconName: "Save" },
         onClick: () => {
-          if (isEditable) {
-            if (mode === Mode.View) setEditable(false);
-            else navigate("/codesTypes");
-          } else {
-            setEditable(true);
-          }
+          setEditable(false);
         },
-      },
-    ];
-    if (isEditable) {
-      arr.splice(0, 0, saveAction);
-    } else arr.push(primeAction);
-    return arr;
+      };
+      const primeAction = {
+        key: "delete",
+        className: clsx("actionButton", "primeAction"),
+        text: t("common:delete"),
+        iconProps: { iconName: "Delete" },
+        onClick: () => {
+          setShowDeleteDialog(true);
+        },
+      };
+      const arr = [
+        {
+          key: "edit",
+          className: clsx(
+            "actionButton",
+            isEditable ? "subAction" : "subAction"
+          ),
+          text: t(isEditable ? "common:cancel" : "common:edit"),
+          iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
+          onClick: () => {
+            if (isEditable) {
+              if (mode === Mode.View) setEditable(false);
+              else navigate("/codesTypes");
+            } else {
+              setEditable(true);
+            }
+          },
+        },
+      ];
+      if (isEditable) {
+        arr.splice(0, 0, saveAction);
+      } else arr.push(primeAction);
+      return arr;
+    }
   };
 
   const onDeleteMetadata = () => {

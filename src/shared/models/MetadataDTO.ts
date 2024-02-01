@@ -8,4 +8,6 @@ export class MetadataDTO {
     MinValue?: number;
     MaxValue?: number;
     Value?: string;
+    ReadOnly?: boolean;
+    Required?: boolean;
 }

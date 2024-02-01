@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from "react";
 import { CodesTypesGrid } from "./CodesTypesGrid";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
@@ -9,6 +10,7 @@ import { IDropdownOption, PrimaryButton } from "@fluentui/react";
 import { useNavigate } from "react-router-dom";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
+import { GeneralUtil } from "../../../shared/utils/generalUtil";
 
 export const CodesTypesList: FC = () => {
   const [codesTypes, setCodesTypes] = useState<CodeTypeDTO[]>([]);
@@ -24,9 +26,13 @@ export const CodesTypesList: FC = () => {
   };
 
   const Search = () => {
-    const types = getCodeTypes().filter(
-      (i) => i.ParentID?.toString() === codeType
-    );
+    let types = getCodeTypes();
+    if (codeType === "0") {
+      types = types.filter((i) => GeneralUtil.isNothing(i.ParentID));
+    } else {
+      types = types.filter((i) => i.ParentID?.toString() === codeType);
+    }
+
     setCodesTypes(types);
   };
 
@@ -38,6 +44,7 @@ export const CodesTypesList: FC = () => {
         text: item.Name,
       };
     });
+    list.unshift({ key: "0", text: t("withoutParent") });
     setCodesTypesList(list);
   }, []);
 
@@ -52,11 +59,11 @@ export const CodesTypesList: FC = () => {
               title={t("common:searchFilters")}
             />
             <div className="row">
-            <TextField
-              label={t("codeType")}
-              value={t(codeTypeName ?? "")}
-              onChange={(e, value) => setCodeTypeName(value ?? "")}
-            />
+              <TextField
+                label={t("codeType")}
+                value={t(codeTypeName ?? "")}
+                onChange={(e, value) => setCodeTypeName(value ?? "")}
+              />
               <Dropdown
                 label={t("parentType")}
                 options={codesTypesList}

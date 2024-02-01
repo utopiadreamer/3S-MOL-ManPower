@@ -1,4 +1,3 @@
-import { MetadataDTO } from "./MetadataDTO";
 
 export class CodeDTO {
     ID!: number;

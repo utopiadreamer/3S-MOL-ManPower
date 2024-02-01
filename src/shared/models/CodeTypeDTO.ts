@@ -6,4 +6,5 @@ export class CodeTypeDTO {
     Name!: string;
     ParentID?: number;
     Metadata?: MetadataDTO[];
+    ReadOnly?: boolean;
 }

@@ -20,5 +20,6 @@
     "metadata": "الحقول الإضافية",
     "addMetadata": "حقل إضافي جديد",
     "text": "نص",
-    "number": "رقم"
+    "number": "رقم",
+    "withoutParent": "بدون نوع كود أساسي"
 }

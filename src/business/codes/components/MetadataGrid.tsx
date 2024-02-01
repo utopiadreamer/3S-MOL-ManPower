@@ -162,7 +162,7 @@ export const MetadatasGrid: FC<GridProps> = (props: GridProps) => {
         onRender: (item: MetadataDTO) => {
           return (
             <div>
-              {editMode !== Mode.View && (
+              {editMode !== Mode.View && !item.ReadOnly && (
                 <ActionButton
                   iconProps={{ iconName: "Delete" }}
                   onClick={() => deleteMetadata(item.Name)}
