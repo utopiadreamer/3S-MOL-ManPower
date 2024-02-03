@@ -20,6 +20,7 @@ import "./CustomDropdown.scss";
 import { RootState } from "../../../redux/store/store";
 import { ValidationUtil } from "../../utils/validationUtil";
 import { useTranslation } from "react-i18next";
+import { GeneralUtil } from "../../utils/generalUtil";
 
 interface ICustomDropdownProps {
   // eslint-disable-next-line react/require-default-props
@@ -134,7 +135,7 @@ const CustomDropdown: FC<
       <Dropdown
         {...props}
         onRenderOption={onRenderOption}
-        placeholder={`${t('select')} ${label}`}
+        placeholder={GeneralUtil.isNothing(label) || readOnly ? "" : `${t('select')} ${label}`}
         id={fieldId}
         calloutProps={{
           className: callOutWidth !== "Fixed" ? "applyContentFit" : "",

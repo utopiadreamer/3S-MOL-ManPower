@@ -35,7 +35,7 @@ export const UsersGrid: FC<GridProps> = (props: GridProps) => {
   const { items: itemsProps, onChanged, onNbItemPerPageChanged } = props;
   const navigate = useNavigate();
 
-  const [items, setItems] = useState<UserDTO[]>([]);
+  const [items, setItems] = useState<UserDTO[]>();
 
   useEffect(() => {
     setItems(itemsProps?.slice());

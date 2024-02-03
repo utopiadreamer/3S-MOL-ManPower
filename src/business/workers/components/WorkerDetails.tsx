@@ -82,7 +82,7 @@ export const WorkerDetails: FC = () => {
 
   return (
     <LayoutContent>
-      <div className="workerDetails panel">
+      <div className="workerDetails">
         <div className="body">
           <div className="section">
             <div className="content">

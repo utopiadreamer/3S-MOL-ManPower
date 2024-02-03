@@ -50,7 +50,7 @@ export const MetadatasGrid: FC<GridProps> = (props: GridProps) => {
   const [editMode, setEditMode] = useState<Mode>(mode);
   const _root = React.createRef<IDetailsList>();
 
-  const [items, setItems] = useState<MetadataDTO[]>(metadata);
+  const [items, setItems] = useState<MetadataDTO[]>();
 
   useEffect(() => {
     setItems(metadata?.slice());
@@ -62,13 +62,14 @@ export const MetadatasGrid: FC<GridProps> = (props: GridProps) => {
 
   useEffect(() => {
     if (reload) {
+      setItems(metadata.slice() ?? []);
       onRealod();
     }
     _root?.current?.focusIndex(metadata.length, true);
   }, [reload]);
 
   const deleteMetadata = (name: string) => {
-    const index = metadata.findIndex((i) => i.toString() === name);
+    const index = metadata.findIndex((i) => i.Name.toString() === name);
     if (index !== -1) {
       const filtered = metadata;
       filtered.splice(index, 1);
@@ -92,7 +93,7 @@ export const MetadatasGrid: FC<GridProps> = (props: GridProps) => {
         },
       },
       {
-        key: "fieldName",
+        key: "fieldLabel",
         name: t("fieldLabel"),
         fieldName: "Name",
         minWidth: 150,

@@ -21,5 +21,7 @@
     "addMetadata": "حقل إضافي جديد",
     "text": "نص",
     "number": "رقم",
-    "withoutParent": "بدون نوع كود أساسي"
+    "withoutParent": "بدون نوع كود أساسي",
+    "childTypes": "انواع الاكواد الفرعية",
+    "childCodes": "الاكواد الفرعية"
 }

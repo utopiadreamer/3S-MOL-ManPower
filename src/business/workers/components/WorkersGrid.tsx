@@ -19,7 +19,7 @@ import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { EditableItem } from "../models/EditableItem";
 import { ValidationType } from "../../../shared/constants/types";
 import { ValidationUtil } from "../../../shared/utils/validationUtil";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface GridProps {
   items: WorkerDTO[];
@@ -40,6 +40,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
   const { items: itemsProps, mode } = props;
   const [editMode, setEditMode] = useState<Mode>(mode);
   const [editInPlace, setEditInPlace] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const [items, setItems] = useState<EditableItem<WorkerDTO>[]>([]);
   const [isNew, setIsNew] = useState<boolean>(false);
@@ -217,13 +218,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
               />
             ) : (
               <div>
-                {/* <Icon iconName="CRMServices" className="workerIcon" /> */}
-                <NavLink
-                  to={`${"/workers/"}${item.item.ID}`}
-                  className={"navLink"}
-                >
                   {item.editedItem.Name}
-                </NavLink>
               </div>
             )}
           </div>
@@ -371,7 +366,11 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
       onRender: (item: EditableItem<WorkerDTO>) => {
         return (
           <div className="actions">
-            {editMode !== Mode.View &&
+          <IconButton
+            iconProps={{ iconName: "View" }}
+            onClick={() => navigate(`/workers/${item.item.ID}`)}
+          />
+            {/* {editMode !== Mode.View &&
               (item.isEdited ? (
                 <>
                   <IconButton
@@ -394,7 +393,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
                     onClick={() => onConfirm(item)}
                   ></IconButton>
                 </>
-              ))}
+              ))} */}
           </div>
         );
       },

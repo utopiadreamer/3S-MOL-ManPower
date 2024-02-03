@@ -19,7 +19,7 @@ export const UsersList: FC = () => {
 
   useEffect(() => {
     Search();
-  });
+  }, []);
 
   const Search = () => {
     const results = getUsers();

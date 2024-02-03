@@ -16,6 +16,7 @@ import { CodeTypeDTO } from "../../../shared/models/CodeTypeDTO";
 import { AddMetadata } from "./MetadataManage";
 import { MetadataDTO } from "../../../shared/models/MetadataDTO";
 import { MetadatasGrid } from "./MetadataGrid";
+import { CodesTypesGrid } from "./CodesTypesGrid";
 
 export interface Props {
   mode: Mode;
@@ -25,6 +26,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
   const { mode } = props;
   let params = useParams();
   const [details, setDetails] = useState<CodeTypeDTO>();
+  const [childTypes, setChildTypes] = useState<CodeTypeDTO[]>();
   const [metadata, setMetadata] = useState<MetadataDTO[]>([]);
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
   const [codeType, setCodeType] = useState<string>();
@@ -36,6 +38,13 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
   const { t } = useTranslation("codes");
   const navigate = useNavigate();
 
+  const getChildTypes = () => {
+    const types = getCodesTypes().filter(
+      (i) => i.ParentID?.toString() === params.id
+    );
+    setChildTypes(types);
+  };
+
   useEffect(() => {
     try {
       const list = getCodesTypes().filter((i) => i.ID.toString() === params.id);
@@ -43,6 +52,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
         const data = list[0];
         setCodeType(data?.ParentID?.toString());
         setMetadata(data.Metadata ?? []);
+        getChildTypes();
         setDetails(data);
       }
       getTypes();
@@ -156,6 +166,26 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
             </div>
           </div>
 
+          <div className="section">
+            <div className="content">
+              <div className="actionsHeader">
+                <Section
+                  title={t("childTypes")}
+                  size={SectionSize.h2}
+                  iconName="EditNote"
+                />
+              </div>
+              <CodesTypesGrid
+                items={childTypes ?? []}
+                onChanged={() => {
+                  return false;
+                }}
+                onNbItemPerPageChanged={() => {
+                  return false;
+                }}
+              />
+            </div>
+          </div>
           <div className="section">
             <div className="content">
               <div className="actionsHeader">

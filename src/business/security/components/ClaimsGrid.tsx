@@ -45,23 +45,24 @@ export const ClaimsGrid: FC<GridProps> = (props: GridProps) => {
     reload,
     onRealod,
     onDelete,
-    mode
+    mode,
   } = props;
   const [editMode, setEditMode] = useState<Mode>(mode);
   const _root = React.createRef<IDetailsList>();
 
-  const [items, setItems] = useState<Claim[]>([]);
+  const [items, setItems] = useState<Claim[]>();
 
   useEffect(() => {
     setItems(claims?.slice());
   }, [claims]);
-  
+
   useEffect(() => {
     setEditMode(mode);
   }, [mode]);
 
   useEffect(() => {
     if (reload) {
+      setItems(claims?.slice());
       onRealod();
     }
     _root?.current?.focusIndex(claims.length, true);

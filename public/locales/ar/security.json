@@ -22,5 +22,6 @@
     "DeleteCode": "حذف كود",
     "EditEstablishment": "تعديل بيانات جهة",
     "EditWorker": "تعديل بيانات عامل",
-    "DeleteWorker": "حذف عامل"
+    "DeleteWorker": "حذف عامل",
+    "userSearch": "البحث عن مستخدم"
 }

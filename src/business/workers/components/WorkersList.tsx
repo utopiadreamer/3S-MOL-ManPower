@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useState } from "react";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
 
@@ -21,7 +22,7 @@ export const WorkersList: FC = () => {
 
   useEffect(() => {
     Search();
-  });
+  }, []);
 
   const Search = () => {
     const results = getWorkers(name, nationalID, occupation, id);

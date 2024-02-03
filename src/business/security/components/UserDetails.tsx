@@ -1,4 +1,6 @@
 import { FC, useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/UserDetails.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
@@ -15,6 +17,7 @@ import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { Claim, Role } from "../../../shared/constants/auth";
 import { ClaimsGrid } from "./ClaimsGrid";
 import { AddClaim } from "./AddClaim";
+import { GeneralUtil } from "../../../shared/utils/generalUtil";
 
 export interface Props {
   mode: Mode;
@@ -26,12 +29,14 @@ export const UserDetails: FC<Props> = (props: Props) => {
   const [details, setDetails] = useState<UserDTO>();
   const [claims, setClaims] = useState<Claim[]>();
   const [selectedRole, setRole] = useState<string>("");
-  const [user, setUser] = useState<string>("");
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const [showAddClaim, setShowAddClaim] = useState<boolean>(false);
   const [reload, setReload] = useState<boolean>(false);
+  const [searchUserName, setSearchUserName] = useState<string>("");
+  const [searchEmail, setSearchEmail] = useState<string>("");
   const { t } = useTranslation(["security", "common"]);
+
   const navigate = useNavigate();
 
   const roles = [
@@ -127,94 +132,129 @@ export const UserDetails: FC<Props> = (props: Props) => {
     setReload(true);
   };
 
+  const Search = () => {
+    const user = getUsers().find(
+      (i) => i.Email === searchEmail || i.UserName === searchUserName
+    );
+    if (user) setDetails(user);
+    else GeneralUtil.notify();
+  };
+
   return (
     <LayoutContent>
       <div className="userDetails">
         <div className="body">
-          <div className="section">
-            <div className="content">
-              <div className="actionsHeader">
-                <Section
-                  title={t("userDetails")}
-                  size={SectionSize.h2}
-                  iconName="UserOptional"
-                />
-                <CommandBar items={[]} farItems={getActions()} />
-              </div>
-              <div className="row">
-                {mode === Mode.New ? (
-                  <>
-                    <TextField
-                      label={t("userName")}
-                      value={t(details?.UserName ?? "")}
-                    />
-                    <TextField
-                      label={t("email")}
-                      value={t(details?.Email ?? "")}
-                    />
-                  </>
-                ) : (
-                  <TextField
-                    readOnly={!isEditable}
-                    label={t("userName")}
-                    value={details?.UserName}
+          {mode === Mode.New && (
+            <div className="section">
+              <div className="content">
+                <div className="actionsHeader">
+                  <Section
+                    title={t("userSearch")}
+                    size={SectionSize.h2}
+                    iconName="UserOptional"
                   />
-                )}
-                <TextField
-                  readOnly={!isEditable}
-                  label={t("name")}
-                  value={details?.Name ?? ""}
-                />
-                <TextField
-                  readOnly={!isEditable}
-                  label={t("email")}
-                  value={details?.Email ?? ""}
-                />
-                <Dropdown
-                  label={t("role")}
-                  options={roles}
-                  selectedKey={selectedRole}
-                  onChange={(_, option) =>
-                    setRole(option?.key.toString() ?? "")
-                  }
-                  disabled={!isEditable}
-                ></Dropdown>
+                </div>
+                <div className="row">
+                  <TextField
+                    label={t("userName")}
+                    value={searchUserName}
+                    onChange={(_, v) => setSearchUserName(v ?? "")}
+                  />
+                  <TextField
+                    label={t("email")}
+                    value={searchEmail ?? ""}
+                    onChange={(_, v) => setSearchEmail(v ?? "")}
+                  />
+                  <div/>
+                  <div className="alignEnd">
+                    <PrimaryButton
+                      className="actionButton primeAction"
+                      iconProps={{ iconName: "Search" }}
+                      text={t("common:search")}
+                      onClick={() => {
+                        Search();
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="section">
-            <div className="content">
-              <div className="actionsHeader">
-                <Section
-                  title={t("claims")}
-                  size={SectionSize.h2}
-                  iconName="AccountManagement"
-                />
-                {isEditable && (
-                  <PrimaryButton
-                    className="actionButton primeAction"
-                    iconProps={{ iconName: "Add" }}
-                    onClick={() => setShowAddClaim(true)}
-                  >
-                    {t("addClaim")}
-                  </PrimaryButton>
-                )}
+          )}
+          {!GeneralUtil.isUndefined(details) && (
+            <div>
+              <div className="section">
+                <div className="content">
+                  <div className="actionsHeader">
+                    <Section
+                      title={t("userDetails")}
+                      size={SectionSize.h2}
+                      iconName="UserOptional"
+                    />
+                    <CommandBar items={[]} farItems={getActions()} />
+                  </div>
+                  <div className="row">
+                    <TextField
+                      readOnly={!isEditable || mode === Mode.New}
+                      label={t("userName")}
+                      value={details?.UserName}
+                    />
+                    <TextField
+                      readOnly={!isEditable}
+                      label={t("name")}
+                      value={details?.Name ?? ""}
+                    />
+                    <TextField
+                      readOnly={!isEditable || mode === Mode.New}
+                      label={t("email")}
+                      value={details?.Email ?? ""}
+                    />
+                    <Dropdown
+                      label={t("role")}
+                      options={roles}
+                      selectedKey={selectedRole}
+                      onChange={(_, option) =>
+                        setRole(option?.key.toString() ?? "")
+                      }
+                      disabled={!isEditable}
+                    />
+                  </div>
+                </div>
               </div>
-              <ClaimsGrid
-                mode={!isEditable ? Mode.View : Mode.Edit}
-                reload={reload}
-                onRealod={() => setReload(false)}
-                onDelete={onDeleteClaim}
-                claims={claims ?? []}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
+              <div className="section">
+                <div className="content">
+                  <div className="actionsHeader">
+                    <Section
+                      title={t("claims")}
+                      size={SectionSize.h2}
+                      iconName="AccountManagement"
+                    />
+                    {isEditable && (
+                      <PrimaryButton
+                        className="actionButton primeAction"
+                        iconProps={{ iconName: "Add" }}
+                        onClick={() => setShowAddClaim(true)}
+                      >
+                        {t("addClaim")}
+                      </PrimaryButton>
+                    )}
+                  </div>
+                  <ClaimsGrid
+                    mode={!isEditable ? Mode.View : Mode.Edit}
+                    reload={reload}
+                    onRealod={() => setReload(false)}
+                    onDelete={onDeleteClaim}
+                    claims={claims ?? []}
+                    onChanged={() => {
+                      return false;
+                    }}
+                    onNbItemPerPageChanged={() => {
+                      return false;
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {showDeleteDialog && (
@@ -243,6 +283,7 @@ export const UserDetails: FC<Props> = (props: Props) => {
           }}
         />
       )}
+      <ToastContainer />
     </LayoutContent>
   );
 };

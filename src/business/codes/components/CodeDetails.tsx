@@ -18,6 +18,7 @@ import { Action, Mode } from "../../../shared/constants/types";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
 import { MetadataDTO } from "../../../shared/models/MetadataDTO";
+import { CodesGrid } from "./CodesGrid";
 
 export interface Props {
   mode: Mode;
@@ -27,6 +28,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
   const { mode } = props;
   let params = useParams();
   const [details, setDetails] = useState<CodeDTO>();
+  const [childCodes, setChildCodes] = useState<CodeDTO[]>();
   const [metadata, setMetadata] = useState<MetadataDTO[]>([]);
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
   const [codeType, setCodeType] = useState<string>();
@@ -41,6 +43,13 @@ export const CodeDetails: FC<Props> = (props: Props) => {
     getCodesList(details?.ParentID?.toString() ?? "");
     setParentCode(details?.ParentID?.toString());
   }, [details]);
+
+  const getChildCodes = () => {
+    const types = getCodes().filter(
+      (i) => i.ParentID?.toString() === params.id
+    );
+    setChildCodes(types);
+  };
 
   const getCodesList = (id: string) => {
     const codes = getCodes().filter((i) => i.ID?.toString() === id);
@@ -74,6 +83,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
         const data = list[0];
         setCodeType(data?.CodeTypeID?.toString());
         getMetadata(data.CodeTypeID.toString(), data?.Metadata ?? "");
+        getChildCodes();
         setDetails(data);
       }
       getTypes();
@@ -192,6 +202,27 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                   disabled={!isEditable}
                 />
               </div>
+            </div>
+          </div>
+
+          <div className="section">
+            <div className="content">
+              <div className="actionsHeader">
+                <Section
+                  title={t("childCodes")}
+                  size={SectionSize.h2}
+                  iconName="EditNote"
+                />
+              </div>
+              <CodesGrid
+                items={childCodes ?? []}
+                onChanged={() => {
+                  return false;
+                }}
+                onNbItemPerPageChanged={() => {
+                  return false;
+                }}
+              />
             </div>
           </div>
           {metadata.length > 0 && (

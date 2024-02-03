@@ -172,7 +172,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
           label={undefined}
           required={undefined}
           className={useClassName}
-          placeholder={GeneralUtil.isNothing(label) ? "" : `${t('insert')} ${label}`}
+          placeholder={GeneralUtil.isNothing(label) || readOnly ? "" : `${t('insert')} ${label}`}
           errorMessage={
             readOnly || disabled
               ? undefined
