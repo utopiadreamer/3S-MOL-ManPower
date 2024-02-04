@@ -1,8 +1,37 @@
+@import "../../../shared/styles/colors";
+@import "../../../shared/styles/custom_variables";
+
 .workersManage {
+    .body {
+        .section {
+            .mol-section {
+                .header {
+
+                    i,
+                    h2 {
+                        color: $primary-color;
+                        font-size: $lg2-size;
+                        font-weight: $font_weight_bold;
+                    }
+                }
+            }
+        }
+    }
+
     .import {
-        display: flex;
-        align-self: end;
-        justify-content: flex-end;
-        padding-bottom: 10px;
+        button {
+            background: transparent;
+            padding: 0;
+            .ms-Button-flexContainer {
+                i {
+                    color: $mol_menu_background!important;
+                    margin: 0 5px;
+                }
+
+                span {
+                    color: $mol_menu_background;
+                }
+            }
+        }
     }
 }

@@ -121,27 +121,6 @@ body,
 
 .section {
   margin-top: 5px;
-  .mol-section {
-    align-self: flex-end;
-    // background-color: $mol_menu_background;
-    // border-radius: 5px 5px 0px 0px;
-    padding: 0px 5px 10px 20px;
-
-    .header {
-      margin-bottom: 0px;
-      padding-top: 0px;
-
-      i,
-      h2 {
-        color: $mol_menu_background;
-        font-size: 20px !important;
-      }
-      h2 {
-        font-weight: 700;
-      }
-    }
-  }
-
   .content {
     box-shadow: 0px 0px 7.5px 1px #57575740;
     border-radius: 4px;
@@ -159,7 +138,6 @@ body,
   max-height: 32px;
   margin-right: 10px;
   padding: 0px 15px;
-  padding-top: 4px;
   color: white;
   cursor: pointer;
 
@@ -171,10 +149,6 @@ body,
     .ms-Button-icon {
       padding-bottom: 5px;
     }
-  }
-
-  .ms-Button-label {
-    padding-bottom: 6px;
   }
 }
 
@@ -410,9 +384,9 @@ button {
   }
 }
 
-h2 {
-  font-size: 1.4rem !important;
-}
+// h2 {
+//   font-size: 1.4rem !important;
+// }
 
 .mol-layout-menu-content {
   .layout-content-root.no-header {
@@ -585,8 +559,12 @@ h2 {
 
 .ms-Label {
   padding-bottom: 3px;
-  color: #000;
-  // font-weight: $font_weight_normal;
+  color: #303030;
+  font-weight: $font_weight_bold;
+
+  &::after {
+    color: $mol_required_color;
+  }
 }
 
 .ms-MessageBar-icon {
