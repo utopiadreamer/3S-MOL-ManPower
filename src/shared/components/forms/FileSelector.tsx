@@ -11,6 +11,7 @@ import React, { FC, useRef, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import './FileSelector.scss';
 import { FilesUtil } from '../../utils/filesUtil';
+import { useTranslation } from "react-i18next";
 
 export interface FileSelectorLabels {
   selectFile: string;
@@ -51,6 +52,7 @@ export interface FileSelectorProps {
 export const FileSelector: FC<FileSelectorProps> = (
   props: FileSelectorProps
 ) => {
+  const { t } = useTranslation(["common"]);
   const fileInput = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const {
@@ -208,7 +210,10 @@ export const FileSelector: FC<FileSelectorProps> = (
   return (
     <div className={clsx('mol-fileSelector', classname)}>
       <form ref={formRef}>
-        <Label>{title}</Label>
+        <div className='label-description'>
+          <Label required>{title}</Label>
+          <span className='desc'>{t("common:descFileSelector")}</span>
+        </div>
         <div>
           <input
             type="file"
@@ -219,7 +224,7 @@ export const FileSelector: FC<FileSelectorProps> = (
             onChange={onChangedFile}
           />
         </div>
-        <div>
+        <div className='fileSelector_btn'>
           {((!fileInfo || currentMode === FileSelectorMode.Button) && !readonly) && (
             <DefaultButton
               iconProps={{ iconName: 'OpenFile' }}

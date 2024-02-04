@@ -8,6 +8,7 @@ import { FileSelector } from "../../../shared/components/forms/FileSelector";
 import { AddWorkItems } from "./AddWorkItems";
 import { DatesUtil } from "../../../shared/utils/datesUtil";
 import { GeneralUtil } from "../../../shared/utils/generalUtil";
+import "../styles/SettlementManage.scss";
 
 export interface WorkItem {
   id: number;
@@ -43,9 +44,8 @@ export const WorkItems: FC = () => {
       const arr = invoices;
       const invoice: IGroup = {
         key: invoiceNo?.toString() ?? "",
-        name: ` فاتورة رقم ${
-          invoices.length + 1
-        } - ${DatesUtil.getLocalizedDateTime("Date", invoiceDate)}`,
+        name: ` فاتورة رقم ${invoices.length + 1
+          } - ${DatesUtil.getLocalizedDateTime("Date", invoiceDate)}`,
         startIndex: invoices.length,
         count: 0,
         level: 0,
@@ -102,8 +102,8 @@ export const WorkItems: FC = () => {
   };
 
   return (
-    <div>
-      <div className="row">
+    <div className="workItems">
+      <div className="row g-112">
         <TextField
           label={t("invoiceNo")}
           value={invoiceNo}
@@ -122,6 +122,8 @@ export const WorkItems: FC = () => {
           value={notes}
           onChange={(_, v) => setNotes(v ?? "")}
         />
+      </div>
+      <div className="attachments">
         <FileSelector
           title={t("common:attachments")}
           labels={{
@@ -133,7 +135,7 @@ export const WorkItems: FC = () => {
           extensionFilter=".jpg"
         />
       </div>
-      <div>
+      <div className="btn-workItems">
         <div className="alignEnd">
           <PrimaryButton
             iconProps={{ iconName: "Add" }}
@@ -151,23 +153,23 @@ export const WorkItems: FC = () => {
           </PrimaryButton>
         </div>
       </div>
-      <br/>
+      <br />
       <div>
-          <WorkItemsGrid
-            reload={reload}
-            onDelete={() =>
-              onDeleteWorkItem()
-            }
-            onRealod={() => setReload(false)}
-            invoices={invoices}
-            workItems={workItems}
-            onChanged={() => {
-              return false;
-            }}
-            onNbItemPerPageChanged={() => {
-              return false;
-            }}
-          />
+        <WorkItemsGrid
+          reload={reload}
+          onDelete={() =>
+            onDeleteWorkItem()
+          }
+          onRealod={() => setReload(false)}
+          invoices={invoices}
+          workItems={workItems}
+          onChanged={() => {
+            return false;
+          }}
+          onNbItemPerPageChanged={() => {
+            return false;
+          }}
+        />
       </div>
       {showAddWorkItemDialog && (
         <AddWorkItems

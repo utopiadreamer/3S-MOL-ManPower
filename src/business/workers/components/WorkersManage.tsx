@@ -154,7 +154,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
                 <CommandBar items={[]} farItems={getActions()} />
               )}
             </div>
-            <div className="row">
+            <div className="row g-112">
               <TextField
                 label={t('settleNo')}
                 name="RecordNo"
@@ -198,6 +198,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
                   <FilePicker
                     name="ImportWorkersSheet"
                     label={t('importWorkersSheet')}
+                    iconName='Download'
                     handleImportedFile={(data: any[]) => {
                       processImportedFile(data);
                     }}

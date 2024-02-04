@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { FC, useEffect, useRef, useState } from "react";
-import "../styles/SettlementManage.scss";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
@@ -52,7 +51,7 @@ export const SettlementManage: FC<Props> = (props: Props) => {
     }));
   };
 
-  const handleDateChange = () => {};
+  const handleDateChange = () => { };
 
   const SetValidity = (name: string, isValid: boolean) => {
     form.current.SetValidity(name, isValid);
@@ -92,16 +91,16 @@ export const SettlementManage: FC<Props> = (props: Props) => {
       <div className="body">
         <div className="section">
           <div className="content">
-          <div className="actionsHeader">
-            <Section
-              size={SectionSize.h2}
-              title={t("settlementInfo")}
-              iconName="ActivateOrders"
-            />
-            {id !== undefined && mode === Mode.Edit && (
-              <CommandBar items={[]} farItems={getActions()} />
-            )}
-          </div>
+            <div className="actionsHeader">
+              <Section
+                size={SectionSize.h2}
+                title={t("settlementInfo")}
+                iconName="OpenEnrollment"
+              />
+              {id !== undefined && mode === Mode.Edit && (
+                <CommandBar items={[]} farItems={getActions()} />
+              )}
+            </div>
             <div className="row">
               <TextField
                 label={t("contractNo")}
@@ -130,7 +129,7 @@ export const SettlementManage: FC<Props> = (props: Props) => {
                 disabled={!isEditable}
               />
             </div>
-            <div className="row">
+            <div className="row g-112">
               <Dropdown
                 label={t("settlementDocumentType")}
                 options={documentTypes}
