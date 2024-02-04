@@ -29,6 +29,7 @@ import { WorkersRecordDTO } from "../../../shared/models/WorkersRecordDTO";
 import { AuthUtil } from "../../../shared/utils/authUtil";
 import { Claim } from "../../../shared/constants/auth";
 import { FileSelector } from "../../../shared/components/forms/FileSelector";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
 
 export interface Props {
   mode: Mode;
@@ -199,10 +200,7 @@ export const ContractManage: FC<Props> = (props: Props) => {
     // if (isEditable) {
     //   arr.splice(0, 0, saveAction);
     // } else
-    if (
-      currentMode === Mode.Edit &&
-      AuthUtil.hasClaim(Claim.DeleteContract)
-    ) {
+    if (currentMode === Mode.Edit && AuthUtil.hasClaim(Claim.DeleteContract)) {
       arr.push(primeAction);
     }
     return arr;
@@ -368,183 +366,149 @@ export const ContractManage: FC<Props> = (props: Props) => {
           </div>
         </div>
 
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              title={t("workInfo")}
-              iconName="WorkItem"
+        <CollapsibleSection open title={t("workInfo")} iconName="WorkItem">
+          <div className="row">
+            <TextField
+              label={t("scopeOfWork")}
+              name="scopeOfWork"
+              value={details?.ScopeOfWork ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              required
             />
-            <div className="row">
-              <TextField
-                label={t("scopeOfWork")}
-                name="scopeOfWork"
-                value={details?.ScopeOfWork ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-              <TextField
-                label={t("worksDescription")}
-                name="worksDescription"
-                value={details?.Description ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                required
-              />
-              <DatePicker
-                label={t("contractStartDate")}
-                value={details?.ContractStartDate}
-                onChange={handleDateChange}
-                disabled={!isEditable}
-                isRequired
-              />
-              <DatePicker
-                label={t("contractStartDate")}
-                value={details?.ContractEndDate}
-                onChange={handleDateChange}
-                disabled={!isEditable}
-                isRequired
-              />
-            </div>
+            <TextField
+              label={t("worksDescription")}
+              name="worksDescription"
+              value={details?.Description ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              required
+            />
+            <DatePicker
+              label={t("contractStartDate")}
+              value={details?.ContractStartDate}
+              onChange={handleDateChange}
+              disabled={!isEditable}
+              isRequired
+            />
+            <DatePicker
+              label={t("contractStartDate")}
+              value={details?.ContractEndDate}
+              onChange={handleDateChange}
+              disabled={!isEditable}
+              isRequired
+            />
           </div>
-        </div>
+        </CollapsibleSection>
 
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              title={t("financialInfo")}
-              iconName="Money"
+        <CollapsibleSection open title={t("financialInfo")} iconName="Money">
+          <div className="row">
+            <TextField
+              label={t("totalAmount")}
+              name="totalAmount"
+              inputType={InputType.DecimalNumber}
+              value={details?.TotalAmount?.toString() ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              maxLength={12}
+              required
             />
-            <div className="row">
-              <TextField
-                label={t("totalAmount")}
-                name="totalAmount"
-                inputType={InputType.DecimalNumber}
-                value={details?.TotalAmount?.toString() ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                maxLength={12}
-                required
-              />
-              <TextField
-                label={t("realAmount")}
-                name="realAmount"
-                inputType={InputType.DecimalNumber}
-                value={details?.RealAmount?.toString() ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                maxLength={12}
-                required
-              />
-              <TextField
-                label={t("taxRate")}
-                name="taxRate"
-                inputType={InputType.DecimalNumber}
-                value={details?.TaxRate?.toString() ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-                onValidationChange={SetValidity}
-                maxLength={2}
-                required
-                suffix="%"
-              />
-            </div>
+            <TextField
+              label={t("realAmount")}
+              name="realAmount"
+              inputType={InputType.DecimalNumber}
+              value={details?.RealAmount?.toString() ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              maxLength={12}
+              required
+            />
+            <TextField
+              label={t("taxRate")}
+              name="taxRate"
+              inputType={InputType.DecimalNumber}
+              value={details?.TaxRate?.toString() ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+              onValidationChange={SetValidity}
+              maxLength={2}
+              required
+              suffix="%"
+            />
           </div>
-        </div>
+        </CollapsibleSection>
 
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              title={t("otherInfo")}
-              iconName="EditNote"
+        <CollapsibleSection open title={t("otherInfo")} iconName="EditNote">
+          <div className="row">
+            <TextField
+              label={t("description")}
+              name="description"
+              value={details?.Description ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
             />
-            <div className="row">
-              <TextField
-                label={t("description")}
-                name="description"
-                value={details?.Description ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-              />
-              <TextField
-                label={t("notes")}
-                name="notes"
-                value={details?.Notes ?? ""}
-                onChange={handleInputChange}
-                readOnly={!isEditable}
-              />
-            </div>
+            <TextField
+              label={t("notes")}
+              name="notes"
+              value={details?.Notes ?? ""}
+              onChange={handleInputChange}
+              readOnly={!isEditable}
+            />
           </div>
-        </div>
+        </CollapsibleSection>
         {currentMode !== Mode.View && (
-          <div className="section">
-            <div className="content">
-              <Section
-                size={SectionSize.h2}
+          <CollapsibleSection
+            open
+            title={t("common:attachments")}
+            iconName="EditNote"
+          >
+            <div className="row">
+              <FileSelector
                 title={t("common:attachments")}
-                iconName="EditNote"
+                labels={{
+                  selectFile: t("common:BrowseFile"),
+                  chooseAnotherFile: t("common:ChooseAnother"),
+                  unSelectFile: t("common:UnSelect"),
+                  viewFile: t("common:view"),
+                }}
+                extensionFilter=".jpg"
               />
-              <div className="row">
-                <FileSelector
-                  title={t("common:attachments")}
-                  labels={{
-                    selectFile: t("common:BrowseFile"),
-                    chooseAnotherFile: t("common:ChooseAnother"),
-                    unSelectFile: t("common:UnSelect"),
-                    viewFile: t("common:view"),
-                  }}
-                  extensionFilter=".jpg"
-                />
-              </div>
             </div>
-          </div>
+          </CollapsibleSection>
         )}
         {currentMode === Mode.View && (
-          <div className="section">
-            <Section
-              size={SectionSize.h2}
-              title={t("settlements")}
-              iconName="EditNote"
+          <CollapsibleSection open title={t("settlements")} iconName="EditNote">
+            <SettlementsGrid
+              items={settlements}
+              onChanged={() => {
+                return false;
+              }}
+              onNbItemPerPageChanged={() => {
+                return false;
+              }}
             />
-            <div className="content">
-              <SettlementsGrid
-                items={settlements}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
-            </div>
-          </div>
+          </CollapsibleSection>
         )}
         {currentMode === Mode.View && (
-          <div className="section">
-            <Section
-              size={SectionSize.h2}
-              title={t("workersRecords")}
-              iconName="FabricUserFolder"
+          <CollapsibleSection
+            open
+            title={t("workersRecords")}
+            iconName="FabricUserFolder"
+          >
+            <WorkerRecordsGrid
+              items={workersRecords}
+              onChanged={() => {
+                return false;
+              }}
+              onNbItemPerPageChanged={() => {
+                return false;
+              }}
             />
-            <div className="content">
-              <WorkerRecordsGrid
-                items={workersRecords}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
-            </div>
-          </div>
+          </CollapsibleSection>
         )}
       </div>
       {showDeleteDialog && (

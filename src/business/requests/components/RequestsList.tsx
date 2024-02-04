@@ -13,12 +13,16 @@ export const RequestsList: FC = () => {
   useEffect(() => {
     const requests = getRequests();
     setRequests(requests);
-  },[]);
+  }, []);
 
   return (
     <LayoutContent>
       <div className="panel">
-          <Section size={SectionSize.h2} iconName="CustomListMirrored" title={t('requests')} />
+        <Section
+          size={SectionSize.h2}
+          iconName="CustomListMirrored"
+          title={t("requests")}
+        />
         <RequestsGrid
           items={requests}
           onChanged={() => {

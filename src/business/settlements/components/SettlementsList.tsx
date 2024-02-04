@@ -3,13 +3,14 @@ import { LayoutContent } from "../../../shared/components/layout/layoutContent/L
 import { getSettlements } from "../../../shared/mockups/Settlements";
 import { SettlementDTO } from "../../../shared/models/SettlementDTO";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
-import { PrimaryButton } from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import { SettlementsGrid } from "./SettlementsGrid";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { SettlementDocumentType } from "../../../shared/constants/constants";
 import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
 import "../styles/SettlementsList.scss";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { SearchBar } from "../../../shared/components/forms/SearchBar";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const SettlementsList: FC = () => {
@@ -42,71 +43,48 @@ export const SettlementsList: FC = () => {
   return (
     <LayoutContent>
       <div className="settlementList">
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              iconName="Search"
-              title={t("common:searchFilters")}
+        <Section title={t('searchRequests')} size={SectionSize.h1} />
+        <CollapsibleSection title={t("common:searchFilters")} open>
+          <div className="row">
+            <TextField
+              label={t("settlementNumber")}
+              value={settleNo}
+              onChange={(e, newValue) => setSettleNo(newValue)}
             />
-            <div className="row g-5">
-              <TextField
-                label={t("settlementNumber")}
-                value={settleNo}
-                onChange={(e, newValue) => setSettleNo(newValue)}
-              />
-              <TextField
-                label={t("contractNo")}
-                value={contractNo}
-                onChange={(e, newValue) => setContractNo(newValue)}
-              />
-              <Dropdown
-                label={t("settlementDocumentType")}
-                options={documentTypes}
-                selectedKey={documentType ?? ""}
-                onChange={(_, option) => {
-                  setDocumentType(option?.key.toString() ?? "");
-                }}
-              />
-              <DatePicker
-                label={t("operationStartDate")}
-                value={startDate}
-                onSelectDate={(val) => {
-                  setStatrtDate(val ?? undefined);
-                }}
-              />
-              <DatePicker
-                label={t("operationEndDate")}
-                value={endDate}
-                onSelectDate={(val) => {
-                  setEndDate(val ?? undefined);
-                }}
-              />
-            </div>
-            <div className="searchBar">
-              <PrimaryButton
-                className="actionButton primeAction"
-                iconProps={{ iconName: "Search" }}
-                text={t("common:search")}
-                onClick={() => {
-                  Search();
-                }}
-              />
-              <PrimaryButton
-                className="actionButton subAction"
-                iconProps={{ iconName: "Clear" }}
-                text={t("common:clearSearch")}
-                onClick={() => {}}
-              />
-            </div>
+            <TextField
+              label={t("contractNo")}
+              value={contractNo}
+              onChange={(e, newValue) => setContractNo(newValue)}
+            />
+            <DatePicker
+              label={t("operationStartDate")}
+              value={startDate}
+              onSelectDate={(val) => {
+                setStatrtDate(val ?? undefined);
+              }}
+            />
+            <DatePicker
+              label={t("operationEndDate")}
+              value={endDate}
+              onSelectDate={(val) => {
+                setEndDate(val ?? undefined);
+              }}
+            />
           </div>
-        </div>
-        <div className="panel">
-          <Section
-            size={SectionSize.h2}
-            iconName="SearchAndApps"
-            title={t("common:searchResults")}
-          />
+          <div className="row g-121">
+            <Dropdown
+              label={t("settlementDocumentType")}
+              options={documentTypes}
+              selectedKey={documentType ?? ""}
+              onChange={(_, option) => {
+                setDocumentType(option?.key.toString() ?? "");
+              }}
+            />
+            <div />
+            <SearchBar onSearch={() => Search()} onClear={() => {}} />
+          </div>
+        </CollapsibleSection>
+        <CollapsibleSection title={t("common:searchResults")} open>
           <SettlementsGrid
             items={settlements}
             onChanged={() => {
@@ -116,7 +94,7 @@ export const SettlementsList: FC = () => {
               return false;
             }}
           />
-        </div>
+        </CollapsibleSection>
       </div>
     </LayoutContent>
   );

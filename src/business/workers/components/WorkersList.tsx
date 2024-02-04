@@ -7,10 +7,10 @@ import { Mode } from "../../../shared/constants/types";
 import { WorkerDTO } from "../../../shared/models/WorkerDTO";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
-import { PrimaryButton } from "@fluentui/react";
 import { getWorkers } from "../../../shared/mockups/Workers";
 import { useParams } from "react-router-dom";
-import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { SearchBar } from "../../../shared/components/forms/SearchBar";
 
 export const WorkersList: FC = () => {
   const [workers, setWorkers] = useState<WorkerDTO[]>([]);
@@ -32,54 +32,28 @@ export const WorkersList: FC = () => {
   return (
     <LayoutContent>
       <div className="workersList">
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              iconName="Search"
-              title={t("common:searchFilters")}
+        <CollapsibleSection open title={t("common:searchFilters")}>
+          <div className="row">
+            <TextField
+              label={t("workerName")}
+              value={name}
+              onChange={(e, newValue) => setName(newValue)}
             />
-            <div className="row">
-              <TextField
-                label={t("workerName")}
-                value={name}
-                onChange={(e, newValue) => setName(newValue)}
-              />
-              <TextField
-                label={t("nationalID")}
-                value={nationalID}
-                onChange={(e, newValue) => setNationalID(newValue)}
-              />
-              <TextField
-                label={t("occupation")}
-                value={occupation}
-                onChange={(e, newValue) => setOccupation(newValue)}
-              />
-            </div>
-            <div className="searchBar">
-              <PrimaryButton
-                className="actionButton primeAction"
-                iconProps={{ iconName: "Search" }}
-                text={t("common:search")}
-                onClick={() => {
-                  Search();
-                }}
-              />
-              <PrimaryButton
-                className="actionButton subAction"
-                iconProps={{ iconName: "Clear" }}
-                text={t("common:clearSearch")}
-                onClick={() => {}}
-              />
-            </div>
+            <TextField
+              label={t("nationalID")}
+              value={nationalID}
+              onChange={(e, newValue) => setNationalID(newValue)}
+            />
+            <TextField
+              label={t("occupation")}
+              value={occupation}
+              onChange={(e, newValue) => setOccupation(newValue)}
+            />
+            <SearchBar onSearch={() => Search()} onClear={() => {}} />
           </div>
-        </div>
-        <div className="panel">
-          <Section
-            size={SectionSize.h2}
-            iconName="SearchAndApps"
-            title={t("common:searchResults")}
-          />
+        </CollapsibleSection>
+
+        <CollapsibleSection open title={t("common:searchResults")}>
           <WorkersGrid
             mode={Mode.View}
             items={workers}
@@ -90,7 +64,7 @@ export const WorkersList: FC = () => {
               return false;
             }}
           />
-        </div>
+        </CollapsibleSection>
       </div>
     </LayoutContent>
   );

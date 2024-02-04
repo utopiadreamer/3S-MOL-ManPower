@@ -4,10 +4,10 @@ import { LayoutContent } from "../../../shared/components/layout/layoutContent/L
 import { getWorkersRecords } from "../../../shared/mockups/WorkersRecord";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
-import { PrimaryButton } from "@fluentui/react";
 import { WorkersRecordDTO } from "../../../shared/models/WorkersRecordDTO";
 import { WorkerRecordsGrid } from "./WorkerRecordsGrid";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { SearchBar } from "../../../shared/components/forms/SearchBar";
 
 export const WorkersRecordList: FC = () => {
   const [workers, setWorkers] = useState<WorkersRecordDTO[]>([]);
@@ -44,22 +44,7 @@ export const WorkersRecordList: FC = () => {
             />
           </div>
         </div>
-        <div className="searchBar">
-          <PrimaryButton
-            className="actionButton primeAction"
-            iconProps={{ iconName: "Search" }}
-            text={t("common:search")}
-            onClick={() => {
-              Search();
-            }}
-          />
-          <PrimaryButton
-            className="actionButton subAction"
-            iconProps={{ iconName: "Clear" }}
-            text={t("common:clearSearch")}
-            onClick={() => {}}
-          />
-        </div>
+            <SearchBar onSearch={() => Search()} onClear={() => {}} />
         <br />
         <div className="panel">
           <Section size={SectionSize.h2} iconName="SearchAndApps" title={t("common:searchResults")} />

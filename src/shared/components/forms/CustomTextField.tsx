@@ -154,7 +154,7 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
   );
   return (
     <div className={clsx("vertialFlexDiv", containerClassName)}>
-      {label && <Label required={required}>{label}</Label>}
+      {label && <Label className="mol-Label" required={required}>{label}</Label>}
       <div className="textContainer">
         {/* <div className={clsx("textIcon", borderClass)}>
           <Icon

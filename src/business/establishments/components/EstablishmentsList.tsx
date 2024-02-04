@@ -3,10 +3,11 @@ import { LayoutContent } from "../../../shared/components/layout/layoutContent/L
 import { EstablishmentsGrid } from "./EstablishmentsGrid";
 import { getEstablishments } from "../../../shared/mockups/Establishments";
 import { EstablishmentDTO } from "../../../shared/models/EstablishmentDTO";
-import { Pivot, PivotItem, PrimaryButton } from "@fluentui/react";
+import { Pivot, PivotItem } from "@fluentui/react";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { SearchBar } from "../../../shared/components/forms/SearchBar";
 
 export const EstablishmentsList: FC = () => {
   const { t } = useTranslation(["establishments", "common"]);
@@ -123,22 +124,7 @@ export const EstablishmentsList: FC = () => {
                 </div>
               </PivotItem>
             </Pivot>
-            <div className="searchBar">
-              <PrimaryButton
-                className="actionButton primeAction"
-                iconProps={{ iconName: "Search" }}
-                text={t("common:search")}
-                onClick={() => {
-                  Search();
-                }}
-              />
-              <PrimaryButton
-                className="actionButton subAction"
-                iconProps={{ iconName: "Clear" }}
-                text={t("common:clearSearch")}
-                onClick={() => {}}
-              />
-            </div>
+            <SearchBar onSearch={() => Search()} onClear={() => {}} />
           </div>
         </div>
         <div className="panel">

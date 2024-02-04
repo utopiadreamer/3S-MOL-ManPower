@@ -4,12 +4,12 @@ import { ContractsGrid } from "./ContractsGrid";
 import { getContracts } from "../../../shared/mockups/Contracts";
 import { ContractDTO } from "../../../shared/models/ContractDTO";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
-import { PrimaryButton } from "@fluentui/react";
 import { useTranslation } from "react-i18next";
 import { DatePicker } from "../../../shared/components/forms/CustomDatePicker";
 import { ContractType } from "../../../shared/constants/constants";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
-import { Section, SectionSize } from "../../../shared/components/forms/Section";
+import { SearchBar } from "../../../shared/components/forms/SearchBar";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
 
 export const ContractsList: FC = () => {
   const { t } = useTranslation(["contracts", "common"]);
@@ -78,97 +78,78 @@ export const ContractsList: FC = () => {
   return (
     <LayoutContent>
       <div className="contractsList">
-        <div className="section">
-          <div className="content">
-            <Section
-              size={SectionSize.h2}
-              iconName="Search"
-              title={t("common:searchFilters")}
+        <CollapsibleSection
+          open
+          title={t("common:searchFilters")}
+          iconName="Search"
+        >
+          <div className="row">
+            <TextField
+              label={t("contractNo")}
+              value={contractNo}
+              onChange={(e, newValue) => setContractNo(newValue)}
             />
-            <div className="row">
-              <TextField
-                label={t("contractNo")}
-                value={contractNo}
-                onChange={(e, newValue) => setContractNo(newValue)}
-              />
-              <TextField
-                label={t("refContractNo")}
-                value={contractRefNo}
-                onChange={(e, newValue) => setContracReftNo(newValue)}
-              />
-              <Dropdown
-                label={t("contractType")}
-                options={contractTypes}
-                selectedKey={contractType ?? ""}
-                onChange={(_, option) => {
-                  setContractType(option?.key.toString() ?? "");
-                }}
-              />
-              <Dropdown
-                label={t("district")}
-                options={[]}
-                selectedKey={district ?? ""}
-                onChange={(_, option) => {
-                  setDistrict(option?.key.toString() ?? "");
-                }}
-              />
-            </div>
-            <div className="row">
-              <Dropdown
-                label={t("assignEst")}
-                options={[]}
-                selectedKey={contractRefNo}
-                onChange={(_, option) => {
-                  setContractType(option?.key.toString() ?? "");
-                }}
-              />
-              <Dropdown
-                label={t("execEst")}
-                options={[]}
-                selectedKey={contractRefNo}
-                onChange={(_, option) => {
-                  setContractType(option?.key.toString() ?? "");
-                }}
-              />
-              <DatePicker
-                label={t("contractStartDate")}
-                value={startDate}
-                onSelectDate={(val) => {
-                  setStatrtDate(val ?? undefined);
-                }}
-              />
-              <DatePicker
-                label={t("contractEndDate")}
-                value={endDate}
-                onSelectDate={(val) => {
-                  setEndDate(val ?? undefined);
-                }}
-              />
-            </div>
-            <div className="searchBar">
-              <PrimaryButton
-                className="actionButton primeAction"
-                iconProps={{ iconName: "Search" }}
-                text={t("common:search")}
-                onClick={() => {
-                  Search();
-                }}
-              />
-              <PrimaryButton
-                className="actionButton subAction"
-                iconProps={{ iconName: "Clear" }}
-                text={t("common:clearSearch")}
-                onClick={() => {}}
-              />
-            </div>
+            <TextField
+              label={t("refContractNo")}
+              value={contractRefNo}
+              onChange={(e, newValue) => setContracReftNo(newValue)}
+            />
+            <Dropdown
+              label={t("contractType")}
+              options={contractTypes}
+              selectedKey={contractType ?? ""}
+              onChange={(_, option) => {
+                setContractType(option?.key.toString() ?? "");
+              }}
+            />
+            <Dropdown
+              label={t("district")}
+              options={[]}
+              selectedKey={district ?? ""}
+              onChange={(_, option) => {
+                setDistrict(option?.key.toString() ?? "");
+              }}
+            />
           </div>
-        </div>
-        <div className="panel">
-          <Section
-            size={SectionSize.h2}
-            iconName="SearchAndApps"
-            title={t("common:searchResults")}
-          />
+          <div className="row">
+            <Dropdown
+              label={t("assignEst")}
+              options={[]}
+              selectedKey={contractRefNo}
+              onChange={(_, option) => {
+                setContractType(option?.key.toString() ?? "");
+              }}
+            />
+            <Dropdown
+              label={t("execEst")}
+              options={[]}
+              selectedKey={contractRefNo}
+              onChange={(_, option) => {
+                setContractType(option?.key.toString() ?? "");
+              }}
+            />
+            <DatePicker
+              label={t("contractStartDate")}
+              value={startDate}
+              onSelectDate={(val) => {
+                setStatrtDate(val ?? undefined);
+              }}
+            />
+            <DatePicker
+              label={t("contractEndDate")}
+              value={endDate}
+              onSelectDate={(val) => {
+                setEndDate(val ?? undefined);
+              }}
+            />
+          </div>
+          <SearchBar onSearch={() => Search()} onClear={() => {}} />
+        </CollapsibleSection>
+        <CollapsibleSection
+          open
+          title={t("common:searchResults")}
+          iconName="SearchAndApps"
+        >
           <ContractsGrid
             items={contracts}
             onChanged={() => {
@@ -178,7 +159,7 @@ export const ContractsList: FC = () => {
               return false;
             }}
           />
-        </div>
+        </CollapsibleSection>
       </div>
     </LayoutContent>
   );

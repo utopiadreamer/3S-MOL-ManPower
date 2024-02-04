@@ -72,7 +72,7 @@ body,
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 30px;
-  padding: 0px 10px;
+  // padding: 0px 10px;
   padding-bottom: 20px;
 
   &.g-112 {
@@ -105,6 +105,9 @@ body,
   }
   &.g-5 {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
+  }
+  &.g-121 {
+    grid-template-columns: 1fr 2fr 1fr !important;
   }
 }
 
@@ -175,6 +178,24 @@ body,
   }
 }
 
+.headerAction {
+  padding: 0px;
+  background-color: transparent;
+  border-width: 0px !important;
+  color: $mol_menu_background !important;
+  span {
+    font-weight: 700 !important;
+  }
+  &:hover {
+    background-color: transparent;
+  }
+  i {
+    font-size: 14px;
+    font-weight: 700 !important;
+    color: $mol_menu_background !important;
+  }
+}
+
 .primeAction {
   background-color: $mol_menu_background;
   border-width: 0px !important;
@@ -203,15 +224,6 @@ body,
 }
 
 .alignEnd {
-  align-self: flex-end;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.searchBar {
-  border-top: 1px solid rgb(223, 223, 223);
-  background-color: white;
-  padding-top: 15px;
   align-self: flex-end;
   display: flex;
   justify-content: flex-end;
@@ -277,7 +289,7 @@ body,
 .navLink {
   font-size: 14px;
   line-height: 20px;
-  color: $mol_menu_background !important;
+  color: #161616 !important;
 }
 
 .receiver-link {
@@ -574,7 +586,7 @@ h2 {
 .ms-Label {
   padding-bottom: 3px;
   color: #000;
-  font-weight: $font_weight_normal;
+  // font-weight: $font_weight_normal;
 }
 
 .ms-MessageBar-icon {
@@ -912,7 +924,7 @@ html[dir="rtl"] {
 
   .ms-DetailsRow-cell {
     text-align: right;
-    color: $mol_menu_background;
+    color: #161616;
 
     font-size: 14px;
   }

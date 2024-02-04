@@ -45,5 +45,6 @@
     "addWorkItemTitle": "إضافة بند عمل!",
     "existingInvoice": "رقم الفاتورة مسجل من قبل",
     "invoiceRequired": "يجب إدخال رقم الفاتورة",
+    "searchRequests": "بحث الطلبات",
     "invoiceDateRequired": "يجب إدخال تاريخ الفاتورة"
 }

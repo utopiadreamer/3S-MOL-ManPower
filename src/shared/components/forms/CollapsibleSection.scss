@@ -1,0 +1,32 @@
+@import "../../styles/colors";
+
+.collapseHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .arrow {
+    cursor: pointer;
+    color: #303030;
+    font-size: 12px;
+  }
+
+  .headerTitle {
+    span {
+        color: $mol_menu_background;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    i {
+      color: $mol_menu_background;
+      font-size: 20px !important;
+      padding: 0px 7px;
+      vertical-align: sub;
+    }
+  }
+}
+
+.sectionContent {
+    padding-top: 10px;
+}

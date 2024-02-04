@@ -26,7 +26,7 @@ export interface LayoutContentHeaderProps {
 export const LayoutContentHeader: FC<LayoutContentHeaderProps> = (
     props: LayoutContentHeaderProps
 ) => {
-    const { commandButtons, menuEntry, commandButtonComponent, headerTitleComponent } = props;
+    const { commandButtons, menuEntry, commandButtonComponent } = props;
     const actionDivRef = useRef<HTMLDivElement>(null);
     const [width] = useState<number>(0);
     const [commandActions, setCommandActions] = useState<{

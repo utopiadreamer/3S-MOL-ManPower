@@ -1,14 +1,12 @@
-import React, { FC, PropsWithChildren, useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { FC, PropsWithChildren } from 'react';
 import {
   DialogType,
   Dialog,
   DialogFooter,
-  setRTL,
   IDialogProps,
   Spinner,
 } from '@fluentui/react';
-import { ConnectedProps, connect } from 'react-redux';
-import clsx from 'clsx';
 import './CustomDialog.scss';
 
 interface CustomDialogProps {

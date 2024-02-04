@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import store from "./redux/store/store";
 import { initializeIcons } from "@fluentui/react";
 import { BrowserRouter } from "react-router-dom";
-import { Role } from "./shared/constants/auth";
 
 initializeIcons();
 const root = ReactDOM.createRoot(

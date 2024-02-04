@@ -6,7 +6,6 @@ import {
   IPivotItemProps,
   Pivot,
   PivotItem,
-  PivotLinkFormat,
 } from "@fluentui/react";
 import "./WizardPivot.scss";
 import { WizardContext } from "./Wizard";

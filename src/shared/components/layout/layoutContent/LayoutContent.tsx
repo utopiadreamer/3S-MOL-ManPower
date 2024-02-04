@@ -28,13 +28,13 @@ export const LayoutContent: FC<PropsWithChildren<LayoutContentProps>> = (
     const sidePanelClassName = clsx('layout-rightPanel',rightPanelClassNameProps);
     return (
         <div className={layoutClassName}>
-            {/* {
+            {
                 loading &&
                 <ProgressIndicator className='LoadingIndicator'/>
             }{
                 !loading &&
                 <div className='LoadingIndicator'/>
-            } */}
+            }
             <div className={clsx('mol-layout-content',rightPanel ? 'srollable' :'')}>
                 <div className={contentClassName}>{children}</div>
                 {rightPanel && (
