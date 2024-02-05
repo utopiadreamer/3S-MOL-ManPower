@@ -390,14 +390,14 @@ export const ContractManage: FC<Props> = (props: Props) => {
               label={t("contractStartDate")}
               value={details?.ContractStartDate}
               onChange={handleDateChange}
-              disabled={!isEditable}
+              readOnly={!isEditable}
               isRequired
             />
             <DatePicker
               label={t("contractStartDate")}
               value={details?.ContractEndDate}
               onChange={handleDateChange}
-              disabled={!isEditable}
+              readOnly={!isEditable}
               isRequired
             />
           </div>

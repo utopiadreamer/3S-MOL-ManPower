@@ -139,12 +139,13 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
     }
   }, [value, onValidationChange]);
 
-  const borderClass =
-    errorMessage !== undefined
-      ? "invalidClass"
-      : isValidInput && !GeneralUtil.isNothing(value)
-      ? "validClass"
-      : undefined;
+  const borderClass = readOnly
+    ? undefined
+    : errorMessage !== undefined
+    ? "invalidClass"
+    : isValidInput && !GeneralUtil.isNothing(value)
+    ? "validClass"
+    : undefined;
   const useClassName = clsx(
     "mol-cTextField",
     className,
@@ -154,7 +155,11 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
   );
   return (
     <div className={clsx("vertialFlexDiv", containerClassName)}>
-      {label && <Label className="mol-Label" required={required}>{label}</Label>}
+      {label && (
+        <Label className="mol-Label" required={readOnly ? false : required}>
+          {label}
+        </Label>
+      )}
       <div className="textContainer">
         {/* <div className={clsx("textIcon", borderClass)}>
           <Icon
@@ -172,7 +177,11 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
           label={undefined}
           required={undefined}
           className={useClassName}
-          placeholder={GeneralUtil.isNothing(label) || readOnly ? "" : `${t('insert')} ${label}`}
+          placeholder={
+            GeneralUtil.isNothing(label) || readOnly
+              ? ""
+              : `${t("insert")} ${label}`
+          }
           errorMessage={
             readOnly || disabled
               ? undefined
@@ -187,14 +196,18 @@ const CustomTextField: FC<ITextField> = (props: ITextField) => {
               }
             }
           }}
-          iconProps={{
-            iconName:
-              errorMessage !== undefined
-                ? "StatusErrorFull"
-                : isValidInput && !GeneralUtil.isNothing(value)
-                ? "CompletedSolid"
-                : undefined,
-          }}
+          iconProps={
+            readOnly
+              ? undefined
+              : {
+                  iconName:
+                    errorMessage !== undefined
+                      ? "StatusErrorFull"
+                      : isValidInput && !GeneralUtil.isNothing(value)
+                      ? "CompletedSolid"
+                      : undefined,
+                }
+          }
         />
       </div>
     </div>

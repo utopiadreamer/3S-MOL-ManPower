@@ -56,6 +56,8 @@ const CustomDropdown: FC<
     onValidationChange,
     errorMessage: errorMessageFromProps,
     selectedKey,
+    selectedKeys,
+    multiSelect,
     id,
     onRenderContainer,
   } = props;
@@ -109,7 +111,7 @@ const CustomDropdown: FC<
   useEffect(() => {
     if (onValidationChange) {
       if (required) {
-        const error = ValidationUtil.isSelectionRequired(t, selectedKey, label);
+        const error = ValidationUtil.isSelectionRequired(t, multiSelect ? selectedKeys : selectedKey, label);
         onValidationChange(name ?? "", error === undefined);
       } else {
         onValidationChange(name ?? "", true);
@@ -131,7 +133,7 @@ const CustomDropdown: FC<
 
   return (
     <div className={clsx("mol-vertialFlexDiv", containerClassName)}>
-      {label && <Label required={required}>{label}</Label>}
+      {label && <Label required={readOnly ? false : required}>{label}</Label>}
       <Dropdown
         {...props}
         onRenderOption={onRenderOption}

@@ -6,7 +6,7 @@ import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
-import { CommandBar, IDropdownOption, PrimaryButton } from "@fluentui/react";
+import { CommandBar, ICommandBarItemProps, IDropdownOption, PrimaryButton } from "@fluentui/react";
 import clsx from "clsx";
 import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
 import { Action, Mode } from "../../../shared/constants/types";
@@ -75,7 +75,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
     setChildTypes(types);
   };
 
-  useEffect(() => {
+  const loadDetails = () => {
     try {
       const list = getCodesTypes().filter((i) => i.ID.toString() === params.id);
       if (list && list.length > 0) {
@@ -87,6 +87,10 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
       }
       getTypes();
     } catch {}
+  }
+
+  useEffect(() => {
+    loadDetails();
   }, [params.id]);
 
   const getTypes = () => {
@@ -102,11 +106,12 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
 
   const getActions = () => {
     if (mode !== Mode.New && details?.ReadOnly) return [];
-    const saveAction = {
+    const saveAction: ICommandBarItemProps = {
       key: "save",
       className: clsx("actionButton", "primeAction"),
       text: t("common:save"),
       iconProps: { iconName: "Save" },
+      disabled: !isFormValid,
       onClick: () => {
         Save();
       },
@@ -120,7 +125,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
         setShowDeleteDialog(true);
       },
     };
-    const arr = [
+    const arr: ICommandBarItemProps[] = [
       {
         key: "edit",
         className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
@@ -128,7 +133,9 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
           if (isEditable) {
-            if (mode === Mode.View) setEditable(false);
+            if (mode === Mode.View) { 
+              loadDetails();              
+              setEditable(false); }
             else navigate("/codesTypes");
           } else {
             setEditable(true);
@@ -189,7 +196,7 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
                   selectedKey={codeType}
                   options={codesTypes}
                   onChange={(_, option) => setCodeType(option?.key.toString())}
-                  disabled={!isEditable}
+                  readOnly={!isEditable}
                 />
               </div>
             </div>

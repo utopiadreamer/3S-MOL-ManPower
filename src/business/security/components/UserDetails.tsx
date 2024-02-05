@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FC, useEffect, useRef, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/UserDetails.scss";
@@ -19,6 +20,7 @@ import { ClaimsGrid } from "./ClaimsGrid";
 import { AddClaim } from "./AddClaim";
 import { GeneralUtil } from "../../../shared/utils/generalUtil";
 import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { Form } from "../../../shared/components/forms/Form";
 
 export interface Props {
   mode: Mode;
@@ -39,6 +41,35 @@ export const UserDetails: FC<Props> = (props: Props) => {
   const { t } = useTranslation(["security", "common"]);
 
   const navigate = useNavigate();
+
+
+  const form = useRef(new Form({}));
+  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  const SetValidity = (name: string, isValid: boolean) => {
+    form.current.SetValidity(name, isValid);
+  };
+
+  useEffect(() => {
+    if (mode === Mode.New) {
+      const data = new UserDTO();
+      setDetails(data);
+    }
+  }, [mode]);
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setDetails((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const Save = () => {
+    if (form.current.isValid) {
+    }
+  };
 
   const roles = [
     {
@@ -67,7 +98,7 @@ export const UserDetails: FC<Props> = (props: Props) => {
     },
   ];
 
-  useEffect(() => {
+  const loadDetails = () => {
     try {
       const list = getUsers().filter((i) => i.ID === params.id);
       if (list && list.length > 0) {
@@ -77,6 +108,11 @@ export const UserDetails: FC<Props> = (props: Props) => {
         setDetails(data);
       }
     } catch {}
+
+  };
+
+  useEffect(() => {
+    loadDetails();
   }, [params.id]);
 
   const getActions = () => {
@@ -85,8 +121,9 @@ export const UserDetails: FC<Props> = (props: Props) => {
       className: clsx("actionButton", "primeAction"),
       text: t("common:save"),
       iconProps: { iconName: "Save" },
+      disabled: !isFormValid,
       onClick: () => {
-        setEditable(false);
+        Save();
       },
     };
     const primeAction = {
@@ -106,7 +143,9 @@ export const UserDetails: FC<Props> = (props: Props) => {
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
           if (isEditable) {
-            if (mode === Mode.View) setEditable(false);
+            if (mode === Mode.View) { 
+              loadDetails();
+              setEditable(false); }
             else navigate("/security/users");
           } else {
             setEditable(true);
@@ -140,6 +179,7 @@ export const UserDetails: FC<Props> = (props: Props) => {
     if (user) setDetails(user);
     else GeneralUtil.notify();
   };
+
   const onSelectRoles = (
     event: React.FormEvent<HTMLDivElement>,
     item?: IDropdownOption
@@ -207,27 +247,34 @@ export const UserDetails: FC<Props> = (props: Props) => {
                   </div>
                   <div className="row">
                     <TextField
-                      readOnly={!isEditable || mode === Mode.New}
+                      readOnly
                       label={t("userName")}
                       value={details?.UserName}
                     />
                     <TextField
                       readOnly={!isEditable}
+                      name="Name"
                       label={t("name")}
                       value={details?.Name ?? ""}
+                      onChange={handleInputChange}
+                      onValidationChange={SetValidity}
+                      required
                     />
                     <TextField
-                      readOnly={!isEditable || mode === Mode.New}
+                      readOnly
                       label={t("email")}
                       value={details?.Email ?? ""}
                     />
                     <Dropdown
                       label={t("role")}
+                      name="Roles"
                       options={roles}
                       selectedKeys={selectedRoles}
                       onChange={(_, option) => onSelectRoles(_, option)}
-                      disabled={!isEditable}
+                      readOnly={!isEditable}
                       multiSelect
+                      onValidationChange={SetValidity}
+                      required
                     />
                   </div>
                 </div>

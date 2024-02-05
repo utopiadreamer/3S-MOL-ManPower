@@ -119,14 +119,14 @@ export const SettlementManage: FC<Props> = (props: Props) => {
                 value={details?.OperationStartDate}
                 onChange={handleDateChange}
                 isRequired
-                disabled={!isEditable}
+                readOnly={!isEditable}
               />
               <DatePicker
                 label={t("operationEndDate")}
                 value={details?.OperationEndDate}
                 onChange={handleDateChange}
                 isRequired
-                disabled={!isEditable}
+                readOnly={!isEditable}
               />
             </div>
             <div className="row g-112">

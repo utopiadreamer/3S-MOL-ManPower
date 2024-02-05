@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import "../styles/EstablishmentDetails.scss";
 import { useParams } from "react-router-dom";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
@@ -15,6 +15,7 @@ import { CommandBar } from "@fluentui/react";
 import clsx from "clsx";
 import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
 import { Action } from "../../../shared/constants/types";
+import { Form } from "../../../shared/components/forms/Form";
 
 export const EstablishmentDetails: FC = () => {
   let params = useParams();
@@ -23,6 +24,27 @@ export const EstablishmentDetails: FC = () => {
   const [isEditable, setEditable] = useState<boolean>(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const { t } = useTranslation("establishments");
+
+  const form = useRef(new Form({}));
+  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  const SetValidity = (name: string, isValid: boolean) => {
+    form.current.SetValidity(name, isValid);
+  };
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setDetails((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const Save = () => {
+    if (form.current.isValid) {
+    }
+  };
 
   useEffect(() => {
     try {
@@ -45,8 +67,9 @@ export const EstablishmentDetails: FC = () => {
       className: clsx("actionButton", "primeAction"),
       text: t("common:save"),
       iconProps: { iconName: "Save" },
+      disabled: !isFormValid,
       onClick: () => {
-        setEditable(false);
+        Save();
       },
     };
     const primeAction = {
@@ -96,7 +119,11 @@ export const EstablishmentDetails: FC = () => {
                 <TextField
                   readOnly={!isEditable}
                   label={t("name")}
+                  name="Name"
                   value={details?.Name ?? ""}
+                  onChange={handleInputChange}
+                  onValidationChange={SetValidity}
+                  required
                 />
                 <TextField
                   readOnly={!isEditable}
@@ -127,8 +154,12 @@ export const EstablishmentDetails: FC = () => {
                 {params.type === EstablishmentType.Person && (
                   <TextField
                     readOnly={!isEditable}
+                    name="NationalID"
                     label={t("nationalID")}
                     value={details?.NationalID ?? ""}
+                    onChange={handleInputChange}
+                    onValidationChange={SetValidity}
+                    required
                   />
                 )}
                 <TextField
@@ -143,13 +174,21 @@ export const EstablishmentDetails: FC = () => {
                 />
                 <TextField
                   readOnly={!isEditable}
+                  name="Address"
                   label={t("address")}
                   value={details?.Address ?? ""}
+                  onChange={handleInputChange}
+                  onValidationChange={SetValidity}
+                  required
                 />
                 <TextField
                   readOnly={!isEditable}
+                  name="PhoneNo"
                   label={t("phoneNumber")}
                   value={details?.PhoneNo ?? ""}
+                  onChange={handleInputChange}
+                  onValidationChange={SetValidity}
+                  required
                 />
               </div>
             </div>

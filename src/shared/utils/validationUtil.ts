@@ -60,7 +60,14 @@ export class ValidationUtil {
       | undefined,
     label?: string
   ): string | undefined {
-    if (value && value !== -1) {
+    let val = value;
+    const isArr = Array.isArray(value);
+    if (isArr) {
+      let arr = value;
+      if (arr.length === 0) val = -1;
+    }
+
+    if (val && val !== -1) {
       return undefined;
     }
     return t("validation:selectionRequired", { label });

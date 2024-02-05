@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import "../styles/CodeDetails.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { getCodesTypes } from "../../../shared/mockups/CodesTypes";
 import { MetadataDTO } from "../../../shared/models/MetadataDTO";
 import { CodesGrid } from "./CodesGrid";
+import { Form } from "../../../shared/components/forms/Form";
 
 export interface Props {
   mode: Mode;
@@ -38,6 +39,34 @@ export const CodeDetails: FC<Props> = (props: Props) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const { t } = useTranslation("codes");
   const navigate = useNavigate();
+
+  const form = useRef(new Form({}));
+  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  const SetValidity = (name: string, isValid: boolean) => {
+    form.current.SetValidity(name, isValid);
+  };
+
+  useEffect(() => {
+    if (mode === Mode.New) {
+      const data = new CodeDTO();
+      setDetails(data);
+    }
+  }, [mode]);
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setDetails((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const Save = () => {
+    if (form.current.isValid) {
+    }
+  };
 
   useEffect(() => {
     getCodesList(details?.ParentID?.toString() ?? "");
@@ -88,7 +117,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
     setMetadata(data ?? []);
   };
 
-  useEffect(() => {
+  const loadDetails = () => {
     try {
       const list = getCodes().filter((i) => i.ID.toString() === params.id);
       if (list && list.length > 0) {
@@ -100,6 +129,10 @@ export const CodeDetails: FC<Props> = (props: Props) => {
       }
       getTypes();
     } catch {}
+  };
+
+  useEffect(() => {
+    loadDetails();
   }, [params.id]);
 
   const getTypesList = (id?: string) => {
@@ -130,8 +163,9 @@ export const CodeDetails: FC<Props> = (props: Props) => {
       className: clsx("actionButton", "primeAction"),
       text: t("common:save"),
       iconProps: { iconName: "Save" },
+      disabled: !isFormValid,
       onClick: () => {
-        setEditable(false);
+        Save();
       },
     };
     const primeAction = {
@@ -151,8 +185,10 @@ export const CodeDetails: FC<Props> = (props: Props) => {
         iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
           if (isEditable) {
-            if (mode === Mode.View) setEditable(false);
-            else navigate("/codes");
+            if (mode === Mode.View) {
+              loadDetails();
+              setEditable(false);
+            } else navigate("/codes");
           } else {
             setEditable(true);
           }
@@ -189,11 +225,16 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                 )}
                 <TextField
                   readOnly={!isEditable}
+                  name="Name"
                   label={t("name")}
                   value={t(details?.Name ?? "")}
+                  onChange={handleInputChange}
+                  onValidationChange={SetValidity}
+                  required
                 />
                 <Dropdown
                   label={t("codeType")}
+                  name="CodeType"
                   selectedKey={codeType}
                   options={codesTypes}
                   onChange={(_, option) => {
@@ -202,7 +243,9 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                     setCodeType(key);
                     getParentTypesCodes(key);
                   }}
-                  disabled={!isEditable}
+                  readOnly={!isEditable}
+                  onValidationChange={SetValidity}
+                  required
                 />
                 <Dropdown
                   label={t("parentID")}
@@ -211,7 +254,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                   onChange={(_, option) =>
                     setParentCode(option?.key.toString())
                   }
-                  disabled={!isEditable}
+                  readOnly={!isEditable}
                 />
               </div>
             </div>

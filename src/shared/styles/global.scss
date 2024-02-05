@@ -171,6 +171,14 @@ body,
       padding-bottom: 5px;
     }
   }
+  &.is-disabled {
+    background-color: rgb(243, 242, 241);
+    cursor: not-allowed;
+
+    i, span {
+      color: rgb(208, 208, 208) !important;
+    }
+  }
 }
 
 .headerAction {
@@ -195,13 +203,13 @@ body,
   background-color: $mol_menu_background;
   border-width: 0px !important;
   color: white !important;
-  &:hover {
+  &:hover:not(.is-disabled) {
     background-color: $mol_menu_background;
   }
   i {
     color: white !important;
     align-self: baseline;
-    padding-top: 4px;
+    padding-top: 8px;
   }
 }
 
@@ -218,7 +226,7 @@ body,
   i {
     color: $mol_section_title !important;
     align-self: baseline;
-    padding-top: 4px;
+    padding-top: 8px;
   }
 }
 
