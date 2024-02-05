@@ -1,6 +1,6 @@
 {
     "save": "حفظ",
-    "saveAndContinue": "حفظ وإستكمال",
+    "saveAndContinue": "حفظ واستمرار",
     "cancel": "إلغاء",
     "add": "إضافة",
     "edit": "تعديل",
@@ -14,7 +14,7 @@
     "address": "العنوان بالتفصيل",
     "send": "إرسال", 
     "view": "عرض",
-    "BrowseFile": "عرض الملف",
+    "BrowseFile": "اضافة ملف",
     "ChooseAnother": "اختر ملف اخر",
     "delete": "حذف",
     "Download": "تحميل",
@@ -29,5 +29,6 @@
     "searchFilters": "حقول البحث",
     "attachments": "المرفقات",
     "return": "إرجاع",
-    "reject": "رفض"
+    "reject": "رفض",
+    "descFileSelector": "الحد الأقصى لحجم الملف هو 5 ميجا بايت ,أنواع الملفات المدعومة هي .jpg"
 }

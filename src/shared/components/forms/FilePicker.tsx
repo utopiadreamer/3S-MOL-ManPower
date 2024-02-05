@@ -1,4 +1,4 @@
-import { PrimaryButton } from '@fluentui/react';
+import { Icon, PrimaryButton } from '@fluentui/react';
 import { useCallback, useRef } from 'react';
 import { FilesUtil } from '../../utils/filesUtil';
 import { read, utils } from 'xlsx-color';
@@ -6,12 +6,14 @@ import { read, utils } from 'xlsx-color';
 interface Props {
   name: string;
   label: string;
+  iconName?: string;
   handleImportedFile: (pickedFile: any[]) => void;
 }
 
 const FilePicker = ({
   name,
   label,
+  iconName,
   handleImportedFile,
 }: Props): React.ReactElement => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -59,7 +61,8 @@ const FilePicker = ({
         type="button"
         onClick={handleImportClick}
       >
-        {label}
+        {iconName && <Icon iconName={iconName} />}
+        <span>{label}</span>
       </PrimaryButton>
     </div>
   );

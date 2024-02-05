@@ -7,13 +7,14 @@ $mol_mainColorLight: rgba(66, 124, 172, 0.4);
 $mol_menu_background : #B97B50;
 $mol_menu_shadowBox : rgba(0, 0, 0, 0.25);
 $mol_menuItem: white;
-$mol_menuItem_hover: white;
+$mol_menuItem_hover: #333;
+$mol_required_color: #EB5757;
 
 $skyBlue: #427CAC;
 $mol_menuItem_Active: #80502E;
-$mol_menuItem_Hover:  #80502E;
-$mol_menuItem_Hover_TextColor: white;
-$mol_menuItem_Active_TextColor: white;
+$mol_menuItem_Hover:  white;
+$mol_menuItem_Hover_TextColor: #333;
+$mol_menuItem_Active_TextColor: #fff;
 
 //$mol_readonlyBorderColor:green;
 $mol_readonlyBorderColor: #EFF4F9;
@@ -32,7 +33,7 @@ $themePrimary: #427199; // cahange from 749fc2 to 427199
 $themeLighterAlt: #F5F8FB;// change from f9fbfd to F5F8FB
 $themeLighter: #EFF4F9;// change from e6eef5 to EFF4F9
 $themeLight: #BACEE0; // change from d0e0ed to BACEE0
-$themeTertiary: #91C8F6; // change from a6c3da  to 91C8F6
+$themeTertiary: #525252; // change from a6c3da  to 525252
 $themeSecondary: #82a9c9;
 $themeDarkAlt: #3B658A; // change from 698fae to 3B658A
 $themeDark: #2C4E6C; // change from 587993 to 2C4E6C
@@ -52,8 +53,10 @@ $black: #242e36;
 $blackShadow: rgba(0,0,0,.108); 
 $white: #ffffff;
 $green: green;
+$greenLighter: #55C56E;
 $lightGreen: #DFF6DDFF;
 $gray2: #A19F9D;
+$primary-color: #303030;
 // Dividers-&-border
 $bodyDivider: #EDEBE9;
 $Input-HoverBorder: $neutralPrimary;

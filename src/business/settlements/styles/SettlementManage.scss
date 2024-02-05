@@ -1,4 +1,18 @@
+@import "../../../shared/styles/colors";
+@import "../../../shared/styles/custom_variables";
+
 .settlementManage {
+  .body {
+    .mol-section {
+      .header {
+        i , h2 {
+          color: $primary-color;
+          font-size: $lg2-size;
+          font-weight: $font_weight_bold;
+        }
+      }
+    }
+  }
   .panel {
     padding: 20px;
   }
@@ -14,6 +28,38 @@
       .norotate {
         .ms-Icon {
           transform: rotate(180deg) !important;
+        }
+      }
+    }
+  }
+
+  .workItems {
+    .attachments {
+      margin-bottom: 10px;
+      .mol-fileSelector {
+        .fileSelector_btn {
+          button {
+            &.fileSelection  {
+              background-color: $mol_menu_background;
+              border-radius: 4px;
+              border: 0;
+  
+              i , .ms-Button-label {
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .btn-workItems {
+      .alignEnd {
+        button {
+          padding-top: 0;
+          .ms-Button-label {
+            padding-bottom: 0;
+          }
         }
       }
     }

@@ -159,7 +159,6 @@ body,
   max-height: 32px;
   margin-right: 10px;
   padding: 0px 15px;
-  padding-top: 4px;
   color: white;
   cursor: pointer;
 
@@ -171,10 +170,6 @@ body,
     .ms-Button-icon {
       padding-bottom: 5px;
     }
-  }
-
-  .ms-Button-label {
-    padding-bottom: 6px;
   }
 }
 
@@ -429,9 +424,9 @@ button {
   }
 }
 
-h2 {
-  font-size: 1.4rem !important;
-}
+// h2 {
+//   font-size: 1.4rem !important;
+// }
 
 .mol-layout-menu-content {
   .layout-content-root.no-header {
@@ -604,8 +599,12 @@ h2 {
 
 .ms-Label {
   padding-bottom: 3px;
-  color: #000;
-  // font-weight: $font_weight_normal;
+  color: #303030;
+  font-weight: $font_weight_bold;
+
+  &::after {
+    color: $mol_required_color;
+  }
 }
 
 .ms-MessageBar-icon {
