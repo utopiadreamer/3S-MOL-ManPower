@@ -17,12 +17,13 @@ export const RequestsList: FC = () => {
 
   return (
     <LayoutContent>
-      <div className="panel">
         <Section
-          size={SectionSize.h2}
+        className="pageHeader"
+          size={SectionSize.h1}
           iconName="CustomListMirrored"
-          title={t("requests")}
+          title={t("myRequests")}
         />
+      <div className="panel">
         <RequestsGrid
           items={requests}
           onChanged={() => {

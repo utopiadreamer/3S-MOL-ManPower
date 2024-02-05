@@ -7,17 +7,20 @@ $mol_mainColorLight: rgba(66, 124, 172, 0.4);
 $mol_menu_background : #B97B50;
 $mol_menu_shadowBox : rgba(0, 0, 0, 0.25);
 $mol_menuItem: white;
-$mol_menuItem_hover: #333;
+$mol_menuItem_hover: white;
 
 $skyBlue: #427CAC;
-$mol_menuItem_Active: white;
-$mol_menuItem_Hover:  white;
-$mol_menuItem_Hover_TextColor: #333;
-$mol_menuItem_Active_TextColor: #333;
+$mol_menuItem_Active: #80502E;
+$mol_menuItem_Hover:  #80502E;
+$mol_menuItem_Hover_TextColor: white;
+$mol_menuItem_Active_TextColor: white;
 
 //$mol_readonlyBorderColor:green;
 $mol_readonlyBorderColor: #EFF4F9;
 $mol_breadCrumbTextColor:  #3F5161;
+
+$mol_section_title: #303030;
+
 /*
 ** THEME COLORS
 ** Feel free to change those colors to reflect your branding

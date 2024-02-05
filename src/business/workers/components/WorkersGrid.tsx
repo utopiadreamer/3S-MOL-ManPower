@@ -218,9 +218,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
                 required
               />
             ) : (
-              <div>
-                  {item.editedItem.Name}
-              </div>
+              <div>{item.editedItem.Name}</div>
             )}
           </div>
         );
@@ -367,11 +365,13 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
       onRender: (item: EditableItem<WorkerDTO>) => {
         return (
           <div className="actions">
-          <IconButton
-            iconProps={{ iconName: "View" }}
-            onClick={() => navigate(`/workers/${item.item.ID}`)}
-          />
-            {/* {editMode !== Mode.View &&
+            {editMode === Mode.View && (
+              <IconButton
+                iconProps={{ iconName: "View" }}
+                onClick={() => navigate(`/workers/${item.item.ID}`)}
+              />
+            )}
+            {editMode !== Mode.View &&
               (item.isEdited ? (
                 <>
                   <IconButton
@@ -394,7 +394,7 @@ export const WorkersGrid: FC<GridProps> = (props: GridProps) => {
                     onClick={() => onConfirm(item)}
                   ></IconButton>
                 </>
-              ))} */}
+              ))}
           </div>
         );
       },

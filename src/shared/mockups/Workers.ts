@@ -2,9 +2,7 @@ import { WorkerDTO } from "../models/WorkerDTO";
 import { GeneralUtil } from "../utils/generalUtil";
 
 export function getWorkers(
-  name?: string,
-  nationalID?: string,
-  occupation?: string,
+  searchCriteria?: WorkerDTO,
   recordNo?: string
 ) {
   let arr: WorkerDTO[] = [
@@ -110,6 +108,9 @@ export function getWorkers(
   ];
 
   let search = arr;
+  const name = searchCriteria?.Name;
+  const occupation = searchCriteria?.Occupation;
+  const nationalID = searchCriteria?.NationalID;
   if (!GeneralUtil.isNothing(name))
     search = arr.filter((i) => i.Name === name?.trim());
   if (!GeneralUtil.isNothing(occupation))

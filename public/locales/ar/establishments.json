@@ -26,5 +26,6 @@
     "searchCriteria": "محدد البحث",
     "id": "رقم الجهة",
     "contractDetails": "العقود المرتبطة",
-    "type": "الجهة"
+    "type": "الجهة",
+    "establishments": "الجهات"
 }

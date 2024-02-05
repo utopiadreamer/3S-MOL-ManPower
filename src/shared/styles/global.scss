@@ -125,7 +125,7 @@ body,
     align-self: flex-end;
     // background-color: $mol_menu_background;
     // border-radius: 5px 5px 0px 0px;
-    padding: 0px 5px 10px 20px;
+    padding: 0px 0px 10px 20px;
 
     .header {
       margin-bottom: 0px;
@@ -133,7 +133,7 @@ body,
 
       i,
       h2 {
-        color: $mol_menu_background;
+        color: $mol_section_title;
         font-size: 20px !important;
       }
       h2 {
@@ -205,21 +205,25 @@ body,
   }
   i {
     color: white !important;
+    align-self: baseline;
+    padding-top: 4px;
   }
 }
 
 .subAction {
   background-color: white;
-  color: $mol_menu_background;
-  border: 1px solid $mol_menu_background;
+  color: $mol_section_title !important;
+  border: 1px solid $mol_section_title;
   &:hover {
-    border: 1px solid $mol_menu_background;
+    border: 1px solid $mol_section_title;
     background-color: white;
-    color: $mol_menu_background;
+    color: $mol_section_title;
   }
 
   i {
-    color: $mol_menu_background;
+    color: $mol_section_title !important;
+    align-self: baseline;
+    padding-top: 4px;
   }
 }
 
@@ -255,6 +259,20 @@ body,
     color: $mol_menu_background;
   }
 }
+.ms-Dialog-content {
+  padding-top: 20px;
+}
+
+.ms-Dialog-button--close {
+  i {
+    color: white !important;
+    background-color: $mol_menu_background;
+  }
+  &:hover {
+    color: white;
+    background-color: $mol_menu_background;
+  }
+}
 
 .ms-CommandBar {
   padding-left: 0px;
@@ -262,7 +280,7 @@ body,
 
 .ms-Dialog-title {
   font-size: 20px;
-  color: $secondary_color;
+  color: white;
 }
 
 .inner-space {
@@ -290,6 +308,7 @@ body,
   font-size: 14px;
   line-height: 20px;
   color: #161616 !important;
+  text-decoration: none;
 }
 
 .receiver-link {
@@ -648,7 +667,8 @@ h2 {
 }
 
 .ms-DetailsHeader-cellName {
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 14px;
   color: white;
 }
 
@@ -851,6 +871,7 @@ h2 {
 .ms-Dialog-main {
   .ms-Dialog-header {
     .ms-Dialog-title {
+      background-color: $mol_menu_background;
       padding: 20px 32px;
       i {
         margin-right: 5px;
@@ -942,6 +963,17 @@ html[dir="rtl"] {
 
   > * {
     font-weight: normal;
+  }
+
+  .pageHeader {
+    padding: 16px 0px;
+    h1 {
+      font-weight: 700;
+      font-size: 32px;
+    }
+    i {
+      font-size: 22px;
+    }
   }
 
   .ms-DatePicker {

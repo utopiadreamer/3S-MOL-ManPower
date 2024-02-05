@@ -40,7 +40,7 @@ export function getUsers() {
       Name: "محمد شوقي احمد",
       UserName: "moo-shoo",
       Email: "m.shawky@3segypt.com",
-      Role: Role.Admin,
+      Roles: [Role.Admin],
     },
     {
       ID: "2",
@@ -52,7 +52,7 @@ export function getUsers() {
         Claim.EditContract,
         Claim.DeleteContract,
       ],
-      Role: Role.Admin,
+      Roles: [Role.Researcher, Role.Reviewer],
     },
     {
       ID: "3",
@@ -64,14 +64,14 @@ export function getUsers() {
         Claim.EditWorker,
         Claim.EditEstablishment,
       ],
-      Role: Role.Researcher,
+      Roles: [Role.Researcher, Role.ReportViewer],
     },
     {
       ID: "4",
       Name: "فادي جرجس",
       UserName: "user3",
       Email: "fady@3segypt.com",
-      Role: Role.Reviewer,
+      Roles: [Role.Reviewer, Role.CommitteeMember],
     }
   ];
 

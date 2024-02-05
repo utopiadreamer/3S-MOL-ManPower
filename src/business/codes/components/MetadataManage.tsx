@@ -63,14 +63,16 @@ export const AddMetadata: FC<AddMetadataProps> = (props: AddMetadataProps) => {
       Footer={
         <div className="addClaimFooter">
           <ActionButton
-            className="actionButton primeAction"
-            onClick={onAddMetadata}
-            text={t("common:add")}
-          />
-          <ActionButton
             className="actionButton subAction"
             onClick={onCancel}
             text={t("common:cancel")}
+            iconProps={{iconName: "ErrorBadge"}}
+          />
+          <ActionButton
+            className="actionButton primeAction"
+            onClick={onAddMetadata}
+            text={t("common:add")}
+            iconProps={{iconName: "Add"}}
           />
         </div>
       }

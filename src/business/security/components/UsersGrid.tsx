@@ -15,6 +15,7 @@ import {
 import { ColumnInfo } from "../../../shared/components/customDetailList/FilteredHeaderColumn";
 import { UserDTO } from "../../../shared/models/UserDTO";
 import { useNavigate } from "react-router-dom";
+import { Claim, Role } from "../../../shared/constants/auth";
 
 interface GridProps {
   items: UserDTO[];
@@ -68,8 +69,8 @@ export const UsersGrid: FC<GridProps> = (props: GridProps) => {
         key: "email",
         name: t("email"),
         fieldName: "Email",
-        minWidth: 200,
-        maxWidth: 200,
+        minWidth: 150,
+        maxWidth: 150,
         isRowHeader: true,
         isResizable: true,
       },
@@ -82,17 +83,30 @@ export const UsersGrid: FC<GridProps> = (props: GridProps) => {
         isRowHeader: true,
         isResizable: true,
         onRender: (item: UserDTO) => {
-          return <div>{t(item.Role)}</div>;
+          let roles = "";
+          item.Roles.forEach((e: Role) => {
+            roles += `${t(e)}, `;
+          });
+          roles = roles.trim().substring(0, roles.length - 2);
+          return <div>{roles}</div>;
         },
       },
       {
         key: "claims",
         name: t("claims"),
         fieldName: "claims",
-        minWidth: 150,
-        maxWidth: 150,
+        minWidth: 400,
+        maxWidth: 400,
         isRowHeader: true,
         isResizable: true,
+        onRender: (item: UserDTO) => {
+          let claims = "";
+          item?.Claims?.forEach((e: Claim) => {
+            claims += `${t(e)}, `;
+          });
+          claims = claims.trim().substring(0, claims.length - 2);
+          return <div>{claims}</div>;
+        },
       },
       {
         key: "action",

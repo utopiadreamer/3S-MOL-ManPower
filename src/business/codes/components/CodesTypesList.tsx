@@ -12,12 +12,12 @@ import { TextField } from "../../../shared/components/forms/CustomTextField";
 import { GeneralUtil } from "../../../shared/utils/generalUtil";
 import { SearchBar } from "../../../shared/components/forms/SearchBar";
 import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const CodesTypesList: FC = () => {
   const [codesTypes, setCodesTypes] = useState<CodeTypeDTO[]>([]);
+  const [searchCriteria, setSearchCriteria] = useState<CodeTypeDTO>();
   const [codesTypesList, setCodesTypesList] = useState<IDropdownOption[]>([]);
-  const [codeType, setCodeType] = useState<string>("");
-  const [codeTypeName, setCodeTypeName] = useState<string>();
   const { t } = useTranslation(["codes"]);
   const navigate = useNavigate();
 
@@ -27,6 +27,8 @@ export const CodesTypesList: FC = () => {
   };
 
   const Search = () => {
+    const codeType = searchCriteria?.ParentID?.toString();
+    if (GeneralUtil.isUndefined(codeType)) return;
     let types = getCodeTypes();
     if (codeType === "0") {
       types = types.filter((i) => GeneralUtil.isNothing(i.ParentID));
@@ -35,6 +37,18 @@ export const CodesTypesList: FC = () => {
     }
 
     setCodesTypes(types);
+  };
+
+  const Clear = () => {
+    const empty = new CodeTypeDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (name: string, value?: string) => {
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   useEffect(() => {
@@ -51,25 +65,39 @@ export const CodesTypesList: FC = () => {
 
   return (
     <LayoutContent>
-      <CollapsibleSection open title={t("common:searchFilters")}>
+      <Section
+        className="pageHeader"
+        iconName="FileCode"
+        title={t("codesTypes")}
+        size={SectionSize.h1}
+      />
+      <CollapsibleSection
+        open
+        title={t("common:searchFilters")}
+        iconName="Search"
+      >
         <div className="row g-112">
           <TextField
             label={t("codeType")}
-            value={t(codeTypeName ?? "")}
-            onChange={(e, value) => setCodeTypeName(value ?? "")}
+            value={searchCriteria?.Name}
+            onChange={(e, newValue) => setSearchCriteriaField("Name", newValue)}
           />
           <Dropdown
             label={t("parentType")}
             options={codesTypesList}
-            selectedKey={codeType ?? ""}
-            onChange={(_, option) => {
-              setCodeType(option?.key.toString() ?? "");
-            }}
+            selectedKey={searchCriteria?.ParentID ?? ""}
+            onChange={(e, option) =>
+              setSearchCriteriaField("ParentID", option?.key.toString())
+            }
           />
-        <SearchBar onSearch={() => Search()} onClear={() => {}} />
+          <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
         </div>
       </CollapsibleSection>
-      <CollapsibleSection title={t("common:searchResults")} open>
+      <CollapsibleSection
+        title={t("common:searchResults")}
+        open
+        iconName="SearchAndApps"
+      >
         <div className="alignEnd">
           <PrimaryButton
             className="actionButton headerAction"

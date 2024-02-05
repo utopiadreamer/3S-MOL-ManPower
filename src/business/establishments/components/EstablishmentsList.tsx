@@ -12,13 +12,8 @@ import { SearchBar } from "../../../shared/components/forms/SearchBar";
 export const EstablishmentsList: FC = () => {
   const { t } = useTranslation(["establishments", "common"]);
   const [establishments, setEstablishments] = useState<EstablishmentDTO[]>([]);
-  const [nationalID, setNationalID] = useState<string>();
-  const [commRegistrationNo, setCommRegistrationNo] = useState<string>();
-  const [taxNumber, setTaxNumber] = useState<string>();
-  const [insuranceNumber, setInsuranceNumber] = useState<string>();
-  const [institutionalCode, setInstitutionalCode] = useState<string>();
-  const [id, setID] = useState<string>();
-  const [name, setName] = useState<string>();
+  const [searchCriteria, setSearchCriteria] = useState<EstablishmentDTO>();
+
   const [estType, setEstType] = useState<string>("persons");
 
   const Search = () => {
@@ -27,9 +22,27 @@ export const EstablishmentsList: FC = () => {
     setEstablishments(list);
   };
 
+  const Clear = () => {
+    const empty = new EstablishmentDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (name: string, value?: string) => {
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <LayoutContent>
       <div className="establishmentsList">
+        <Section
+          className="pageHeader"
+          iconName="Bank"
+          title={t("establishments")}
+          size={SectionSize.h1}
+        />
         <div className="section">
           <div className="content">
             <Pivot
@@ -47,23 +60,31 @@ export const EstablishmentsList: FC = () => {
                 <div className="row">
                   <TextField
                     label={t("id")}
-                    value={id}
-                    onChange={(e, newValue) => setID(newValue)}
+                    value={searchCriteria?.ID}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("ID", newValue)
+                    }
                   />
                   <TextField
                     label={t("name")}
-                    value={name}
-                    onChange={(e, newValue) => setName(newValue)}
+                    value={searchCriteria?.Name}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("Name", newValue)
+                    }
                   />
                   <TextField
                     label={t("nationalID")}
-                    value={nationalID}
-                    onChange={(e, newValue) => setNationalID(newValue)}
+                    value={searchCriteria?.NationalID}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("NationalID", newValue)
+                    }
                   />
                   <TextField
                     label={t("insuranceNumber")}
-                    value={insuranceNumber}
-                    onChange={(e, newValue) => setInsuranceNumber(newValue)}
+                    value={searchCriteria?.InsuranceNumber}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("InsuranceNumber", newValue)
+                    }
                   />
                 </div>
               </PivotItem>
@@ -75,23 +96,31 @@ export const EstablishmentsList: FC = () => {
                 <div className="row">
                   <TextField
                     label={t("id")}
-                    value={id}
-                    onChange={(e, newValue) => setID(newValue)}
+                    value={searchCriteria?.ID}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("ID", newValue)
+                    }
                   />
                   <TextField
                     label={t("name")}
-                    value={name}
-                    onChange={(e, newValue) => setName(newValue)}
+                    value={searchCriteria?.Name}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("Name", newValue)
+                    }
                   />
                   <TextField
                     label={t("commRegistrationNo")}
-                    value={commRegistrationNo}
-                    onChange={(e, newValue) => setCommRegistrationNo(newValue)}
+                    value={searchCriteria?.CommRegistrationNo}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("CommRegistrationNo", newValue)
+                    }
                   />
                   <TextField
                     label={t("taxNumber")}
-                    value={taxNumber}
-                    onChange={(e, newValue) => setTaxNumber(newValue)}
+                    value={searchCriteria?.TaxNumber}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("TaxNumber", newValue)
+                    }
                   />
                 </div>
               </PivotItem>
@@ -103,28 +132,36 @@ export const EstablishmentsList: FC = () => {
                 <div className="row">
                   <TextField
                     label={t("id")}
-                    value={id}
-                    onChange={(e, newValue) => setID(newValue)}
+                    value={searchCriteria?.ID}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("ID", newValue)
+                    }
                   />
                   <TextField
                     label={t("name")}
-                    value={name}
-                    onChange={(e, newValue) => setName(newValue)}
+                    value={searchCriteria?.Name}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("Name", newValue)
+                    }
                   />
                   <TextField
                     label={t("insuranceNumber")}
-                    value={insuranceNumber}
-                    onChange={(e, newValue) => setInsuranceNumber(newValue)}
+                    value={searchCriteria?.InsuranceNumber}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("InsuranceNumber", newValue)
+                    }
                   />
                   <TextField
                     label={t("institutionalCode")}
-                    value={institutionalCode ?? ""}
-                    onChange={(e, newValue) => setInstitutionalCode(newValue)}
+                    value={searchCriteria?.InstitutionalCode}
+                    onChange={(e, newValue) =>
+                      setSearchCriteriaField("InstitutionalCode", newValue)
+                    }
                   />
                 </div>
               </PivotItem>
             </Pivot>
-            <SearchBar onSearch={() => Search()} onClear={() => {}} />
+            <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
           </div>
         </div>
         <div className="panel">

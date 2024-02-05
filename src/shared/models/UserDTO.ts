@@ -6,5 +6,5 @@ export class UserDTO {
     UserName!: string;
     Email!: string;
     Claims?: Claim[];
-    Role!: Role;
+    Roles!: Role[];
 }

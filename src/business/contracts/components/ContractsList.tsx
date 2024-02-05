@@ -10,20 +10,34 @@ import { ContractType } from "../../../shared/constants/constants";
 import { Dropdown } from "../../../shared/components/forms/CustomDropdown";
 import { SearchBar } from "../../../shared/components/forms/SearchBar";
 import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const ContractsList: FC = () => {
   const { t } = useTranslation(["contracts", "common"]);
   const [contracts, setContracts] = useState<ContractDTO[]>([]);
-  const [contractNo, setContractNo] = useState<string>();
-  const [contractRefNo, setContracReftNo] = useState<string>();
-  const [contractType, setContractType] = useState<string>();
-  const [district, setDistrict] = useState<string>();
-  const [startDate, setStatrtDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [searchCriteria, setSearchCriteria] = useState<ContractDTO>();
 
   const Search = () => {
     const list = getContracts();
     setContracts(list);
+  };
+
+  const Clear = () => {
+    const empty = new ContractDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (
+    name: string,
+    value?: string | Date | null,
+    type?: "Date"
+  ) => {
+    let val = value;
+    if (type === "Date") val = new Date(val ?? "");
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: val,
+    }));
   };
 
   const icon = { icon: "TextDocumentShared" };
@@ -78,6 +92,12 @@ export const ContractsList: FC = () => {
   return (
     <LayoutContent>
       <div className="contractsList">
+        <Section
+          className="pageHeader"
+          iconName="ActivateOrders"
+          title={t("contracts")}
+          size={SectionSize.h1}
+        />
         <CollapsibleSection
           open
           title={t("common:searchFilters")}
@@ -86,64 +106,74 @@ export const ContractsList: FC = () => {
           <div className="row">
             <TextField
               label={t("contractNo")}
-              value={contractNo}
-              onChange={(e, newValue) => setContractNo(newValue)}
+              value={searchCriteria?.ContractNo}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("ContractNo", newValue)
+              }
             />
             <TextField
               label={t("refContractNo")}
-              value={contractRefNo}
-              onChange={(e, newValue) => setContracReftNo(newValue)}
+              value={searchCriteria?.ReferenceContrctNo}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("ReferenceContrctNo", newValue)
+              }
             />
             <Dropdown
               label={t("contractType")}
               options={contractTypes}
-              selectedKey={contractType ?? ""}
-              onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
-              }}
+              selectedKey={searchCriteria?.ContractType ?? ''}
+              onChange={(e, option) =>
+                setSearchCriteriaField("ContractType", option?.key.toString())
+              }
             />
             <Dropdown
               label={t("district")}
               options={[]}
-              selectedKey={district ?? ""}
-              onChange={(_, option) => {
-                setDistrict(option?.key.toString() ?? "");
-              }}
+              selectedKey={searchCriteria?.District ?? ''}
+              onChange={(e, option) =>
+                setSearchCriteriaField("District", option?.key.toString())
+              }
             />
           </div>
           <div className="row">
             <Dropdown
               label={t("assignEst")}
               options={[]}
-              selectedKey={contractRefNo}
+              selectedKey={searchCriteria?.AssignEstablishmentID ?? ''}
               onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
+                setSearchCriteriaField(
+                  "AssignEstablishmentID",
+                  option?.key.toString()
+                );
               }}
             />
             <Dropdown
               label={t("execEst")}
               options={[]}
-              selectedKey={contractRefNo}
+              selectedKey={searchCriteria?.ExecEstablishmentID ?? ''}
               onChange={(_, option) => {
-                setContractType(option?.key.toString() ?? "");
+                setSearchCriteriaField(
+                  "ExecEstablishmentID",
+                  option?.key.toString()
+                );
               }}
             />
             <DatePicker
               label={t("contractStartDate")}
-              value={startDate}
-              onSelectDate={(val) => {
-                setStatrtDate(val ?? undefined);
-              }}
+              value={searchCriteria?.ContractStartDate}
+              onSelectDate={(newValue) =>
+                setSearchCriteriaField("ContractStartDate", newValue, "Date")
+              }
             />
             <DatePicker
               label={t("contractEndDate")}
-              value={endDate}
-              onSelectDate={(val) => {
-                setEndDate(val ?? undefined);
-              }}
+              value={searchCriteria?.ContractEndDate}
+              onSelectDate={(newValue) =>
+                setSearchCriteriaField("ContractEndDate", newValue, "Date")
+              }
             />
           </div>
-          <SearchBar onSearch={() => Search()} onClear={() => {}} />
+          <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
         </CollapsibleSection>
         <CollapsibleSection
           open

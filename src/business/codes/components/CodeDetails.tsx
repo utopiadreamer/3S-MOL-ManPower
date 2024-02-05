@@ -51,6 +51,18 @@ export const CodeDetails: FC<Props> = (props: Props) => {
     setChildCodes(types);
   };
 
+  const getParentTypesCodes = (id: string) => {
+    const type = getTypesList(id)[0];
+    const codes = getCodes().filter((i) => i.CodeTypeID === type.ParentID);
+    const list = codes.map((item) => {
+      return {
+        key: item.ID.toString(),
+        text: item.Name,
+      };
+    });
+    setCodes(list);
+  };
+
   const getCodesList = (id: string) => {
     const codes = getCodes().filter((i) => i.ID?.toString() === id);
     const list = codes.map((item) => {
@@ -188,7 +200,7 @@ export const CodeDetails: FC<Props> = (props: Props) => {
                     const key = option?.key.toString() ?? "";
                     getMetadata(key, "");
                     setCodeType(key);
-                    getCodesList(key);
+                    getParentTypesCodes(key);
                   }}
                   disabled={!isEditable}
                 />
@@ -205,26 +217,28 @@ export const CodeDetails: FC<Props> = (props: Props) => {
             </div>
           </div>
 
-          <div className="section">
-            <div className="content">
-              <div className="actionsHeader">
-                <Section
-                  title={t("childCodes")}
-                  size={SectionSize.h2}
-                  iconName="EditNote"
+          {mode !== Mode.New && (
+            <div className="section">
+              <div className="content">
+                <div className="actionsHeader">
+                  <Section
+                    title={t("childCodes")}
+                    size={SectionSize.h2}
+                    iconName="EditNote"
+                  />
+                </div>
+                <CodesGrid
+                  items={childCodes ?? []}
+                  onChanged={() => {
+                    return false;
+                  }}
+                  onNbItemPerPageChanged={() => {
+                    return false;
+                  }}
                 />
               </div>
-              <CodesGrid
-                items={childCodes ?? []}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
             </div>
-          </div>
+          )}
           {metadata.length > 0 && (
             <div className="section">
               <div className="content">

@@ -207,7 +207,7 @@ export const WorkersManage: FC<Props> = (props: Props) => {
             </div>
             <div className="row g-1">
               <WorkersGrid
-                mode={Mode.View}
+                mode={mode}
                 items={workers}
                 onChanged={() => {
                   return false;

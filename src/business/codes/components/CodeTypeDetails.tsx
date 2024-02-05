@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import "../styles/CodeDetails.scss";
 import { useNavigate, useParams } from "react-router-dom";
 import { TextField } from "../../../shared/components/forms/CustomTextField";
@@ -17,6 +17,8 @@ import { AddMetadata } from "./MetadataManage";
 import { MetadataDTO } from "../../../shared/models/MetadataDTO";
 import { MetadatasGrid } from "./MetadataGrid";
 import { CodesTypesGrid } from "./CodesTypesGrid";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { Form } from "../../../shared/components/forms/Form";
 
 export interface Props {
   mode: Mode;
@@ -37,6 +39,34 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
     useState<boolean>(false);
   const { t } = useTranslation("codes");
   const navigate = useNavigate();
+
+  const form = useRef(new Form({}));
+  const [isFormValid, setIsFormValid] = useState<boolean>(form.current.isValid);
+  form.current.onValidityChanged = (isValid) => setIsFormValid(isValid);
+
+  const SetValidity = (name: string, isValid: boolean) => {
+    form.current.SetValidity(name, isValid);
+  };
+
+  useEffect(() => {
+    if (mode === Mode.New) {
+      const data = new CodeTypeDTO();
+      setDetails(data);
+    }
+  }, [mode]);
+
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setDetails((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const Save = () => {
+    if (form.current.isValid) {
+    }
+  };
 
   const getChildTypes = () => {
     const types = getCodesTypes().filter(
@@ -71,50 +101,45 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
   };
 
   const getActions = () => {
-    if (details?.ReadOnly) return [];
-    if (details) {
-      const saveAction = {
-        key: "save",
-        className: clsx("actionButton", "primeAction"),
-        text: t("common:save"),
-        iconProps: { iconName: "Save" },
+    if (mode !== Mode.New && details?.ReadOnly) return [];
+    const saveAction = {
+      key: "save",
+      className: clsx("actionButton", "primeAction"),
+      text: t("common:save"),
+      iconProps: { iconName: "Save" },
+      onClick: () => {
+        Save();
+      },
+    };
+    const primeAction = {
+      key: "delete",
+      className: clsx("actionButton", "primeAction"),
+      text: t("common:delete"),
+      iconProps: { iconName: "Delete" },
+      onClick: () => {
+        setShowDeleteDialog(true);
+      },
+    };
+    const arr = [
+      {
+        key: "edit",
+        className: clsx("actionButton", isEditable ? "subAction" : "subAction"),
+        text: t(isEditable ? "common:cancel" : "common:edit"),
+        iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
         onClick: () => {
-          setEditable(false);
+          if (isEditable) {
+            if (mode === Mode.View) setEditable(false);
+            else navigate("/codesTypes");
+          } else {
+            setEditable(true);
+          }
         },
-      };
-      const primeAction = {
-        key: "delete",
-        className: clsx("actionButton", "primeAction"),
-        text: t("common:delete"),
-        iconProps: { iconName: "Delete" },
-        onClick: () => {
-          setShowDeleteDialog(true);
-        },
-      };
-      const arr = [
-        {
-          key: "edit",
-          className: clsx(
-            "actionButton",
-            isEditable ? "subAction" : "subAction"
-          ),
-          text: t(isEditable ? "common:cancel" : "common:edit"),
-          iconProps: { iconName: isEditable ? "Cancel" : "Edit" },
-          onClick: () => {
-            if (isEditable) {
-              if (mode === Mode.View) setEditable(false);
-              else navigate("/codesTypes");
-            } else {
-              setEditable(true);
-            }
-          },
-        },
-      ];
-      if (isEditable) {
-        arr.splice(0, 0, saveAction);
-      } else arr.push(primeAction);
-      return arr;
-    }
+      },
+    ];
+    if (isEditable) {
+      arr.splice(0, 0, saveAction);
+    } else arr.push(primeAction);
+    return arr;
   };
 
   const onDeleteMetadata = () => {
@@ -153,7 +178,11 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
                 <TextField
                   readOnly={!isEditable}
                   label={t("name")}
-                  value={t(details?.Name ?? "")}
+                  name="Name"
+                  value={details?.Name}
+                  onChange={handleInputChange}
+                  onValidationChange={SetValidity}
+                  required
                 />
                 <Dropdown
                   label={t("parentType")}
@@ -166,59 +195,54 @@ export const CodeTypeDetails: FC<Props> = (props: Props) => {
             </div>
           </div>
 
-          <div className="section">
-            <div className="content">
-              <div className="actionsHeader">
-                <Section
-                  title={t("childTypes")}
-                  size={SectionSize.h2}
-                  iconName="EditNote"
+          {mode !== Mode.New && (
+            <div className="section">
+              <div className="content">
+                <div className="actionsHeader">
+                  <Section
+                    title={t("childTypes")}
+                    size={SectionSize.h2}
+                    iconName="EditNote"
+                  />
+                </div>
+                <CodesTypesGrid
+                  items={childTypes ?? []}
+                  onChanged={() => {
+                    return false;
+                  }}
+                  onNbItemPerPageChanged={() => {
+                    return false;
+                  }}
                 />
               </div>
-              <CodesTypesGrid
-                items={childTypes ?? []}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
             </div>
-          </div>
-          <div className="section">
-            <div className="content">
-              <div className="actionsHeader">
-                <Section
-                  title={t("metadata")}
-                  size={SectionSize.h2}
-                  iconName="EditNote"
-                />
-                {isEditable && (
-                  <PrimaryButton
-                    className="actionButton primeAction"
-                    iconProps={{ iconName: "Add" }}
-                    onClick={() => setShowAddMetadataDialog(true)}
-                  >
-                    {t("addMetadata")}
-                  </PrimaryButton>
-                )}
-              </div>
-              <MetadatasGrid
-                mode={!isEditable ? Mode.View : Mode.Edit}
-                reload={reload}
-                onRealod={() => setReload(false)}
-                onDelete={onDeleteMetadata}
-                metadata={metadata ?? []}
-                onChanged={() => {
-                  return false;
-                }}
-                onNbItemPerPageChanged={() => {
-                  return false;
-                }}
-              />
+          )}
+          <CollapsibleSection open title={t("metadata")} iconName="EditNote">
+            <div className="alignEnd">
+              {isEditable && (
+                <PrimaryButton
+                  className="actionButton headerAction"
+                  iconProps={{ iconName: "Add" }}
+                  onClick={() => setShowAddMetadataDialog(true)}
+                >
+                  {t("addMetadata")}
+                </PrimaryButton>
+              )}
             </div>
-          </div>
+            <MetadatasGrid
+              mode={!isEditable ? Mode.View : Mode.Edit}
+              reload={reload}
+              onRealod={() => setReload(false)}
+              onDelete={onDeleteMetadata}
+              metadata={metadata ?? []}
+              onChanged={() => {
+                return false;
+              }}
+              onNbItemPerPageChanged={() => {
+                return false;
+              }}
+            />
+          </CollapsibleSection>
         </div>
       </div>
       {showDeleteDialog && (

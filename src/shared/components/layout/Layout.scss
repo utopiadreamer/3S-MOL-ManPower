@@ -30,7 +30,7 @@ $dropdown-item-padding-x: 1.5rem;
       width: 100%;
       overflow: auto;
       .layout-header {
-        background-color: #303030;
+        background-color: $mol_section_title;
         box-shadow: 0px 4px 4px -4px #00000040;
         height: $header-height;
         display: flex;

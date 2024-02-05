@@ -13,6 +13,7 @@ import "./CustomDatePicker.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store/store";
 import { DatesUtil } from "../../utils/datesUtil";
+import { GeneralUtil } from "../../utils/generalUtil";
 
 const CustomDatePicker: FC<IDatePickerProps & FormFieldInterface> = (
   props: IDatePickerProps & FormFieldInterface
@@ -27,7 +28,7 @@ const CustomDatePicker: FC<IDatePickerProps & FormFieldInterface> = (
     currentLang.isRtl ? "rtlFlag" : "ltrFlag"
   );
   const { label } = props;
-  const { t } = useTranslation(["calendar"]);
+  const { t } = useTranslation(["calendar", "validation"]);
 
   const getdateformatting = (locale: string): IDateFormatting => {
     return {
@@ -115,6 +116,7 @@ const CustomDatePicker: FC<IDatePickerProps & FormFieldInterface> = (
       <DatePicker
         {...props}
         isRequired={undefined}
+        placeholder={GeneralUtil.isNothing(label) || readOnly ? "" : `${t('validation:select')} ${label}`}
         className={useClassName}
         label={undefined}
         strings={stringsOverride}

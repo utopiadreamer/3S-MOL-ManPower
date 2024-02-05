@@ -7,9 +7,12 @@ export class ContractDTO {
     RequestDate!: Date;
     AssignEstablishment!: EstablishmentDTO;
     ExecEstablishment!: EstablishmentDTO;
+    AssignEstablishmentID?: string;
+    ExecEstablishmentID?: string;
     ContractType!: string;
     ContractNo!: string;
     ReferenceContrctNo?: string;
+    District?: string;
     ScopeOfWork!: string;
     ContractStartDate!: Date;
     ContractEndDate!: Date;

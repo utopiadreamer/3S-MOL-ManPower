@@ -15,16 +15,30 @@ import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const SettlementsList: FC = () => {
   const { t } = useTranslation(["settlements", "common"]);
+  const [searchCriteria, setSearchCriteria] = useState<SettlementDTO>();
   const [settlements, setSettlements] = useState<SettlementDTO[]>([]);
-  const [settleNo, setSettleNo] = useState<string>();
-  const [documentType, setDocumentType] = useState<string>();
-  const [contractNo, setContractNo] = useState<string>();
-  const [startDate, setStatrtDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
 
   const Search = () => {
     let list = getSettlements();
     setSettlements(list);
+  };
+
+  const Clear = () => {
+    const empty = new SettlementDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (
+    name: string,
+    value?: string | Date | null,
+    type?: "Date"
+  ) => {
+    let val = value;
+    if (type === "Date") val = new Date(val ?? "");
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: val,
+    }));
   };
 
   const documentTypes = [
@@ -43,48 +57,65 @@ export const SettlementsList: FC = () => {
   return (
     <LayoutContent>
       <div className="settlementList">
-        <Section title={t('searchRequests')} size={SectionSize.h1} />
-        <CollapsibleSection title={t("common:searchFilters")} open>
+        <Section
+          className="pageHeader"
+          iconName="CustomListMirrored"
+          title={t("searchRequests")}
+          size={SectionSize.h1}
+        />
+        <CollapsibleSection
+          title={t("common:searchFilters")}
+          open
+          iconName="Search"
+        >
           <div className="row">
             <TextField
               label={t("settlementNumber")}
-              value={settleNo}
-              onChange={(e, newValue) => setSettleNo(newValue)}
+              value={searchCriteria?.SettlementNo}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("SettlementNo", newValue)
+              }
             />
             <TextField
               label={t("contractNo")}
-              value={contractNo}
-              onChange={(e, newValue) => setContractNo(newValue)}
+              value={searchCriteria?.ContractNo}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("ContractNo", newValue)
+              }
             />
             <DatePicker
               label={t("operationStartDate")}
-              value={startDate}
-              onSelectDate={(val) => {
-                setStatrtDate(val ?? undefined);
-              }}
+              value={searchCriteria?.OperationStartDate}
+              onSelectDate={(newValue) =>
+                setSearchCriteriaField("OperationStartDate", newValue, "Date")
+              }
             />
             <DatePicker
               label={t("operationEndDate")}
-              value={endDate}
-              onSelectDate={(val) => {
-                setEndDate(val ?? undefined);
-              }}
+              value={searchCriteria?.OperationEndDate}
+              onSelectDate={(newValue) =>
+                setSearchCriteriaField("OperationEndDate", newValue, "Date")
+              }
             />
           </div>
           <div className="row g-121">
             <Dropdown
               label={t("settlementDocumentType")}
               options={documentTypes}
-              selectedKey={documentType ?? ""}
-              onChange={(_, option) => {
-                setDocumentType(option?.key.toString() ?? "");
-              }}
+              selectedKey={searchCriteria?.DocumentType ?? ''}
+              onChange={(e, option) =>
+                setSearchCriteriaField("DocumentType", option?.key.toString())
+              }
             />
             <div />
-            <SearchBar onSearch={() => Search()} onClear={() => {}} />
+            <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
           </div>
         </CollapsibleSection>
-        <CollapsibleSection title={t("common:searchResults")} open>
+        <CollapsibleSection
+          title={t("common:searchResults")}
+          open
+          iconName="SearchAndApps"
+        >
           <SettlementsGrid
             items={settlements}
             onChanged={() => {

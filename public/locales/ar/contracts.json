@@ -44,5 +44,6 @@
     "name": "إسم العقد",
     "district": "المديرية",
     "type": "العقد",
-    "workersRecords": "كشوف العمال"
+    "workersRecords": "كشوف العمال",
+    "contracts": "العقود"
 }

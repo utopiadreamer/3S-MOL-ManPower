@@ -23,5 +23,6 @@
     "EditEstablishment": "تعديل بيانات جهة",
     "EditWorker": "تعديل بيانات عامل",
     "DeleteWorker": "حذف عامل",
-    "userSearch": "البحث عن مستخدم"
+    "userSearch": "البحث عن مستخدم",
+    "security": "المستخدمين والصلاحيات"
 }

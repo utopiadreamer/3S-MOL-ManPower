@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Section, SectionSize } from "../../../shared/components/forms/Section";
 import { UserDTO } from "../../../shared/models/UserDTO";
 import { LayoutContent } from "../../../shared/components/layout/layoutContent/LayoutContent";
-import { CommandBar, PrimaryButton } from "@fluentui/react";
+import { CommandBar, IDropdownOption, PrimaryButton } from "@fluentui/react";
 import clsx from "clsx";
 import { ConfirmAction } from "../../../shared/components/business/ConfirmAction";
 import { Action, Mode } from "../../../shared/constants/types";
@@ -18,6 +18,7 @@ import { Claim, Role } from "../../../shared/constants/auth";
 import { ClaimsGrid } from "./ClaimsGrid";
 import { AddClaim } from "./AddClaim";
 import { GeneralUtil } from "../../../shared/utils/generalUtil";
+import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
 
 export interface Props {
   mode: Mode;
@@ -27,8 +28,8 @@ export const UserDetails: FC<Props> = (props: Props) => {
   const { mode } = props;
   let params = useParams();
   const [details, setDetails] = useState<UserDTO>();
-  const [claims, setClaims] = useState<Claim[]>();
-  const [selectedRole, setRole] = useState<string>("");
+  const [claims, setClaims] = useState<Claim[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [isEditable, setEditable] = useState<boolean>(mode === Mode.New);
   const [showDeleteDialog, setShowDeleteDialog] = useState<boolean>(false);
   const [showAddClaim, setShowAddClaim] = useState<boolean>(false);
@@ -71,7 +72,7 @@ export const UserDetails: FC<Props> = (props: Props) => {
       const list = getUsers().filter((i) => i.ID === params.id);
       if (list && list.length > 0) {
         const data = list[0];
-        setRole(data.Role);
+        setSelectedRoles(data.Roles);
         setClaims(data.Claims ?? []);
         setDetails(data);
       }
@@ -139,6 +140,18 @@ export const UserDetails: FC<Props> = (props: Props) => {
     if (user) setDetails(user);
     else GeneralUtil.notify();
   };
+  const onSelectRoles = (
+    event: React.FormEvent<HTMLDivElement>,
+    item?: IDropdownOption
+  ): void => {
+    if (item) {
+      setSelectedRoles(
+        item.selected
+          ? [...selectedRoles, item.key as string]
+          : selectedRoles.filter((key) => key !== item.key)
+      );
+    }
+  };
 
   return (
     <LayoutContent>
@@ -165,7 +178,7 @@ export const UserDetails: FC<Props> = (props: Props) => {
                     value={searchEmail ?? ""}
                     onChange={(_, v) => setSearchEmail(v ?? "")}
                   />
-                  <div/>
+                  <div />
                   <div className="alignEnd">
                     <PrimaryButton
                       className="actionButton primeAction"
@@ -211,48 +224,44 @@ export const UserDetails: FC<Props> = (props: Props) => {
                     <Dropdown
                       label={t("role")}
                       options={roles}
-                      selectedKey={selectedRole}
-                      onChange={(_, option) =>
-                        setRole(option?.key.toString() ?? "")
-                      }
+                      selectedKeys={selectedRoles}
+                      onChange={(_, option) => onSelectRoles(_, option)}
                       disabled={!isEditable}
+                      multiSelect
                     />
                   </div>
                 </div>
               </div>
-              <div className="section">
-                <div className="content">
-                  <div className="actionsHeader">
-                    <Section
-                      title={t("claims")}
-                      size={SectionSize.h2}
-                      iconName="AccountManagement"
-                    />
-                    {isEditable && (
-                      <PrimaryButton
-                        className="actionButton primeAction"
-                        iconProps={{ iconName: "Add" }}
-                        onClick={() => setShowAddClaim(true)}
-                      >
-                        {t("addClaim")}
-                      </PrimaryButton>
-                    )}
-                  </div>
-                  <ClaimsGrid
-                    mode={!isEditable ? Mode.View : Mode.Edit}
-                    reload={reload}
-                    onRealod={() => setReload(false)}
-                    onDelete={onDeleteClaim}
-                    claims={claims ?? []}
-                    onChanged={() => {
-                      return false;
-                    }}
-                    onNbItemPerPageChanged={() => {
-                      return false;
-                    }}
-                  />
+              <CollapsibleSection
+                open
+                title={t("claims")}
+                iconName="AccountManagement"
+              >
+                <div className="alignEnd">
+                  {isEditable && (
+                    <PrimaryButton
+                      className="actionButton headerAction"
+                      iconProps={{ iconName: "Add" }}
+                      onClick={() => setShowAddClaim(true)}
+                    >
+                      {t("addClaim")}
+                    </PrimaryButton>
+                  )}
                 </div>
-              </div>
+                <ClaimsGrid
+                  mode={!isEditable ? Mode.View : Mode.Edit}
+                  reload={reload}
+                  onRealod={() => setReload(false)}
+                  onDelete={onDeleteClaim}
+                  claims={claims ?? []}
+                  onChanged={() => {
+                    return false;
+                  }}
+                  onNbItemPerPageChanged={() => {
+                    return false;
+                  }}
+                />
+              </CollapsibleSection>
             </div>
           )}
         </div>

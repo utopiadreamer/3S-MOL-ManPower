@@ -10,12 +10,12 @@ import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../../shared/mockups/User";
 import { SearchBar } from "../../../shared/components/forms/SearchBar";
 import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const UsersList: FC = () => {
   const [users, setUsers] = useState<UserDTO[]>([]);
+  const [searchCriteria, setSearchCriteria] = useState<UserDTO>();
   const { t } = useTranslation(["security", "common"]);
-  const [email, setEmail] = useState<string>();
-  const [name, setName] = useState<string>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,25 +27,58 @@ export const UsersList: FC = () => {
     setUsers(results);
   };
 
+  const Clear = () => {
+    const empty = new UserDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (
+    name: string,
+    value?: string
+  ) => {
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <LayoutContent>
       <div className="usersList">
-        <CollapsibleSection open title={t("common:searchFilters")}>
+        <Section
+          className="pageHeader"
+          iconName="SecurityGroup"
+          title={t("security")}
+          size={SectionSize.h1}
+        />
+        <CollapsibleSection
+          open
+          title={t("common:searchFilters")}
+          iconName="Search"
+        >
           <div className="row g-112">
             <TextField
               label={t("userName")}
-              value={name}
-              onChange={(e, newValue) => setName(newValue)}
+              value={searchCriteria?.Name}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("Name", newValue)
+              }
             />
             <TextField
               label={t("email")}
-              value={email}
-              onChange={(e, newValue) => setEmail(newValue)}
+              value={searchCriteria?.Email}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("Email", newValue)
+              }
             />
-          <SearchBar onSearch={() => Search()} onClear={() => {}} />
+            <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
           </div>
         </CollapsibleSection>
-        <CollapsibleSection open title={t("common:searchFilters")}>
+        <CollapsibleSection
+          open
+          title={t("common:searchResults")}
+          iconName="SearchAndApps"
+        >
           <div className="alignEnd">
             <PrimaryButton
               className="actionButton headerAction"

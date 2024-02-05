@@ -2,6 +2,20 @@ import { Bounce, ToastPosition, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export class GeneralUtil {
+
+  public static setSearchCriteriaField = (
+    searchCriteria: any,
+    name: string,
+    value?: string | Date | null,
+    type?: "Date"
+  ) => {
+    let val = value;
+    if (type === "Date") val = new Date(val ?? "");
+    const criteria = searchCriteria;
+    criteria[name] = val;
+    return criteria;
+  };
+
   public static isUndefined = (obj: any) => {
     return obj === null || obj === undefined;
   };

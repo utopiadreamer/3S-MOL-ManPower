@@ -25,7 +25,11 @@ export const WorkersRecordList: FC = () => {
     <LayoutContent>
       <div className="workersList">
         <div className="panel">
-          <Section size={SectionSize.h2} iconName="Search" title={t('common:searchFilters')} />
+          <Section
+            size={SectionSize.h2}
+            iconName="Search"
+            title={t("common:searchFilters")}
+          />
           <div className="row">
             <TextField
               label={t("workerRecordNo")}
@@ -44,10 +48,14 @@ export const WorkersRecordList: FC = () => {
             />
           </div>
         </div>
-            <SearchBar onSearch={() => Search()} onClear={() => {}} />
+        <SearchBar onSearch={() => Search()} onClear={() => {}} />
         <br />
         <div className="panel">
-          <Section size={SectionSize.h2} iconName="SearchAndApps" title={t("common:searchResults")} />
+          <Section
+            size={SectionSize.h2}
+            iconName="SearchAndApps"
+            title={t("common:searchResults")}
+          />
           <WorkerRecordsGrid
             items={workers}
             onChanged={() => {

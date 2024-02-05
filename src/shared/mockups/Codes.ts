@@ -85,6 +85,12 @@ export function getCodes() {
       CodeTypeID: 7,
       ParentID: 9
     },
+    {
+      ID: 15,
+      Code: "15",
+      Name: "الاسكندرية",
+      CodeTypeID: 1
+    },
   ];
   return arr;
 }

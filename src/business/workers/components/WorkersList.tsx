@@ -11,13 +11,12 @@ import { getWorkers } from "../../../shared/mockups/Workers";
 import { useParams } from "react-router-dom";
 import { CollapsibleSection } from "../../../shared/components/forms/CollapsibleSection";
 import { SearchBar } from "../../../shared/components/forms/SearchBar";
+import { Section, SectionSize } from "../../../shared/components/forms/Section";
 
 export const WorkersList: FC = () => {
   const [workers, setWorkers] = useState<WorkerDTO[]>([]);
+  const [searchCriteria, setSearchCriteria] = useState<WorkerDTO>();
   const { t } = useTranslation(["workers", "common"]);
-  const [nationalID, setNationalID] = useState<string>();
-  const [occupation, setOccupation] = useState<string>();
-  const [name, setName] = useState<string>();
   const { id } = useParams();
 
   useEffect(() => {
@@ -25,35 +24,73 @@ export const WorkersList: FC = () => {
   }, []);
 
   const Search = () => {
-    const results = getWorkers(name, nationalID, occupation, id);
+    const results = getWorkers(searchCriteria, id);
     setWorkers(results);
+  };
+
+  const Clear = () => {
+    const empty = new WorkerDTO();
+    setSearchCriteria(empty);
+  };
+
+  const setSearchCriteriaField = (
+    name: string,
+    value?: string | Date | null,
+    type?: "Date"
+  ) => {
+    let val = value;
+    if (type === "Date") val = new Date(val ?? "");
+    setSearchCriteria((prevData: any) => ({
+      ...prevData,
+      [name]: val,
+    }));
   };
 
   return (
     <LayoutContent>
       <div className="workersList">
-        <CollapsibleSection open title={t("common:searchFilters")}>
+        <Section
+          className="pageHeader"
+          iconName="FabricUserFolder"
+          title={t("workersInfo")}
+          size={SectionSize.h1}
+        />
+        <CollapsibleSection
+          open
+          title={t("common:searchFilters")}
+          iconName="Search"
+        >
           <div className="row">
             <TextField
               label={t("workerName")}
-              value={name}
-              onChange={(e, newValue) => setName(newValue)}
+              value={searchCriteria?.Name}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("Name", newValue)
+              }
             />
             <TextField
               label={t("nationalID")}
-              value={nationalID}
-              onChange={(e, newValue) => setNationalID(newValue)}
+              value={searchCriteria?.NationalID}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("NationalID", newValue)
+              }
             />
             <TextField
               label={t("occupation")}
-              value={occupation}
-              onChange={(e, newValue) => setOccupation(newValue)}
+              value={searchCriteria?.Occupation}
+              onChange={(e, newValue) =>
+                setSearchCriteriaField("Occupation", newValue)
+              }
             />
-            <SearchBar onSearch={() => Search()} onClear={() => {}} />
+            <SearchBar onSearch={() => Search()} onClear={() => Clear()} />
           </div>
         </CollapsibleSection>
 
-        <CollapsibleSection open title={t("common:searchResults")}>
+        <CollapsibleSection
+          open
+          title={t("common:searchResults")}
+          iconName="SearchAndApps"
+        >
           <WorkersGrid
             mode={Mode.View}
             items={workers}

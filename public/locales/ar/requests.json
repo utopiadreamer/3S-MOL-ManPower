@@ -10,6 +10,7 @@
     "InProgress": "قيد التنفيذ",
     "UnderReview": "تحت المراجعة",
     "metedata": "بيانات الطلب",
-    "requests": "الطلبات"
+    "requests": "الطلبات",
+    "myRequests": "طلباتي"
 
 }
